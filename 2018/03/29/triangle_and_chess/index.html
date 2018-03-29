@@ -1,11 +1,11 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><meta name="description" content="衡门栖鹊,暗树流萤"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title>[算法]任意三角形&amp;国际象棋 - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-03-29T13:58:45.000Z">三月 29, 2018</time><h1 class="post__title"><a href="/2018/03/29/任意三角形and国际象棋/">[算法]任意三角形&amp;国际象棋</a></h1><div class="post__main echo"><h2 id="任意三角形"><a href="#任意三角形" class="headerlink" title="任意三角形"></a>任意三角形</h2><blockquote>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><meta name="description" content="衡门栖鹊,暗树流萤"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title>任意三角形&amp;国际象棋 - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-03-29T13:58:45.000Z">三月 29, 2018</time><h1 class="post__title"><a href="/2018/03/29/triangle_and_chess/">任意三角形&amp;国际象棋</a></h1><div class="post__main echo"><h2 id="challenge-任意三角形"><a href="#challenge-任意三角形" class="headerlink" title="challenge: 任意三角形"></a>challenge: 任意三角形</h2><blockquote>
 <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述:"></a>问题描述:</h3><p>圆上任选三点组成三角形，这个三角形是锐角三角形的概率是多少？</p>
 </blockquote>
 <p><img src="https://github.com/SilentSpiral/my-markdown-test-area/blob/master/1521531625200.png?raw=true" alt="有基佬开我裤链!"></p>
 <blockquote>
 <p>锐角必定包含圆心, 问题转化为构成的三角形包含圆心的概率<br>做三条过圆心的直线<br>A随便选一个，假定选A<br>then B和A必须分居C所在的直线两侧，所以只能选B`，概率1/2<br>C必须在AB`确定的优弧上(或者说AC必须分居在B所在直线两侧)，概率1/2<br>所以构成三角形包含圆心的概率是 1/4  </p>
 </blockquote>
-<h2 id="国际象棋"><a href="#国际象棋" class="headerlink" title="国际象棋"></a>国际象棋</h2><h3 id="问题描述-1"><a href="#问题描述-1" class="headerlink" title="问题描述:"></a>问题描述:</h3><blockquote>
+<h2 id="challenge-国际象棋"><a href="#challenge-国际象棋" class="headerlink" title="challenge:  国际象棋"></a>challenge:  国际象棋</h2><h3 id="问题描述-1"><a href="#问题描述-1" class="headerlink" title="问题描述:"></a>问题描述:</h3><blockquote>
 <p>国际象棋棋盘有8行8列，上面的格子是黑白相间的，每个格子里要么没有棋子，要么有1个棋子.<br>有没有可能在棋盘上摆若干个棋子，使得<strong>每一行，每一列都有奇数个棋子，而且棋盘上黑色格子里的棋子总数也是奇数？</strong>  </p>
 </blockquote>
 <h3 id="try-位运算"><a href="#try-位运算" class="headerlink" title="try(位运算):"></a>try(位运算):</h3><ol>
@@ -40,10 +40,10 @@
 <p>如下是四个子命题的证明:</p>
 <blockquote>
 <ul>
-<li>子命题1: 8个奇数相加结果为偶数  </li>
-<li>子命题2: 反证法, 略  </li>
-<li>子命题3: 这里可以写个算法了,往下找吧骚年   </li>
-<li>子命题4: 如果棋盘不止8个棋子，则每次只关注其中10个棋子, 必定至少有一行一列都有不少于3个棋子的, 这时一定会出现十字,八字或T字型的局部, 运用变换2(总数不变)统统变成T字型, 而后可运用变换3使总数-2, 只要总数仍大于8, 则仍然可执行此过程,使得总数最终降为8</li>
+<li>子命题1:   8个奇数相加结果为偶数  </li>
+<li>子命题2:   反证法, 略  </li>
+<li>子命题3:   这里可以写个算法了,往下找吧骚年   </li>
+<li>子命题4:   如果棋盘不止8个棋子，则每次只关注其中10个棋子, 必定至少有一行一列都有不少于3个棋子的, 这时一定会出现十字,八字或T字型的局部, 运用变换2(总数不变)统统变成T字型, 而后可运用变换3使总数-2, 只要总数仍大于8, 则仍然可执行此过程,使得总数最终降为8</li>
 </ul>
 </blockquote>
 <p><img src="https://github.com/SilentSpiral/my-markdown-test-area/blob/master/1521532907770.png?raw=true" alt="巴扎嘿!"><br>       　　　　此为十字形, 八字形略(鸣谢dalao顺手帮忙制图233333)</p>
@@ -58,5 +58,6 @@
 <li>其中白色格子被计算了两次, 黑色格子只计算了一次.   </li>
 <li>所以黑色格子的棋子数 = 偶数 - 偶数 = 偶数  </li>
 </ul>
+<p>大佬: 一个能打的都没有.jpg</p>
 </blockquote>
 </div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/算法/">算法</a></li></ul></footer></article><div class="comments" id="lv-container" data-id="city" data-uid="your uid"><script>(function(d, s) {var j, e = d.getElementsByTagName(s)[0];if (typeof LivereTower === 'function') { return; } j = d.createElement(s);j.src = 'https://cdn-city.livere.com/js/embed.dist.js';j.async = true;e.parentNode.insertBefore(j, e);})(document, 'script');</script></div></main><footer class="foot"><div class="foot-copy">&copy; 2018 WeiSch</div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
