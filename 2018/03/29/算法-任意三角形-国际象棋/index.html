@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><meta name="description" content="衡门栖鹊,暗树流萤"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title>[算法]任意三角形&amp;国际象棋 - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-03-29T13:58:45.000Z">三月 29, 2018</time><h1 class="post__title"><a href="/2018/03/29/算法-任意三角形-国际象棋/">[算法]任意三角形&amp;国际象棋</a></h1><div class="post__main echo"><h2 id="任意三角形"><a href="#任意三角形" class="headerlink" title="任意三角形"></a>任意三角形</h2><blockquote>
 <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述:"></a>问题描述:</h3><p>圆上任选三点组成三角形，这个三角形是锐角三角形的概率是多少？</p>
 </blockquote>
-<p><img src="./1521531625200.png" alt="Alt text"></p>
+<p><img src="https://github.com/SilentSpiral/SilentSpiral.github.io/blob/master/2018/03/29/%E7%AE%97%E6%B3%95-%E4%BB%BB%E6%84%8F%E4%B8%89%E8%A7%92%E5%BD%A2-%E5%9B%BD%E9%99%85%E8%B1%A1%E6%A3%8B/1521531625200.png?raw=true" alt="Alt text"></p>
 <blockquote>
 <p>锐角必定包含圆心, 问题转化为构成的三角形包含圆心的概率<br>做三条过圆心的直线<br>A随便选一个，假定选A<br>then B和A必须分居C所在的直线两侧，所以只能选B`，概率1/2<br>C必须在AB`确定的优弧上(或者说AC必须分居在B所在直线两侧)，概率1/2<br>所以构成三角形包含圆心的概率是 1/4  </p>
 </blockquote>
@@ -45,7 +45,7 @@
 </blockquote>
 <p>子命题4: 如果棋盘不止8个棋子，则每次只关注其中10个棋子, 必定至少有一行一列都有不少于3个棋子的, 这时一定会出现十字,八字或T字型的局部, 运用变换2(总数不变)统统变成T字型, 而后可运用变换3使总数-2, 只要总数仍大于8, 则仍然可执行此过程,使得总数最终降为8</p>
 </blockquote>
-<p><img src="./1521532907770.png" alt="Alt text"><br>                  此为十字形, 八字形略(鸣谢dalao顺手帮忙制图233333)</p>
+<p><img src="https://github.com/SilentSpiral/SilentSpiral.github.io/blob/master/2018/03/29/%E7%AE%97%E6%B3%95-%E4%BB%BB%E6%84%8F%E4%B8%89%E8%A7%92%E5%BD%A2-%E5%9B%BD%E9%99%85%E8%B1%A1%E6%A3%8B/1521532907770.png?raw=true" alt="Alt text"><br>                  此为十字形, 八字形略(鸣谢dalao顺手帮忙制图233333)</p>
 <h4 id="前方高能"><a href="#前方高能" class="headerlink" title="前方高能"></a>前方高能</h4><h3 id="前方高能-1"><a href="#前方高能-1" class="headerlink" title="前方高能"></a>前方高能</h3><h2 id="前方高能-2"><a href="#前方高能-2" class="headerlink" title="前方高能"></a>前方高能</h2><h1 id="而你群大佬犹然笑之"><a href="#而你群大佬犹然笑之" class="headerlink" title="-而你群大佬犹然笑之-"></a>-而你群大佬犹然笑之-</h1><blockquote>
 <p>记棋盘的横坐标是abcd…h, 纵坐标是123…8<br>记N(1)为第1行棋子的数量, N(a)为第a列棋子的数量等等<br>N(a) + N(c) + N(e) + N(g) + N(2) + N(4) + N(6) + N(8) = 偶数.<br>其中白色格子被计算了两次, 黑色格子只计算了一次.<br>所以黑色格子的棋子数 = 偶数 - 偶数 = 偶数  </p>
 </blockquote>
