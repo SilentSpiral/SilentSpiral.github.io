@@ -12,18 +12,16 @@
 <p>所以我们得到快慢指针相遇的充要条件: <strong>(a,k)互质</strong>或<strong>m是a的倍数</strong>  </p>
 <p>在实际工程中, k和m都是不可控的: <strong>m是a的倍数</strong>这一条件完全不可能事先办到, 所以只能寄希望于前者, 即<strong>a,k互质</strong>, 易知k也是完全不可控的, 事实上k存不存在都是未知, 所以<strong>令a=1是唯一的选择</strong>, 即Vf-Vs=1  </p>
 <blockquote>
-<p>出于以上思路的构造:<br>Vf=4, Vs=1, k=9, 慢指针初次进入环路时坐标为0, 同时快指针坐标为5<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; Vf=<span class="number">4</span>;Vs=<span class="number">1</span>;a=<span class="number">0</span>;b=<span class="number">5</span></span><br><span class="line">&gt; <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">&gt;     a=(a+Vf)%<span class="number">9</span></span><br><span class="line">&gt;     b=(b+Vs)%<span class="number">9</span></span><br><span class="line">&gt;     print(a,b)</span><br><span class="line">&gt;     <span class="keyword">if</span>(a==b):</span><br><span class="line">&gt;         <span class="keyword">break</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure></p>
+<p>出于以上思路的构造:<br>Vf=4, Vs=1, k=9, 慢指针初次进入环路时坐标为0, 同时快指针坐标为5<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Vf=<span class="number">4</span>;Vs=<span class="number">1</span>;a=<span class="number">0</span>;b=<span class="number">5</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    a=(a+Vf)%<span class="number">9</span></span><br><span class="line">    b=(b+Vs)%<span class="number">9</span></span><br><span class="line">    print(a,b)</span><br><span class="line">    <span class="keyword">if</span>(a==b):</span><br><span class="line">    <span class="keyword">break</span></span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <blockquote>
 <p>此时有a,b的坐标陷入如下不相遇的循环:<br><strong>(8,6)</strong>-&gt;(3,7)-&gt;(7,8)-&gt;(2,0)-&gt;(6,1)-&gt;(1,2)-&gt;(5,3)-&gt;(0,4)-&gt;(4,5)-&gt;<strong>(8,6)</strong>-&gt;(3,7)-&gt;…</p>
 </blockquote>
 <p>那么只能令Vf=2, Vs=1了                ……………….吗?<br>是个头, 矮十厘米.jpg<br>Vf=2, Vs=1<br>Vf=3, Vs=2<br>Vf=4, Vs=3<br>Vf=5, Vs=4<br>……  </p>
-<h2 id="Q2-寻找链表成环位置"><a href="#Q2-寻找链表成环位置" class="headerlink" title="Q2:寻找链表成环位置"></a>Q2:寻找链表成环位置</h2><p>###算法:  </p>
-<blockquote>
+<h2 id="Q2-寻找链表成环位置"><a href="#Q2-寻找链表成环位置" class="headerlink" title="Q2:寻找链表成环位置"></a>Q2:寻找链表成环位置</h2><h3 id="算法"><a href="#算法" class="headerlink" title="算法:"></a>算法:</h3><blockquote>
 <p>Vf=2, Vs=1 (注: 只有这一对速度可以)<br>在快慢指针相遇时, 用另一个慢指针从链表起点出发, 两个慢指针相遇时便指向成环的节点   </p>
 </blockquote>
-<p>###证明:</p>
-<blockquote>
+<h3 id="证明"><a href="#证明" class="headerlink" title="证明:"></a>证明:</h3><blockquote>
 <p>慢指针速度Vs=1,快指针速度Vf=Vs+1=2;<br>环长k,成环前长度为l;  </p>
 <p>若Vs≠1, 则只有<strong>l是Vs的倍数</strong>或<strong>Vs与k互质</strong>时才能保证慢指针一定过成环处节点<br>鉴于l与k皆未知, 所以只能选择Vs=1才能使慢指针一定经过成环处节点  </p>
 <p>慢指针刚刚进入环路时, 一定处于成环处节点, 设此处为坐标原点, 此时快指针坐标为l<br>快慢指针相遇时有同余方程:<br>(Vf-Vs)*t≡-l (mod k) (注意此时从追击问题的角度其实是慢指针领先快指针k-r)<br>t≡-l (mod k)<br>所以快慢指针相遇时慢指针位于坐标为(k-l)的节点<br>此时再向起点出放置一个慢指针,则经过l个周期, 两指针皆指向成环处节点  </p>
