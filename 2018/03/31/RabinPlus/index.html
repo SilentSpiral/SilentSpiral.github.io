@@ -3,7 +3,7 @@
 <blockquote>
 <p><a href="https://silentspiral.github.io/2018/03/31/RSA-Rabin/" target="_blank" rel="noopener">Rabin加密算法了解一下(๑•̀ㅂ•́) ✧</a><br>考虑到最终解出来的x是四个一次同余方程的解:<br>　　{x ≡ m (mod p), x ≡ m (mod q)}<br>　　{x ≡ m (mod p), x ≡ -m (mod q)}<br>　　{x ≡ -m (mod p), x ≡ m (mod q)}<br>　　{x ≡ -m (mod p), x ≡ -m (mod q)}<br>可由中国剩余定理解得 :<br>x ≡ [±m*q*(q<sup>-1</sup>(mod p)) ±m*p*(p<sup>-1</sup>(mod q)) ] (mod pq)<br>易知当两个m都取正的时候可解出来明文 x ≡ m (mod pq)<br>　(但实际上你并不知道那两个两个二次剩余各自求出来的是m还是-m)<br>寄希望于由中国剩余定理得到的解可以通过控制p,q的取值得到自己想要的结果<br>对着这个式子发了一上午呆无果, 甚至在qq上问高中老师, 得到了明确的<strong>另请高明</strong>的答复……  </p>
 <hr>
-<p>然后就放弃了中国剩余定理的方向, 转而回到加密过程: C ≡ M^2 (mod pq)<br>我们的目标是通过控制pq的值, 使得明文M与假明文N共享密文C<br>此时可以得到 :<br>　　C ≡ N<sup>2</sup> ≡ M<sup>2</sup> (mod pq)<br>　　N<sup>2</sup> ≡ M<sup>2</sup> (mod pq)<br>　　N<sup>2</sup> - M<sup>2</sup> ≡ 0 (mod pq)<br>　　(N+M)*(N-M) ≡ 0 (mod pq)<br>易知, 该构造要求pq为(N<sup>2</sup> - M<sup>2</sup> )的因数, 且必须符合模4余3的要求<br>其中(N<sup>2</sup> - M<sup>2</sup> )可以天然分解为(N+M)*(N-M)<br>只需要分别分解(N+M)和(N-M)即可, 找到最大的两个模4余3的素因子, 若二者乘积大于M和N, 则可令p,q 等于这两个因子, 构造成功</p>
+<p>然后就放弃了中国剩余定理的方向, 转而回到加密过程: C ≡ M<sup>2</sup> (mod pq)<br>我们的目标是通过控制pq的值, 使得明文M与假明文N共享密文C<br>此时可以得到 :<br>　　C ≡ N<sup>2</sup> ≡ M<sup>2</sup> (mod pq)<br>　　N<sup>2</sup> ≡ M<sup>2</sup> (mod pq)<br>　　N<sup>2</sup> - M<sup>2</sup> ≡ 0 (mod pq)<br>　　(N+M)*(N-M) ≡ 0 (mod pq)<br>易知, 该构造要求pq为(N<sup>2</sup> - M<sup>2</sup> )的因数, 且必须符合模4余3的要求<br>其中(N<sup>2</sup> - M<sup>2</sup> )可以天然分解为(N+M)*(N-M)<br>只需要分别分解(N+M)和(N-M)即可, 找到最大的两个模4余3的素因子, 若二者乘积大于M和N, 则可令p,q 等于这两个因子, 构造成功</p>
 </blockquote>
 <p>出于这个思路, 我特地做了一些尝试, 并且取得了一点点用以把玩的成果  </p>
 <p>先说一下我字符串是如何处理成大整数的, 为了节约空间, 使用了GBK编码, 也没有考虑大端序小端序什么的, 感谢python爸爸原生支持大整数_(:з」∠)_</p>
