@@ -6,7 +6,8 @@
 </blockquote>
 <p>但何谓快慢指针? 快者多快? 慢者多慢?<br>快指针速度Vf, 慢指针速度Vs, 环长k, 设慢指针刚刚进入环路时, 距离快指针m  </p>
 <blockquote>
-<p>据此列出相遇状态同余方程, 设经过时间为t:<br>(Vf-Vs)*t≡m (mod k)<br>令a=(Vf-Vs)<br>当且仅当a,k互质时有:<br><strong>t≡m*a^-1 (mod k)</strong><br>若a,k不互质,当m≡0 (mod a)时, 记m=r<em>a, 有:<br>a\</em>t≡r*a (modk)<br><strong>t≡r (mod k)</strong></p>
+<p>据此列出相遇状态同余方程, 设经过时间为t:<br>(Vf-Vs)*t≡m (mod k)<br>令a=(Vf-Vs)<br>当且仅当a,k互质时有:<br><strong>t≡m*a^-1 (mod k)</strong><br>若a,k不互质,当m≡0 (mod a)时, 记m=r*a, 有:<br>a*t≡r*a (modk)<br><strong>t≡r (mod k)</strong></p>
+<p>注:若t有解即说明快慢指针可相遇</p>
 </blockquote>
 <p>所以我们得到快慢指针相遇的充要条件: <strong>(a,k)互质</strong>或<strong>m是a的倍数</strong>  </p>
 <p>在实际工程中, k和m都是不可控的: <strong>m是a的倍数</strong>这一条件完全不可能事先办到, 所以只能寄希望于前者, 即<strong>a,k互质</strong>, 易知k也是完全不可控的, 事实上k存不存在都是未知, 所以<strong>令a=1是唯一的选择</strong>, 即Vf-Vs=1  </p>
@@ -24,7 +25,7 @@
 <p>###证明:</p>
 <blockquote>
 <p>慢指针速度Vs=1,快指针速度Vf=Vs+1=2;<br>环长k,成环前长度为l;  </p>
-<p>若Vs≠1, 则只有<strong>l是Vs的倍数</strong>或<strong>Vs与k的公因子</strong>时才能保证慢指针一定过成环处节点<br>鉴于l与k皆未知, 所以只能选择Vs=1才能使慢指针一定经过成环处节点  </p>
+<p>若Vs≠1, 则只有<strong>l是Vs的倍数</strong>或<strong>Vs与k互质</strong>时才能保证慢指针一定过成环处节点<br>鉴于l与k皆未知, 所以只能选择Vs=1才能使慢指针一定经过成环处节点  </p>
 <p>慢指针刚刚进入环路时, 一定处于成环处节点, 设此处为坐标原点, 此时快指针坐标为l<br>快慢指针相遇时有同余方程:<br>(Vf-Vs)*t≡-l (mod k) (注意此时从追击问题的角度其实是慢指针领先快指针k-r)<br>t≡-l (mod k)<br>所以快慢指针相遇时慢指针位于坐标为(k-l)的节点<br>此时再向起点出放置一个慢指针,则经过l个周期, 两指针皆指向成环处节点  </p>
 </blockquote>
 <h2 id="Q3-判断链表是否交尾共尾"><a href="#Q3-判断链表是否交尾共尾" class="headerlink" title="Q3:判断链表是否交尾共尾"></a>Q3:判断链表是否<del>交尾</del>共尾</h2><p>其实分别遍历到最后一个节点就可以了, 但还有一个有趣的思路:<br>将链表1的尾节点指向链表2的首节点, 再从链表2开始用快慢指针遍历判断是否成环</p>
