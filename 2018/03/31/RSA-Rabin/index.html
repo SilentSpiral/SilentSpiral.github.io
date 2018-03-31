@@ -8,7 +8,7 @@
 </blockquote>
 <hr>
 <h2 id="Rabin"><a href="#Rabin" class="headerlink" title="Rabin:"></a>Rabin:</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理:"></a>原理:</h3><blockquote>
-<p><strong>二次剩余</strong><br>若p是奇质数且p不能整除d, 则方程 x^2 ≡ d (mod p)有解的充要条件是:<br>d^((p-1)/2) ≡ 1 (mod p)       (欧拉判别准则)<br>特殊的, 若p ≡ 3 (mod 4)<br>则可进一步解出来 x ≡ d^((p+1)/4) (mod p)<br>　　事实上这是一个极为精妙的构造解:<br>　　d^((p-1)/2) ≡ 1 (mod p) ,两边同乘d得:<br>　　d^((p+1)/2) ≡ d (mod p)<br>　　因为 p ≡ 3 (mod 4), 故(p+1)/4是一个整数<br>　　　　(d^((p+1 /4))^2 ≡ d (mod p)<br>　　　　观察得: x ≡ ±d^((p+1)/4) (mod p)<br><strong>中国剩余定理</strong><br>对于一次同余方程组:<br>　　x ≡ a (mod p)<br>　　x ≡ b (mod q)<br>可解得 x ≡ [a*q*(q^-1(mod p)) + b*p*(p^-1(mod q)) ] (mod pq)  </p>
+<p><strong>二次剩余</strong><br>若p是奇质数且p不能整除d, 则方程 x^2 ≡ d (mod p)有解的充要条件是:<br>d^((p-1)/2) ≡ 1 (mod p)       (欧拉判别准则)<br>特殊的, 若p ≡ 3 (mod 4)<br>则可进一步解出来 x ≡ d^((p+1)/4) (mod p)<br>　　事实上这是一个极为精妙的构造解:<br>　　d^((p-1)/2) ≡ 1 (mod p) ,两边同乘d得:<br>　　d^((p+1)/2) ≡ d (mod p)<br>　　因为 p ≡ 3 (mod 4), 故(p+1)/4是一个整数<br>　　　　(d^((p+1 /4))^2 ≡ d (mod p)<br>　　　　观察得: x ≡ ±d^((p+1)/4) (mod p)<br>　　　　<br><strong>中国剩余定理</strong><br>对于一次同余方程组:<br>　　x ≡ a (mod p)<br>　　x ≡ b (mod q)<br>可解得 x ≡ [a*q*(q^-1(mod p)) + b*p*(p^-1(mod q)) ] (mod pq)  </p>
 </blockquote>
 <h3 id="构造"><a href="#构造" class="headerlink" title="构造:"></a>构造:</h3><blockquote>
 <p>随机选取素数p≡q≡3 (mod 4)<br>公钥&lt;2,n=pq&gt;<br>私钥&lt;p,q&gt;<br>记明文为M, 密文为C<br>加密: C ≡ M^2 (mod pq)          (Rabin加密是真的快)<br>解密: 此处解同余方程组<br>　　x^2 ≡ C (mod p)<br>　　x^2 ≡ C (mod q)      注:有效明文一定有解<br>运用公式 x ≡ ±d^((p+1)/4) (mod p), 可迅速解得:<br>　　x ≡ ±m (mod p)<br>　　x ≡ ±m (mod q)<br>随后得到了4个一次同余方程组<br>　　{x ≡ m (mod p), x ≡ m (mod q)}<br>　　{x ≡ m (mod p), x ≡ -m (mod q)}<br>　　{x ≡ -m (mod p), x ≡ m (mod q)}<br>　　{x ≡ -m (mod p), x ≡ -m (mod q)}<br>可由<strong>中国剩余定理</strong>解出4个解, 则明文为其中的一个, 需附加语义(或校验码)进行判断  </p>
@@ -18,12 +18,14 @@
 <p>但仅仅从数学的角度来看, 建立在大整数分解难问题的这两个算法, 无疑又比类Elgamal系列算法优雅的多, 或许是由于RSA和Rabin明文密文实质性的参与了加解密运算的缘故吧</p>
 <blockquote>
 <ul>
-<li>Rabin比RSA安全的理由:<br>Rabin已被证实安全性与大整数分解难问题等价, 想要破解密钥, 就必须分解大整数n<br>而RSA的安全性仍未被证明, 个人臆测为由私钥 d无法反推 φ(n), 说明求出d与求出φ(n)在求解难度上并不等价</li>
-<li>RSA比Rabin安全的理由:<br>Rabin的素数必须满足p≡q≡3 (mod 4), 这无疑在暴力破解n的时候减小了近一半的搜索空间<br>Rabin的公钥为2, 在明文较短的情况下, 可以尝试开方破解<br>(在RSA取e=3的情况下同样存在此问题 )  </li>
+<li><p>Rabin比RSA安全的理由:<br>Rabin已被证实安全性与大整数分解难问题等价, 想要破解密钥, 就必须分解大整数n<br>而RSA的安全性仍未被证明, 个人臆测为由私钥 d无法反推 φ(n), 说明求出d与求出φ(n)在求解难度上并不等价   </p>
+</li>
+<li><p>RSA比Rabin安全的理由:<br>Rabin的素数必须满足p≡q≡3 (mod 4), 这无疑在暴力破解n的时候减小了近一半的搜索空间<br>Rabin的公钥为2, 在明文较短的情况下, 可以尝试开方破解<br>(在RSA取e=3的情况下同样存在此问题 )  </p>
+</li>
 </ul>
 </blockquote>
 <hr>
 <h2 id="是否可以说Rabin是RSA令e-2的特例"><a href="#是否可以说Rabin是RSA令e-2的特例" class="headerlink" title="是否可以说Rabin是RSA令e=2的特例?"></a>是否可以说Rabin是RSA令e=2的特例?</h2><blockquote>
 <p>我认为这个是难以说得通的<br>首先二者的原理差的有点远, 二次剩余算是一个比较独特的领域了<br>其次吧… RSA要求 e与 φ(n)互质<br>φ(n) = (p-1)(q-1) ,一定是个偶数<br>所以e=2的时候, e不存在模 φ(n)的逆<br>无法以RSA的方式对Rabin密文进行解密<br>更遑论Rabin是建立在RSA的基础上的  </p>
 </blockquote>
-</div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/密码学/">密码学</a></li><li class="post__tag__item"><a class="post__tag__link" href="/tags/算法/">算法</a></li></ul></footer></article><div class="comments" id="lv-container" data-id="city" data-uid="your uid"><script>(function(d, s) {var j, e = d.getElementsByTagName(s)[0];if (typeof LivereTower === 'function') { return; } j = d.createElement(s);j.src = 'https://cdn-city.livere.com/js/embed.dist.js';j.async = true;e.parentNode.insertBefore(j, e);})(document, 'script');</script></div></main><footer class="foot"><div class="foot-copy">&copy; 2018 WeiSch</div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
+</div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/算法/">算法</a></li><li class="post__tag__item"><a class="post__tag__link" href="/tags/密码学/">密码学</a></li></ul></footer></article><div class="comments" id="lv-container" data-id="city" data-uid="your uid"><script>(function(d, s) {var j, e = d.getElementsByTagName(s)[0];if (typeof LivereTower === 'function') { return; } j = d.createElement(s);j.src = 'https://cdn-city.livere.com/js/embed.dist.js';j.async = true;e.parentNode.insertBefore(j, e);})(document, 'script');</script></div></main><footer class="foot"><div class="foot-copy">&copy; 2018 WeiSch</div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
