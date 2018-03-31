@@ -1,23 +1,34 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><meta name="description" content="衡门栖鹊,暗树流萤"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title>链表,快慢指针与数论 - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-03-31T02:48:18.000Z">三月 31, 2018</time><h1 class="post__title"><a href="/2018/03/31/LinkedList/">链表,快慢指针与数论</a></h1><div class="post__main echo"><blockquote>
-<p>Question:<br>1.判断链表是否成环<br>2.寻找链表成环位置<br>3.判断链表是否<del>交尾</del>共尾  </p>
+<p>Question:</p>
+<ol>
+<li>判断链表是否成环  </li>
+<li>寻找链表成环位置  </li>
+<li>判断链表是否<del>交尾</del>共尾  </li>
+</ol>
 </blockquote>
+<hr>
 <h2 id="Q1-判断链表是否成环"><a href="#Q1-判断链表是否成环" class="headerlink" title="Q1: 判断链表是否成环"></a>Q1: 判断链表是否成环</h2><blockquote>
 <p>想必这个问题相当多的人都知道答案: 快慢指针判断相遇  </p>
 </blockquote>
 <p>但何谓快慢指针? 快者多快? 慢者多慢?<br>快指针速度Vf, 慢指针速度Vs, 环长k, 设慢指针刚刚进入环路时, 距离快指针m  </p>
 <blockquote>
-<p>据此列出相遇状态同余方程, 设经过时间为t:<br>(Vf-Vs)*t≡m (mod k)<br>令a=(Vf-Vs)<br>当且仅当a,k互质时有:<br><strong>t≡m*a^-1 (mod k)</strong><br>若a,k不互质,当m≡0 (mod a)时, 记m=r*a, 有:<br>a*t≡r*a (modk)<br><strong>t≡r (mod k)</strong></p>
+<p>据此列出相遇状态同余方程, 设经过时间为t:<br>　　(Vf-Vs)*t≡m (mod k)<br>令a=(Vf-Vs)<br>当且仅当a,k互质时有:<br>　　<strong>t≡m*a^-1 (mod k)</strong><br>若a,k不互质,当m≡0 (mod a)时, 记m=r*a, 有:<br>　　a*t≡r*a (modk)<br>　　<strong>t≡r (mod k)</strong>   </p>
 <p>注:若t有解即说明快慢指针可相遇</p>
 </blockquote>
 <p>所以我们得到快慢指针相遇的充要条件: <strong>(a,k)互质</strong>或<strong>m是a的倍数</strong>  </p>
 <p>在实际工程中, k和m都是不可控的: <strong>m是a的倍数</strong>这一条件完全不可能事先办到, 所以只能寄希望于前者, 即<strong>a,k互质</strong>, 易知k也是完全不可控的, 事实上k存不存在都是未知, 所以<strong>令a=1是唯一的选择</strong>, 即Vf-Vs=1  </p>
 <blockquote>
-<p>出于以上思路的构造:<br>Vf=4, Vs=1, k=9, 慢指针初次进入环路时坐标为0, 同时快指针坐标为5<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Vf=<span class="number">4</span>;Vs=<span class="number">1</span>;a=<span class="number">0</span>;b=<span class="number">5</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    a=(a+Vf)%<span class="number">9</span></span><br><span class="line">    b=(b+Vs)%<span class="number">9</span></span><br><span class="line">    print(a,b)</span><br><span class="line">    <span class="keyword">if</span>(a==b):</span><br><span class="line">    <span class="keyword">break</span></span><br></pre></td></tr></table></figure></p>
+<p>出于以上思路的构造:<br>Vf=4, Vs=1, k=9, 慢指针初次进入环路时坐标为0, 同时快指针坐标为5  </p>
 </blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Vf=<span class="number">4</span>;Vs=<span class="number">1</span>;a=<span class="number">0</span>;b=<span class="number">5</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    a=(a+Vf)%<span class="number">9</span></span><br><span class="line">    b=(b+Vs)%<span class="number">9</span></span><br><span class="line">    print(a,b)</span><br><span class="line">    <span class="keyword">if</span>(a==b):</span><br><span class="line">    <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>此时有a,b的坐标陷入如下不相遇的循环:<br><strong>(8,6)</strong>-&gt;(3,7)-&gt;(7,8)-&gt;(2,0)-&gt;(6,1)-&gt;(1,2)-&gt;(5,3)-&gt;(0,4)-&gt;(4,5)-&gt;<strong>(8,6)</strong>-&gt;(3,7)-&gt;…</p>
+<p>此时有a,b的坐标对陷入如下不相遇的循环:<br><strong>(8,6)</strong>-&gt;(3,7)-&gt;(7,8)-&gt;(2,0)-&gt;(6,1)-&gt;(1,2)-&gt;(5,3)-&gt;(0,4)-&gt;(4,5)-&gt;<strong>(8,6)</strong>-&gt;(3,7)-&gt;…</p>
 </blockquote>
-<p>那么只能令Vf=2, Vs=1了                ……………….吗?<br>是个头, 矮十厘米.jpg<br>Vf=2, Vs=1<br>Vf=3, Vs=2<br>Vf=4, Vs=3<br>Vf=5, Vs=4<br>……  </p>
+<p>那么只能令Vf=2, Vs=1了…<br>　　　　　　　　　　　　　　　　……..吗?     </p>
+<p>是个头, 矮十厘米.jpg<br>　　Vf=2, Vs=1<br>　　Vf=3, Vs=2<br>　　Vf=4, Vs=3<br>　　Vf=5, Vs=4<br>　　……    
+　　</p>
+<hr>
+<p>但之所以通常要令Vf=2, Vs=1, 是因为……   </p>
 <h2 id="Q2-寻找链表成环位置"><a href="#Q2-寻找链表成环位置" class="headerlink" title="Q2:寻找链表成环位置"></a>Q2:寻找链表成环位置</h2><h3 id="算法"><a href="#算法" class="headerlink" title="算法:"></a>算法:</h3><blockquote>
 <p>Vf=2, Vs=1 (注: 只有这一对速度可以)<br>在快慢指针相遇时, 用另一个慢指针从链表起点出发, 两个慢指针相遇时便指向成环的节点   </p>
 </blockquote>
@@ -26,5 +37,6 @@
 <p>若Vs≠1, 则只有<strong>l是Vs的倍数</strong>或<strong>Vs与k互质</strong>时才能保证慢指针一定过成环处节点<br>鉴于l与k皆未知, 所以只能选择Vs=1才能使慢指针一定经过成环处节点  </p>
 <p>慢指针刚刚进入环路时, 一定处于成环处节点, 设此处为坐标原点, 此时快指针坐标为l<br>快慢指针相遇时有同余方程:<br>(Vf-Vs)*t≡-l (mod k) (注意此时从追击问题的角度其实是慢指针领先快指针k-r)<br>t≡-l (mod k)<br>所以快慢指针相遇时慢指针位于坐标为(k-l)的节点<br>此时再向起点出放置一个慢指针,则经过l个周期, 两指针皆指向成环处节点  </p>
 </blockquote>
+<hr>
 <h2 id="Q3-判断链表是否交尾共尾"><a href="#Q3-判断链表是否交尾共尾" class="headerlink" title="Q3:判断链表是否交尾共尾"></a>Q3:判断链表是否<del>交尾</del>共尾</h2><p>其实分别遍历到最后一个节点就可以了, 但还有一个有趣的思路:<br>将链表1的尾节点指向链表2的首节点, 再从链表2开始用快慢指针遍历判断是否成环</p>
-</div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/算法/">算法</a></li></ul></footer></article><div class="comments" id="lv-container" data-id="city" data-uid="your uid"><script>(function(d, s) {var j, e = d.getElementsByTagName(s)[0];if (typeof LivereTower === 'function') { return; } j = d.createElement(s);j.src = 'https://cdn-city.livere.com/js/embed.dist.js';j.async = true;e.parentNode.insertBefore(j, e);})(document, 'script');</script></div></main><footer class="foot"><div class="foot-copy">&copy; 2018 WeiSch</div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
+</div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/算法/">算法</a></li><li class="post__tag__item"><a class="post__tag__link" href="/tags/数论/">数论</a></li></ul></footer></article><div class="comments" id="lv-container" data-id="city" data-uid="your uid"><script>(function(d, s) {var j, e = d.getElementsByTagName(s)[0];if (typeof LivereTower === 'function') { return; } j = d.createElement(s);j.src = 'https://cdn-city.livere.com/js/embed.dist.js';j.async = true;e.parentNode.insertBefore(j, e);})(document, 'script');</script></div></main><footer class="foot"><div class="foot-copy">&copy; 2018 WeiSch</div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
