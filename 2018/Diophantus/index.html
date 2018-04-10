@@ -63,9 +63,9 @@
 <p><strong>证明</strong>:<br>由裴蜀定理(也叫贝祖定理)<br>对于任意的(A,B)总存在一对(x,y)<br>使得 Ax+By=gcd(A,B)<br>由于此处AB互质<br>则存在(x<sub>0</sub>,y<sub>0</sub>)使得Ax<sub>0</sub>+By<sub>0</sub>=gcd(A,B)=1<br>所以A(kx<sub>0</sub>)+B(ky<sub>0</sub>)=k<br>所以对于任意整数 k, 总存在(kx<sub>0</sub>,ky<sub>0</sub>)满足要求  </p>
 </blockquote>
 <p>接下来该考虑如何建立约束了<br>注意到算式可以看作向量内积的形式<br>Ax+By=(A,B)*(x,y)  </p>
-<p><img src="A:\GitHub\my-markdown-test-area\20180410132811.png" alt="看不到图的你退群吧"></p>
+<p><img src="https://github.com/SilentSpiral/my-markdown-test-area/blob/master/20180410132811.png" alt="看不到图的你退群吧"></p>
 <p>图中红线为(A,B)<br>蓝线以及平行于蓝线的所有直线姑且称作等积线吧<br>向量(x,y)的终点落在同一等积线上的任意一点时, Ax+By都会对应同一个值   </p>
-<p><img src="A:\GitHub\my-markdown-test-area\20180410133416.png" alt="看不到图的你退群吧"></p>
+<p><img src="https://github.com/SilentSpiral/my-markdown-test-area/blob/master/20180410133416.png" alt="看不到图的你退群吧"></p>
 <p>红:(A,B)<br>蓝: 等积线<br>绿: 临界等积线<br>易知若等积线被xy正半轴所截大于√<span style="text-decoration:overline">A<sup>2</sup>+B<sup>2</sup></span> ,则在第一象限一定经过某一点<br>等积线上两个整点的横坐标差最小必定为B, 纵坐标差最小A  (AB互质才有的这个性质)  </p>
 <p>绿线以外的等积线, 其对应的得数一定可以被表示出来, 因为它们在第一象限一定经过整点  </p>
 <p>所有只需要考虑蓝绿线间的所有等积线即可:  </p>
@@ -76,12 +76,13 @@
 <li>黑框以内点标示的等积线则找不到第一象限对应的整点</li>
 <li>黑框不含边界, 共包含(A-1)(B-1)/2个整点</li>
 </ul>
-<p>其中在(A,B)上投影最远的点:(-1,A-1)<br>(A,B)*(-1,A-1)=AB-B-A<br>此即为最大不能表示的数</p>
+<p>其中在(A,B)上投影最远的点:(-1,A-1)<br>(A,B)*(-1,A-1)=AB-B-A<br>此即为最大不能表示的数  </p>
+<p>注:  excel设置列宽为4行高26时方格为正方形  </p>
 <h2 id="网上找到的看不懂的证明"><a href="#网上找到的看不懂的证明" class="headerlink" title="网上找到的看不懂的证明:"></a>网上找到的看不懂的证明:</h2><blockquote>
-<p>题意：给定A和B，A和B互质，求最大不能组合数，和不能组合数的个数。</p>
-<p>基础知识：<br>Gcd(A, B) = 1 → Lcm(A, B) = AB<br>剩余类，把所有整数划分成m个等价类，每个等价类由相互同余的整数组成</p>
-<p>任何数分成m个剩余类，分别为 mk，mk+1，mk+2，……，mk+(m-1)<br>分别记为{0(mod m)}，{1(mod m)}……<br>而n的倍数肯定分布在这m个剩余类中<br>因为Gcd(m，n)=1，所以每个剩余类中都有一些数是n的倍数，并且是平均分配它的旁证，可见HDOJ 1222 Wolf and Rabbit<br>设 kmin = min{ k | nk ∈ {i (mod m)} }, i ∈ [0, m)<br>则 nkmin 是{i (mod m)}中n的最小倍数。特别的，nm ∈ {0 (mod m)}<br>nkmin 是个标志，它表明{i (mod m)}中nkmin 后面所有数，即nkmin + jm必定都能被组合出来<br>那也说明最大不能组合数必定小于nkmin<br>我们开始寻找max{ nkmin }<br>Lcm(m, n) = mn，所以很明显(m-1)n是最大的<br>因为(m-1)n是nkmin 中的最大值，所以在剩下的m-1个剩余类中，必定有比它小并且能被m和n组合，这些数就是(m-1)n -1，(m-1)n -2，……，(m-1)n -(m-1)<br>所以最大不能被组合数就是(m-1)n -m</p>
-<p>如果m和n不互素，那{1 (mod m)}不能被m组合，同样也不能被n和m组合</p>
-<p>我们能求出各个剩余类的nkmin之后，不能组合数的个数就是每个剩余类中小于各自nkmin的数的个数总和。<br>观察如下：<br>M = 5，N = 3<br>{0(mod 5)}：0，5，10，15……<br>{1(mod 5)}：1，6，11，16……<br>{2(mod 5)}：2，7，12，17……<br>{3(mod 5)}：3，8，13，18……<br>{4(mod 5)}：4，9，14，19……<br>红色的就是不能组合数，可以看出在剩余类中它的数目有规律<br>Total = [0+1+2] + [0+1]<br>因为m和n互质，必有一个不完全周期<br>整理以后，可得公式 Total = (n-1)*(m-1)/2</p>
+<p>题意：给定A和B，A和B互质，求最大不能组合数，和不能组合数的个数。  </p>
+<p>基础知识：<br>Gcd(A, B) = 1 → Lcm(A, B) = AB<br>剩余类，把所有整数划分成m个等价类，每个等价类由相互同余的整数组成  </p>
+<p>任何数分成m个剩余类，分别为 mk，mk+1，mk+2，……，mk+(m-1)<br>分别记为{0(mod m)}，{1(mod m)}……<br>而n的倍数肯定分布在这m个剩余类中<br>因为Gcd(m，n)=1，所以每个剩余类中都有一些数是n的倍数，并且是平均分配它的旁证，可见HDOJ 1222 Wolf and Rabbit<br>设 kmin = min{ k | nk ∈ {i (mod m)} }, i ∈ [0, m)<br>则 nkmin 是{i (mod m)}中n的最小倍数。特别的，nm ∈ {0 (mod m)}<br>nkmin 是个标志，它表明{i (mod m)}中nkmin 后面所有数，即nkmin + jm必定都能被组合出来<br>那也说明最大不能组合数必定小于nkmin<br>我们开始寻找max{ nkmin }<br>Lcm(m, n) = mn，所以很明显(m-1)n是最大的<br>因为(m-1)n是nkmin 中的最大值，所以在剩下的m-1个剩余类中，必定有比它小并且能被m和n组合，这些数就是(m-1)n -1，(m-1)n -2，……，(m-1)n -(m-1)<br>所以最大不能被组合数就是(m-1)n -m  </p>
+<p>如果m和n不互素，那{1 (mod m)}不能被m组合，同样也不能被n和m组合  </p>
+<p>我们能求出各个剩余类的nkmin之后，不能组合数的个数就是每个剩余类中小于各自nkmin的数的个数总和。<br>观察如下：<br>M = 5，N = 3<br>{0(mod 5)}：0，5，10，15……<br>{1(mod 5)}：1，6，11，16……<br>{2(mod 5)}：2，7，12，17……<br>{3(mod 5)}：3，8，13，18……<br>{4(mod 5)}：4，9，14，19……<br>红色的就是不能组合数，可以看出在剩余类中它的数目有规律<br>Total = [0+1+2] + [0+1]<br>因为m和n互质，必有一个不完全周期<br>整理以后，可得公式 Total = (n-1)*(m-1)/2  </p>
 </blockquote>
 <h3 id="看懂了跟我说一声-谢谢"><a href="#看懂了跟我说一声-谢谢" class="headerlink" title="看懂了跟我说一声, 谢谢"></a>看懂了跟我说一声, 谢谢</h3></div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/数论/">数论</a></li><li class="post__tag__item"><a class="post__tag__link" href="/tags/算法/">算法</a></li></ul></footer></article><div class="comments" id="lv-container" data-id="city" data-uid="your uid"><script>(function(d, s) {var j, e = d.getElementsByTagName(s)[0];if (typeof LivereTower === 'function') { return; } j = d.createElement(s);j.src = 'https://cdn-city.livere.com/js/embed.dist.js';j.async = true;e.parentNode.insertBefore(j, e);})(document, 'script');</script></div></main><footer class="foot"><div class="foot-copy">&copy; 2018 WeiSch</div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
