@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title>不定方程plus - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-04-10T15:15:35.000Z">April 10, 2018</time><h1 class="post__title"><a href="/2018/Diophantus2/">不定方程plus</a></h1><div class="post__main echo"><h1 id="题目">题目:</h1>
+<blockquote>
+<p>给定互质的<span class="math inline">\(A,B\)</span><br>
+<span class="math inline">\(x, y\)</span>为任意正整数<br>
+求算式 <span class="math inline">\(Ax+By\)</span>所不能表示的最大的数<br>
+以及其所不能表示的数的个数</p>
+</blockquote>
+<p>应该想到, 该算式有不能表示的数, 是因为<span class="math inline">\(x, y\)</span>为正整数的约束<br>
+那么若没有这一约束, <span class="math inline">\(Ax+By\)</span>是否可以表示任意整数呢?</p>
+<blockquote>
+<p><strong>证明</strong>:<br>
+由裴蜀定理(也叫贝祖定理)<br>
+对于任意的<span class="math inline">\((A,B)\)</span>总存在一对<span class="math inline">\((x,y)\)</span><br>
+使得 <span class="math inline">\(Ax+By=gcd(A,B)\)</span><br>
+由于此处<span class="math inline">\(A,B\)</span>互质<br>
+则存在<span class="math inline">\((x_{0},y_{0})\)</span>使得<span class="math inline">\(Ax_{0}+By_{0}=gcd(A,B)=1\)</span><br>
+所以<span class="math inline">\(A(kx_{0})+B(ky_{0})=k\)</span><br>
+所以对于任意整数 <span class="math inline">\(k\)</span>, 总存在 <span class="math inline">\((kx_{0},ky_{0})\)</span> 满足要求</p>
+</blockquote>
+<p>接下来该考虑如何建立约束了<br>
+注意到算式可以看作向量内积的形式<br>
+<span class="math display">\[Ax+By=(A,B)*(x,y)\]</span></p>
+<figure>
+<img src="https://github.com/SilentSpiral/my-markdown-test-area/blob/master/20180410132811.png?raw=true" alt="看不到图的你退群吧"><figcaption>看不到图的你退群吧</figcaption>
+</figure>
+<p>图中红线为 <span class="math inline">\((A,B)\)</span><br>
+蓝线以及平行于蓝线的所有直线姑且称作等积线吧<br>
+向量 <span class="math inline">\((x,y)\)</span> 的终点落在同一等积线上的任意一点时, <span class="math inline">\(Ax+By\)</span> 都会对应同一个值</p>
+<figure>
+<img src="https://github.com/SilentSpiral/my-markdown-test-area/blob/master/20180410133416.png?raw=true" alt="看不到图的你退群吧"><figcaption>看不到图的你退群吧</figcaption>
+</figure>
+<p>红:<span class="math inline">\((A,B)\)</span><br>
+蓝: 等积线<br>
+绿: 临界等积线<br>
+易知若等积线被<span class="math inline">\(xy\)</span>正半轴所截大于<span class="math inline">\(\sqrt [] {A^{2} + B^{2}}\)</span> ,则在第一象限一定经过某一点<br>
+等积线上两个整点的横坐标差最小必定为<span class="math inline">\(B\)</span>, 纵坐标差最小<span class="math inline">\(A\)</span> (<span class="math inline">\(AB\)</span>互质才有的这个性质)</p>
+<p>绿线以外的等积线, 其对应的得数一定可以被表示出来, 因为它们在第一象限一定经过整点</p>
+<h3 id="所有只需要考虑蓝绿线间的所有等积线即可">所有只需要考虑蓝绿线间的所有等积线即可:</h3>
+<ul>
+<li>每一个等积线都可以由一个整点唯一的标示出来, 易知黑色+绿色的框可以标示蓝绿线间的所有等积线<br>
+</li>
+<li>对于蓝绿线间的所有等积线, 如果在第一象限没有经过整点的话,则此等积线对应的乘积不可表示</li>
+<li>绿色的框及黑色框的边界标示的等积线都可以在第一象限找到经过的整点</li>
+<li>黑框以内点标示的等积线则找不到第一象限对应的整点</li>
+<li>黑框不含边界, 共包含<span class="math inline">\((A-1)(B-1)/2\)</span>个整点</li>
+</ul>
+<p>其中在<span class="math inline">\((A,B)\)</span>上投影最远的点:<span class="math inline">\((-1,A-1)\)</span><br>
+<span class="math inline">\((A,B)*(-1,A-1)=AB-B-A\)</span><br>
+此即为最大不能表示的数</p>
+<p><em>注: excel设置列宽为4行高26时方格为正方形</em><br>
+# 代码本体 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print((A<span class="number">-1</span>)*(B<span class="number">-1</span>)//<span class="number">2</span>)</span><br><span class="line">print(A*B-B-A)</span><br></pre></td></tr></table></figure></p>
+<h1 id="网上找到的看不懂的证明">网上找到的看不懂的证明</h1>
+<blockquote>
+<p>题意：给定A和B，A和B互质，求最大不能组合数，和不能组合数的个数。</p>
+<p>基础知识：<br>
+$Gcd(A, B) = 1 → Lcm(A, B) = AB $ <strong>剩余类:</strong> 把所有整数划分成m个等价类，每个等价类由相互同余的整数组成</p>
+<p>任何数分成m个剩余类，分别为:<br>
+$mk，mk+1，mk+2，……，mk+(m-1) $<br>
+分别记为<span class="math inline">\({0\,(mod \,m)}，{1\,(mod\,m)}\)</span>……<br>
+而n的倍数肯定分布在这m个剩余类中<br>
+因为<span class="math inline">\(Gcd(m,n)=1​\)</span>，所以每个剩余类中都有一些数是n的倍数，并且是平均分配它的旁证<br>
+可见HDOJ 1222 Wolf and Rabbit<br>
+设 $kmin = min{ k | nk ∈ {i, (mod,m)} }, i ∈ [0, m) $<br>
+则 <span class="math inline">\(nkmin\)</span> 是<span class="math inline">\({i\,(mod\,m)}\)</span>中n的最小倍数。特别的，$nm ∈ {0,(mod,m)} $<br>
+$nkmin <span class="math inline">\(是个标志，它表明\)</span>{i,(mod,m)}<span class="math inline">\(中\)</span>nkmin <span class="math inline">\(后面所有数 即\)</span>nkmin + jm<span class="math inline">\(必定都能被组合出来 那也说明最大不能组合数必定小于\)</span>nkmin $<br>
+我们开始寻找<span class="math inline">\(max{ nkmin }\)</span><br>
+<span class="math inline">\(Lcm(m, n) = mn\)</span>，所以很明显<span class="math inline">\((m-1)n\)</span>是最大的<br>
+因为<span class="math inline">\((m-1)n\)</span>是$nkmin <span class="math inline">\(中的最大值，所以在剩下的\)</span>m-1<span class="math inline">\(个剩余类中，必定有比它小并且能被m和n组合，这些数就是\)</span>(m-1)n -1，(m-1)n -2，……，(m-1)n -(m-1)$<br>
+所以最大不能被组合数就是$(m-1)n -m $</p>
+<p>如果m和n不互素，那<span class="math inline">\(\{1\,(mod\,m)\}\)</span><strong>不能</strong>被m组合，同样也不能被n和m组合</p>
+<p>我们能求出各个剩余类的nkmin之后，不能组合数的个数就是每个剩余类中小于各自nkmin的数的个数总和。<br>
+观察如下：</p>
+<p><span class="math inline">\(M = 5，N = 3\)</span><br>
+<span class="math inline">\({0(mod 5)}：0，5，10，15……\)</span><br>
+${1(mod 5)}：1，6，11，16…… $<br>
+${2(mod 5)}：2，7，12，17…… $<br>
+${3(mod 5)}：3，8，13，18…… $<br>
+<span class="math inline">\({4(mod 5)}：4，9，14，19……\)</span><br>
+红色的就是不能组合数，可以看出在剩余类中它的数目有规律<br>
+<span class="math inline">\(Total = [0+1+2] + [0+1]\)</span><br>
+因为m和n互质，必有一个不完全周期<br>
+整理以后，可得公式 <span class="math inline">\(Total = (n-1)*(m-1)/2\)</span></p>
+</blockquote>
+<h2 id="有谁看懂了给我讲一下-谢谢">有谁看懂了给我讲一下, 谢谢</h2>
+</div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/数论/">数论</a></li></ul></footer></article><div class="comments" id="lv-container" data-id="city" data-uid="your uid"><script>(function(d, s) {var j, e = d.getElementsByTagName(s)[0];if (typeof LivereTower === 'function') { return; } j = d.createElement(s);j.src = 'https://cdn-city.livere.com/js/embed.dist.js';j.async = true;e.parentNode.insertBefore(j, e);})(document, 'script');</script></div></main><footer class="foot"><div class="foot-copy">&copy; 2018 WeiSch<!--mathjax config similar to math.stackexchange--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true
+  }
+});</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});</script><script async type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script></div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
