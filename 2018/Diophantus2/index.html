@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title>不定方程plus - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-04-10T15:15:35.000Z">April 10, 2018</time><h1 class="post__title"><a href="/2018/Diophantus2/">不定方程plus</a></h1><div class="post__main echo"><h1 id="题目">题目:</h1>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title>不定方程plus - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-04-10T15:15:35.000Z">April 10, 2018</time><h1 class="post__title"><a href="/2018/Diophantus2/">不定方程plus</a></h1><div class="post__main echo"><h1 id="题目">题目</h1>
 <blockquote>
 <p>给定互质的<span class="math inline">\(A,B\)</span><br>
 <span class="math inline">\(x, y\)</span>为任意正整数<br>
@@ -8,7 +8,7 @@
 <p>应该想到, 该算式有不能表示的数, 是因为<span class="math inline">\(x, y\)</span>为正整数的约束<br>
 那么若没有这一约束, <span class="math inline">\(Ax+By\)</span>是否可以表示任意整数呢?</p>
 <blockquote>
-<p><strong>证明</strong>:<br>
+<p><strong>证明</strong><br>
 由裴蜀定理(也叫贝祖定理)<br>
 对于任意的<span class="math inline">\((A,B)\)</span>总存在一对<span class="math inline">\((x,y)\)</span><br>
 使得 <span class="math inline">\(Ax+By=gcd(A,B)\)</span><br>
@@ -35,7 +35,7 @@
 易知若等积线被<span class="math inline">\(xy\)</span>正半轴所截大于<span class="math inline">\(\sqrt [] {A^{2} + B^{2}}\)</span> ,则在第一象限一定经过某一点<br>
 等积线上两个整点的横坐标差最小必定为<span class="math inline">\(B\)</span>, 纵坐标差最小<span class="math inline">\(A\)</span> (<span class="math inline">\(AB\)</span>互质才有的这个性质)</p>
 <p>绿线以外的等积线, 其对应的得数一定可以被表示出来, 因为它们在第一象限一定经过整点</p>
-<h3 id="所有只需要考虑蓝绿线间的所有等积线即可">所有只需要考虑蓝绿线间的所有等积线即可:</h3>
+<h3 id="所以只需要考虑蓝绿线间的所有等积线即可">所以只需要考虑蓝绿线间的所有等积线即可:</h3>
 <ul>
 <li>每一个等积线都可以由一个整点唯一的标示出来, 易知黑色+绿色的框可以标示蓝绿线间的所有等积线<br>
 </li>
@@ -47,8 +47,9 @@
 <p>其中在<span class="math inline">\((A,B)\)</span>上投影最远的点:<span class="math inline">\((-1,A-1)\)</span><br>
 <span class="math inline">\((A,B)*(-1,A-1)=AB-B-A\)</span><br>
 此即为最大不能表示的数</p>
-<p><em>注: excel设置列宽为4行高26时方格为正方形</em><br>
-# 代码本体 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print((A<span class="number">-1</span>)*(B<span class="number">-1</span>)//<span class="number">2</span>)</span><br><span class="line">print(A*B-B-A)</span><br></pre></td></tr></table></figure></p>
+<p><em>注: excel设置列宽为4行高26时方格为正方形</em></p>
+<h1 id="代码本体">代码本体</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print((A<span class="number">-1</span>)*(B<span class="number">-1</span>)//<span class="number">2</span>)</span><br><span class="line">print(A*B-B-A)</span><br></pre></td></tr></table></figure>
 <h1 id="网上找到的看不懂的证明">网上找到的看不懂的证明</h1>
 <blockquote>
 <p>题意：给定A和B，A和B互质，求最大不能组合数，和不能组合数的个数。</p>
@@ -65,7 +66,7 @@ $mk，mk+1，mk+2，……，mk+(m-1) $<br>
 $nkmin <span class="math inline">\(是个标志，它表明\)</span>{i,(mod,m)}<span class="math inline">\(中\)</span>nkmin <span class="math inline">\(后面所有数 即\)</span>nkmin + jm<span class="math inline">\(必定都能被组合出来 那也说明最大不能组合数必定小于\)</span>nkmin $<br>
 我们开始寻找<span class="math inline">\(max{ nkmin }\)</span><br>
 <span class="math inline">\(Lcm(m, n) = mn\)</span>，所以很明显<span class="math inline">\((m-1)n\)</span>是最大的<br>
-因为<span class="math inline">\((m-1)n\)</span>是$nkmin <span class="math inline">\(中的最大值，所以在剩下的\)</span>m-1<span class="math inline">\(个剩余类中，必定有比它小并且能被m和n组合，这些数就是\)</span>(m-1)n -1，(m-1)n -2，……，(m-1)n -(m-1)$<br>
+因为<span class="math inline">\((m-1)n\)</span>是$nkmin <span class="math inline">\(中的最大值，所以在剩下的\)</span>m-1<span class="math inline">\(个剩余类中， 必定有比它小并且能被m和n组合， 这些数就是\)</span>(m-1)n -1，(m-1)n -2，……，(m-1)n -(m-1)$<br>
 所以最大不能被组合数就是$(m-1)n -m $</p>
 <p>如果m和n不互素，那<span class="math inline">\(\{1\,(mod\,m)\}\)</span><strong>不能</strong>被m组合，同样也不能被n和m组合</p>
 <p>我们能求出各个剩余类的nkmin之后，不能组合数的个数就是每个剩余类中小于各自nkmin的数的个数总和。<br>
