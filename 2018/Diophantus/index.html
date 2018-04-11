@@ -1,88 +1,204 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title>不定方程 and 组合数计算 - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-04-05T15:15:35.000Z">April 5, 2018</time><h1 class="post__title"><a href="/2018/Diophantus/">不定方程 and 组合数计算</a></h1><div class="post__main echo"><h1 id="题目"><a href="#题目" class="headerlink" title="题目:"></a>题目:</h1><blockquote>
-<p>小Q有X首长度为A的不同的歌和Y首长度为B的不同的歌，现在小Q想用这些歌组成一个总长度正好为K的歌单，每首歌最多只能在歌单中出现一次，在不考虑歌单内歌曲的先后顺序的情况下，请问有多少种组成歌单的方法。  </p>
-<p><strong>输入描述: </strong> </p>
-<ul>
-<li>每个输入包含一个测试用例。  </li>
-<li>每个测试用例的第一行包含一个整数，表示歌单的总长度K( 1&lt;=K&lt;=1000 )。</li>
-<li>接下来的一行包含四个正整数，分别表示歌的第一种长度<strong>A</strong>(A&lt;=10)和数量<strong>X</strong>(X&lt;=100)以及歌的第二种长度<strong>B</strong> (B&lt;=10)和数量<strong>Y</strong>(Y&lt;=100)。</li>
-<li>保证A不等于B。</li>
-</ul>
-<p><strong>输出描述:</strong>  </p>
-<ul>
-<li>输出一个整数,表示组成歌单的方法取模。因为答案可能会很大,输出对1000000007取模的结果。</li>
-</ul>
-</blockquote>
-<h1 id="问题分解"><a href="#问题分解" class="headerlink" title="问题分解:"></a>问题分解:</h1><p>本题即求解不定方程 s*A+t*B=K<br>以及组合数的计算问题</p>
-<h2 id="不定方程"><a href="#不定方程" class="headerlink" title="不定方程:"></a>不定方程:</h2><ul>
-<li>两边对A取模得: t*B ≡ K mod A  </li>
-<li>两边对B取模得: s*A ≡ K mod B  </li>
-</ul>
-<p>若想直接解这个同余方程组, 需要AB对彼此存在逆, 也就是说AB应互质<br>若AB不互质, 记g=gcd(A,B), 则有A = a*g; B = b*g<br>　s*a*g+t*b*g = K<br>　(s*a+t*b)*g = K<br>提取公因式后易知当且仅当K是g的倍数时有解, 记K = k*g<br>　s*A + t*B = K<br>　s*a*g + t*b*g = k*g<br>　<strong>s*a + t*b = k</strong><br>两边对a取模有<br>　t*b ≡ k mod a<br>　<strong>t ≡ k*b<sup>-1</sup> mod a </strong><br>两边对b取模有<br>　s*a ≡ k mod b<br>　<strong>s ≡ k*a<sup>-1</sup> mod b</strong>  </p>
-<p>而后我们知道了s和t出现的规律<br>可以只利用其中一个<br>譬如s[i]是一个首项<strong>s[0] ≡ k*a<sup>-1</sup> (mod b) </strong>公比为b的数列<br>对于每一个s, 一定会满足s*a+t*b=k<br>　t*b=k-s*a<br>故直接求出t也是容易的     </p>
-<p>至于s所在的数列范围<br>注意到s[i] = s[0]+i*b<br>(s[0]+i*b)+t*b = k<br>t*b = k - s[0]*a - i*a*b<br>0 ≤ t*b = k-[k*a<sup>-1</sup> (mod b)]*a - i*a*b<br>i*a*b ≤ k-[k*a<sup>-1</sup> (mod b)]*a<br>i ≤ <strong>⌊</strong> { k - [ k*a<sup>-1</sup> (mod b) ]*a } / ab <strong>⌋</strong>   (擦亮眼睛, 看见地板函数没)</p>
-<p>而后可以开始编程了, 调用的函数见文末代码本体<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve</span><span class="params">(A,B,K)</span>:</span>   <span class="comment">#sA+tB=K</span></span><br><span class="line">	g=gcd(A,B)</span><br><span class="line">	<span class="keyword">if</span> K%g!=<span class="number">0</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	a=A//g</span><br><span class="line">	b=B//g</span><br><span class="line">	k=K//g      <span class="comment">#sa+tb=k</span></span><br><span class="line">	start=(k*modinv(a,b))%b    <span class="comment">#s=k*a^-1 mod b</span></span><br><span class="line">	cnt=<span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range((k-a*start)//(a*b)+<span class="number">1</span>):</span><br><span class="line">		s=start+b*i</span><br><span class="line">		t=(k-s*a)//b</span><br><span class="line">		print(s,<span class="string">'*'</span>,A,<span class="string">'+'</span>,t,<span class="string">'*'</span>,B,<span class="string">'='</span>,K)</span><br></pre></td></tr></table></figure></p>
-<p>嗯, 只用到了s的出现规律, 半部论语可以治天下<br>能不能再用上另半部呢?<br>梳理下我们已有的东西:    </p>
-<ul>
-<li>s*a + t*b = k  </li>
-<li>t ≡ k*b<sup>-1</sup> mod a   </li>
-<li>s ≡ k*a<sup>-1</sup> mod b  </li>
-</ul>
-<p>记 t = [ k*b<sup>-1</sup> (mod a)] + M*a;<br>　 s = [ k*a<sup>-1</sup> (mod b)] + N*b<br>一个很自然的想法是把t和s带回原不定方程<br><strong>{ [ k*a<sup>-1</sup> (mod b)] + N*b }*a+{ [ k*b<sup>-1</sup> (mod a)] + M*a }*b=k</strong><br>[ k*a<sup>-1</sup> (mod b)]*a +  [ k*b<sup>-1</sup> (mod a)]*b + <strong>(N+M)</strong>*a*b=k<br>(N+M)*a*b = k - [ k*a<sup>-1</sup> (mod b)]*a -  [ k*b<sup>-1</sup> (mod a)]*b<br>易知等式右端是个定值<br>而等式左端的M和N是由我为所欲为随意掌控的<br>易知<strong>M+N</strong>为一个定值<br>所以<strong>t每增加a, s都要随之减少b</strong>     </p>
-<p>由此思路可优化代码如下:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve</span><span class="params">(A,B,K)</span>:</span>   <span class="comment">#sA+tB=K</span></span><br><span class="line">	g=gcd(A,B)</span><br><span class="line">	<span class="keyword">if</span> K%g!=<span class="number">0</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	a=A//g</span><br><span class="line">	b=B//g</span><br><span class="line">	k=K//g      <span class="comment">#sa+tb=k</span></span><br><span class="line">	start=(k*modinv(a,b))%b    <span class="comment">#s=k*a&lt;sup&gt;-1&lt;/sup&gt; mod b</span></span><br><span class="line">	cnt=<span class="number">0</span></span><br><span class="line">	s=start</span><br><span class="line">	t=(k-s*a)//b</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range((k-a*start)//(a*b)+<span class="number">1</span>):</span><br><span class="line">		print(s,<span class="string">'*'</span>,A,<span class="string">'+'</span>,t,<span class="string">'*'</span>,B,<span class="string">'='</span>,K)</span><br><span class="line">		s+=b</span><br><span class="line">		t-=a</span><br></pre></td></tr></table></figure></p>
-<h2 id="组合数计算"><a href="#组合数计算" class="headerlink" title="组合数计算:"></a>组合数计算:</h2><p>记组合数为C(M,N), 其中下标在前, 上标在后, 我也不知道谁想出来的这么别扭的方式</p>
-<p>而后放大杀器: <strong>组合数恒等式</strong>  </p>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title>不定方程 and 组合数计算 - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-04-05T15:15:35.000Z">April 5, 2018</time><h1 class="post__title"><a href="/2018/Diophantus/">不定方程 and 组合数计算</a></h1><div class="post__main echo"><h1 id="题目">题目:</h1>
 <blockquote>
-<p><strong>C(m+1,n+1) = C(m,n+1) + C(m, n)  </strong><br>高中的时候对这个公式一点也不感冒, 觉得并没有实际意义<br>上了大学: 真香.jpg  </p>
-<p><strong>简证一下:</strong><br>m+1个同学里抽n+1个同学做值日,<br>钦定小江同学不用做值日, 那么一共有C(m,n+1)种选择<br>但是小江同学的决定权也是很重要的, 他想他应该留下了做值日<br>老师于是钦定他做值日, 裆燃啦, 现在一共有C(m, n)种选泽<br>一共就这两种情况, 于是睿智的小江同学推了一下黑框眼镜,在黑板上写下了:<br>C(m+1,n+1) = C(m,n+1) + C(m, n)  </p>
+<p>小Q有X首长度为A的不同的歌和Y首长度为B的不同的歌，现在小Q想用这些歌组成一个总长度正好为K的歌单，每首歌最多只能在歌单中出现一次，在不考虑歌单内歌曲的先后顺序的情况下，请问有多少种组成歌单的方法。</p>
+<p><strong>输入描述: </strong> - 每个输入包含一个测试用例。<br>
+- 每个测试用例的第一行包含一个整数，表示歌单的总长度K( 1&lt;=K&lt;=1000 )。<br>
+- 接下来的一行包含四个正整数，分别表示歌的第一种长度<strong>A</strong>(A&lt;=10)和数量<strong>X</strong>(X&lt;=100)以及歌的第二种长度<strong>B</strong> (B&lt;=10)和数量<strong>Y</strong>(Y&lt;=100)。<br>
+- 保证A不等于B。</p>
+<p><strong>输出描述:</strong><br>
+- 输出一个整数,表示组成歌单的方法取模。因为答案可能会很大,输出对1000000007取模的结果。</p>
 </blockquote>
-<p>于是嘛, 对于任意一个组合数C(m,n), 都可以通过递归成C(m-1,n) + C(m-1, n-1)来计算……<br>递归个头! 矮十厘米.jpg<br>不打表还有王Fa?  </p>
-<p><del>用一个下三角数组来存储</del> (我知道你懒得实现下三角数组谢谢)<br>用一个数组的下三角来存储</p>
+<h1 id="问题分解">问题分解:</h1>
+<p>本题即求解不定方程 <span class="math inline">\(sA+tB=K\)</span><br>
+以及组合数的计算问题<br>
+## 不定方程:<br>
+- 两边对A取模得: <span class="math inline">\(tB ≡ K\, mod\,A\)</span><br>
+- 两边对B取模得: <span class="math inline">\(sA ≡ K \,mod\, B\)</span></p>
+<p>若想直接解这个同余方程组, 需要AB对彼此存在逆, 也就是说AB应互质<br>
+若AB不互质, 记<span class="math inline">\(g=gcd(A,B)\)</span>, 则有<span class="math inline">\(A = a*g\,; \,B = b*g\)</span><br>
+　<span class="math inline">\(sag+tbg = K\)</span><br>
+　<span class="math inline">\((sa+tb)g = K\)</span><br>
+提取公因式后易知当且仅当K是g的倍数时有解, 记<span class="math inline">\(K = k*g\)</span><br>
+　<span class="math inline">\(sA + tB = K\)</span><br>
+　<span class="math inline">\(sag + tbg = kg\)</span><br>
+　<span class="math inline">\(\mathbf{sa + tb = k}\)</span><br>
+两边对a取模有<br>
+　<span class="math inline">\(tb ≡ k \, mod\, a\)</span><br>
+　<span class="math inline">\(\mathbf{t ≡ kb^{-1}\, mod\, a}\)</span><br>
+两边对b取模有<br>
+　<span class="math inline">\(sa ≡ k \, mod\, b\)</span><br>
+　<span class="math inline">\(\mathbf{s ≡ ka^{-1}\, mod\, b}\)</span></p>
+<p>而后我们知道了s和t出现的规律<br>
+可以只利用其中一个<br>
+譬如<span class="math inline">\(s[i]\)</span> 是一个首项<span class="math inline">\(s[0] ≡ ka^{-1}\, (mod\, b)\)</span> 公比为b的数列<br>
+对于每一个s, 一定会满足<span class="math inline">\(sa+tb=k\)</span><br>
+　<span class="math inline">\(tb=k-sa\)</span><br>
+故直接求出t也是容易的</p>
+<p>至于s所在的数列范围<br>
+注意到<span class="math inline">\(s[i] = s[0]+ib\)</span><br>
+<span class="math inline">\((s[0]+ib)+tb = k\)</span><br>
+<span class="math inline">\(tb = k - s[0]a - iab​\)</span><br>
+<span class="math inline">\(0 ≤ tb = k-[ka^{-1}\, (mod\, b)]a - iab\)</span><br>
+<span class="math inline">\(iab ≤ k-[ka^{-1}\, (mod\, b)]*a\)</span><br>
+<span class="math inline">\(i ≤ \mathbf{⌊} { k - [ ka^{-1}\, (mod\, b) ]*a } / ab\mathbf{ ⌋ }\)</span> (擦亮眼睛, 看见地板函数没)</p>
+<p>而后可以开始编程了, 调用的函数见文末代码本体<br>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve</span><span class="params">(A,B,K)</span>:</span>   <span class="comment">#sA+tB=K</span></span><br><span class="line">	g=gcd(A,B)</span><br><span class="line">	<span class="keyword">if</span> K%g!=<span class="number">0</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	a=A//g</span><br><span class="line">	b=B//g</span><br><span class="line">	k=K//g      <span class="comment">#sa+tb=k</span></span><br><span class="line">	start=(k*modinv(a,b))%b    <span class="comment">#s=k*a^-1 mod b</span></span><br><span class="line">	cnt=<span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range((k-a*start)//(a*b)+<span class="number">1</span>):</span><br><span class="line">		s=start+b*i</span><br><span class="line">		t=(k-s*a)//b</span><br><span class="line">		print(s,<span class="string">'*'</span>,A,<span class="string">'+'</span>,t,<span class="string">'*'</span>,B,<span class="string">'='</span>,K)</span><br></pre></td></tr></table></figure></p>
+<p>嗯, 只用到了s的出现规律, 半部论语可以治天下<br>
+能不能再用上另半部呢?<br>
+梳理下我们已有的东西:<br>
+- <span class="math inline">\(s*a + t*b = k\)</span><br>
+- <span class="math inline">\(t ≡ k*b^{-1}\, mod \,a​\)</span><br>
+- <span class="math inline">\(s ≡ k*a^{-1}\,mod\,b ​\)</span></p>
+<p>记 <span class="math inline">\(t = [ k*b^{-1}\,(mod\,a)] + M*a\)</span><br>
+　 <span class="math inline">\(s = [ k*a^{-1}\,(mod\,b)] + N*b\)</span><br>
+一个很自然的想法是把t和s带回原不定方程<br>
+${ [ k*a^{-1} (mod,b)] + N<em>b }</em>a+{ [ k*b^{-1} (mod,a)] + M<em>a}</em>b=k $<br>
+<span class="math inline">\([ k*a^{-1} (mod\,b)]*a + [ k*b^{-1} (mod\,a)]*b +\mathbf{(N+M)}*a*b=k\)</span><br>
+$  <em>a</em>b = k - [ k*a^{-1} (mod,b)]<em>a - [ k*b^{-1} (mod,a)]</em>b $<br>
+易知等式右端是个定值<br>
+而等式左端的M和N是由我为所欲为随意掌控的<br>
+易知<strong>M+N</strong>为一个定值<br>
+所以 <strong>t每增加a, s都要随之减少b</strong></p>
+<p>由此思路可优化代码如下:<br>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve</span><span class="params">(A,B,K)</span>:</span>   <span class="comment">#sA+tB=K</span></span><br><span class="line">	g=gcd(A,B)</span><br><span class="line">	<span class="keyword">if</span> K%g!=<span class="number">0</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	a=A//g</span><br><span class="line">	b=B//g</span><br><span class="line">	k=K//g      <span class="comment">#sa+tb=k</span></span><br><span class="line">	start=(k*modinv(a,b))%b    <span class="comment">#s=k*a&lt;sup&gt;-1&lt;/sup&gt; mod b</span></span><br><span class="line">	cnt=<span class="number">0</span></span><br><span class="line">	s=start</span><br><span class="line">	t=(k-s*a)//b</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range((k-a*start)//(a*b)+<span class="number">1</span>):</span><br><span class="line">		print(s,<span class="string">'*'</span>,A,<span class="string">'+'</span>,t,<span class="string">'*'</span>,B,<span class="string">'='</span>,K)</span><br><span class="line">		s+=b</span><br><span class="line">		t-=a</span><br></pre></td></tr></table></figure></p>
+<h2 id="组合数计算">组合数计算:</h2>
+<p>记组合数为C(M,N), 其中下标在前, 上标在后, 我也不知道谁想出来的这么别扭的方式</p>
+<p>而后放大杀器: <strong>组合数恒等式</strong></p>
 <blockquote>
-<p>1<br>1　1<br>1　2　1<br>1　3　3　1<br>1　4　6　4　1<br>1　5  10 10　5　1</p>
+<p><span class="math inline">\(C_{m+1}^{n+1} = C_{m}^{n+1} + C_m^n\)</span><br>
+高中的时候对这个公式一点也不感冒, 觉得并没有实际意义<br>
+上了大学: 真香.jpg</p>
+<p><strong>简证一下:</strong><br>
+<span class="math inline">\(m+1\)</span>个同学里抽<span class="math inline">\(n+1\)</span>个同学做值日,<br>
+钦定小江同学不用做值日, 那么一共有<span class="math inline">\(C_{m}^{n+1}\)</span>种选择<br>
+但是小江同学的决定权也是很重要的, 他想他应该留下了做值日<br>
+老师于是钦定他做值日, 裆燃啦, 现在一共有<span class="math inline">\(C_{m}^{n}\)</span>种选泽<br>
+一共就这两种情况, 于是睿智的小江同学推了一下黑框眼镜,在黑板上写下了:<br>
+<span class="math inline">\(C_{m+1}^{n+1} = C_{m}^{n+1} + C_m^n\)</span></p>
 </blockquote>
-<p>嗯, 杨辉三角, 想不到吧<br>生成数组然后访存就好了<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init</span><span class="params">(N)</span>:</span></span><br><span class="line">	comb =[[<span class="number">0</span>]*N]*N</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">		comb[i][<span class="number">0</span>] = comb[i][i] = <span class="number">1</span></span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> range(i):</span><br><span class="line">		comb[i][j] = comb[i<span class="number">-1</span>][j] + comb[i<span class="number">-1</span>][j<span class="number">-1</span>]</span><br><span class="line">	<span class="keyword">return</span> comb</span><br></pre></td></tr></table></figure></p>
-<h3 id="改进思路"><a href="#改进思路" class="headerlink" title="改进思路:"></a>改进思路:</h3><p>我们知道杨辉三角也能如下存储:</p>
+<p>于是嘛, 对于任意一个组合数<span class="math inline">\(C_m^n\)</span>, 都可以通过递归成<span class="math inline">\(C_{m-1}^{n}+C_{m-1}^{n-1}\)</span>来计算……</p>
+<p>递归个头! 矮十厘米.jpg<br>
+不打表还有王Fa?</p>
+<p><del>用一个下三角数组来存储</del> (我知道你懒得实现下三角数组谢谢)<br>
+用一个数组的下三角来存储</p>
 <blockquote>
-<p>1　1　1　1　1　1<br>1　2　3　4　5　6<br>1　3　6  10  …  …<br>1　4  10 …<br>1　5　…<br>1　6   …  </p>
+<p>1<br>
+1　1<br>
+1　2　1<br>
+1　3　3　1<br>
+1　4　6　4　1<br>
+1　5 10 10　5　1</p>
 </blockquote>
-<p>其对应关系是C(m,n) = A[m][n] = B[m-n][n]<br>数组B的生成规律: B[x][y] = B[x-1][y] + B[x][y-1]</p>
-<h2 id="卢卡斯定理"><a href="#卢卡斯定理" class="headerlink" title="卢卡斯定理:"></a>卢卡斯定理:</h2><p>用于计算需要对素数p取模, 并且上下标都大于p的组合数<br>卢卡斯dalao是这么教你做人的:</p>
+<p>嗯, 杨辉三角, 想不到吧<br>
+生成数组然后访存就好了<br>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init</span><span class="params">(N)</span>:</span></span><br><span class="line">	comb =[[<span class="number">0</span>]*N]*N</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">		comb[i][<span class="number">0</span>] = comb[i][i] = <span class="number">1</span></span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> range(i):</span><br><span class="line">		comb[i][j] = comb[i<span class="number">-1</span>][j] + comb[i<span class="number">-1</span>][j<span class="number">-1</span>]</span><br><span class="line">	<span class="keyword">return</span> comb</span><br></pre></td></tr></table></figure></p>
+<h3 id="改进思路">改进思路:</h3>
+<p>我们知道杨辉三角也能如下存储:<br>
+&gt; 1　1　1　1　1　1<br>
+&gt; 1　2　3　4　5　6<br>
+&gt; 1　3　6 10 … …<br>
+&gt; 1　4 10 …<br>
+&gt; 1　5　…<br>
+&gt; 1　6 …</p>
+<p>其对应关系是<span class="math inline">\(C(m,n) = A[m][n] = B[m-n][n]\)</span><br>
+数组B的生成规律: <span class="math inline">\(B[x][y] = B[x-1][y] + B[x][y-1]​\)</span></p>
+<h2 id="卢卡斯定理">卢卡斯定理:</h2>
+<p>用于计算需要对素数p取模, 并且上下标都大于p的组合数<br>
+卢卡斯dalao是这么教你做人的:</p>
 <blockquote>
-<p>C(m, n) % p = C(m/p, n/p) * C(m%p, n%p) % p</p>
+<p><span class="math inline">\(C_{m}^n mod p = C_{m/p}^{n/p} * C_{m mod p}^{ n mod p}\,mod\,p\)</span></p>
 </blockquote>
-<p>而后C(m/p, n/p)如果还是很大,则可以继续递归几次再计算</p>
+<p>而后<span class="math inline">\(C_{m/p}^{n/p}\)</span>如果还是很大,则可以继续递归几次再计算</p>
 <blockquote>
-<p>但如果需要计算对合数取模的组合数时, 该怎么办呢?<br><strong>中国剩余定理了解一下谢谢</strong></p>
+<p>但如果需要计算对合数取模的组合数时, 该怎么办呢?<br>
+<strong>中国剩余定理了解一下谢谢</strong></p>
 </blockquote>
-<h1 id="附-代码本体"><a href="#附-代码本体" class="headerlink" title="附: 代码本体"></a>附: 代码本体</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init</span><span class="params">(N,MOD)</span>:</span></span><br><span class="line">	comb =[[<span class="number">0</span>]*N]*N</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">		comb[i][<span class="number">0</span>] = comb[i][i] = <span class="number">1</span></span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> range(i):</span><br><span class="line">		comb[i][j] = comb[i<span class="number">-1</span>][j] + comb[i<span class="number">-1</span>][j<span class="number">-1</span>]</span><br><span class="line">		comb[i][j] %= MOD</span><br><span class="line">	<span class="keyword">return</span> comb</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gcd</span><span class="params">(a,b)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> a%b == <span class="number">0</span>:  </span><br><span class="line">        <span class="keyword">return</span> b  </span><br><span class="line">    <span class="keyword">else</span> :  </span><br><span class="line">        <span class="keyword">return</span> gcd(b,a%b) </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">egcd</span><span class="params">(a,b)</span>:</span></span><br><span class="line">	<span class="keyword">if</span> a==<span class="number">0</span>:</span><br><span class="line">		<span class="keyword">return</span> (b,<span class="number">0</span>,<span class="number">1</span>)</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		g,y,x=egcd(b%a,a)  <span class="comment"># g为公因子</span></span><br><span class="line">		<span class="keyword">return</span> (g,x-(b//a)*y,y)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">modinv</span><span class="params">(a,m)</span>:</span></span><br><span class="line">	g,x,y=egcd(a,m)</span><br><span class="line">	<span class="keyword">if</span> (g!=<span class="number">1</span>):</span><br><span class="line">		print(<span class="string">'modular inverse does not exist'</span>)</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> x%m</span><br><span class="line">		</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve</span><span class="params">(A,B,K)</span>:</span>   <span class="comment">#sA+tB=K</span></span><br><span class="line">	MOD =<span class="number">10</span>**<span class="number">9</span>+<span class="number">7</span></span><br><span class="line">	comb=init(K+<span class="number">1</span>,MOD)</span><br><span class="line">	g=gcd(A,B)</span><br><span class="line">	<span class="keyword">if</span> K%g!=<span class="number">0</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	a=A//g</span><br><span class="line">	b=B//g</span><br><span class="line">	k=K//g      <span class="comment">#sa+tb=k</span></span><br><span class="line">	start=(k*modinv(a,b))%b    <span class="comment">#s=k*a&lt;sup&gt;-1&lt;/sup&gt; mod b</span></span><br><span class="line">	cnt=<span class="number">0</span></span><br><span class="line">	s=start</span><br><span class="line">	t=(k-s*a)//b</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range((k-a*start)//(a*b)+<span class="number">1</span>):</span><br><span class="line">		cnt=(cnt+comb[K][s]*comb[K][t])%MOD</span><br><span class="line">		print(s,<span class="string">'*'</span>,A,<span class="string">'+'</span>,t,<span class="string">'*'</span>,B,<span class="string">'='</span>,K)</span><br><span class="line">		s+=b</span><br><span class="line">		t-=a</span><br><span class="line">	print(cnt)</span><br></pre></td></tr></table></figure>
-<h1 id="2018-4-10增补"><a href="#2018-4-10增补" class="headerlink" title="2018/4/10增补:"></a>2018/4/10增补:</h1><h2 id="题目-1"><a href="#题目-1" class="headerlink" title="题目:"></a>题目:</h2><blockquote>
-<p>给定互质的A,B<br>x, y为任意正整数<br>求算式 Ax+By所不能表示的最大的数<br>以及其所不能表示的数的个数  </p>
-</blockquote>
-<p>应该想到, 该算式有不能表示的数, 是因为x, y为正整数的约束<br>那么若没有这一约束, Ax+By是否可以表示任意整数呢?  </p>
+<h1 id="附-代码本体">附: 代码本体</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init</span><span class="params">(N,MOD)</span>:</span></span><br><span class="line">	comb =[[<span class="number">0</span>]*N]*N</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">		comb[i][<span class="number">0</span>] = comb[i][i] = <span class="number">1</span></span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> range(i):</span><br><span class="line">		comb[i][j] = comb[i<span class="number">-1</span>][j] + comb[i<span class="number">-1</span>][j<span class="number">-1</span>]</span><br><span class="line">		comb[i][j] %= MOD</span><br><span class="line">	<span class="keyword">return</span> comb</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gcd</span><span class="params">(a,b)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> a%b == <span class="number">0</span>:  </span><br><span class="line">        <span class="keyword">return</span> b  </span><br><span class="line">    <span class="keyword">else</span> :  </span><br><span class="line">        <span class="keyword">return</span> gcd(b,a%b) </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">egcd</span><span class="params">(a,b)</span>:</span></span><br><span class="line">	<span class="keyword">if</span> a==<span class="number">0</span>:</span><br><span class="line">		<span class="keyword">return</span> (b,<span class="number">0</span>,<span class="number">1</span>)</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		g,y,x=egcd(b%a,a)  <span class="comment"># g为公因子</span></span><br><span class="line">		<span class="keyword">return</span> (g,x-(b//a)*y,y)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">modinv</span><span class="params">(a,m)</span>:</span></span><br><span class="line">	g,x,y=egcd(a,m)</span><br><span class="line">	<span class="keyword">if</span> (g!=<span class="number">1</span>):</span><br><span class="line">		print(<span class="string">'modular inverse does not exist'</span>)</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> x%m</span><br><span class="line">		</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve</span><span class="params">(A,B,K)</span>:</span>   <span class="comment">#sA+tB=K</span></span><br><span class="line">	MOD =<span class="number">10</span>**<span class="number">9</span>+<span class="number">7</span></span><br><span class="line">	comb=init(K+<span class="number">1</span>,MOD)</span><br><span class="line">	g=gcd(A,B)</span><br><span class="line">	<span class="keyword">if</span> K%g!=<span class="number">0</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	a=A//g</span><br><span class="line">	b=B//g</span><br><span class="line">	k=K//g      <span class="comment">#sa+tb=k</span></span><br><span class="line">	start=(k*modinv(a,b))%b    <span class="comment">#s=k*a&lt;sup&gt;-1&lt;/sup&gt; mod b</span></span><br><span class="line">	cnt=<span class="number">0</span></span><br><span class="line">	s=start</span><br><span class="line">	t=(k-s*a)//b</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range((k-a*start)//(a*b)+<span class="number">1</span>):</span><br><span class="line">		cnt=(cnt+comb[K][s]*comb[K][t])%MOD</span><br><span class="line">		print(s,<span class="string">'*'</span>,A,<span class="string">'+'</span>,t,<span class="string">'*'</span>,B,<span class="string">'='</span>,K)</span><br><span class="line">		s+=b</span><br><span class="line">		t-=a</span><br><span class="line">	print(cnt)</span><br></pre></td></tr></table></figure>
+<h1 id="增补">2018/4/10增补:</h1>
+<h2 id="题目-1">题目:</h2>
 <blockquote>
-<p><strong>证明</strong>:<br>由裴蜀定理(也叫贝祖定理)<br>对于任意的(A,B)总存在一对(x,y)<br>使得 Ax+By=gcd(A,B)<br>由于此处AB互质<br>则存在(x<sub>0</sub>,y<sub>0</sub>)使得Ax<sub>0</sub>+By<sub>0</sub>=gcd(A,B)=1<br>所以A(kx<sub>0</sub>)+B(ky<sub>0</sub>)=k<br>所以对于任意整数 k, 总存在(kx<sub>0</sub>,ky<sub>0</sub>)满足要求  </p>
+<p>给定互质的<span class="math inline">\(A,B\)</span><br>
+<span class="math inline">\(x, y\)</span>为任意正整数<br>
+求算式 <span class="math inline">\(Ax+By\)</span>所不能表示的最大的数<br>
+以及其所不能表示的数的个数</p>
 </blockquote>
-<p>接下来该考虑如何建立约束了<br>注意到算式可以看作向量内积的形式<br>Ax+By=(A,B)*(x,y)  </p>
-<p><img src="https://github.com/SilentSpiral/my-markdown-test-area/blob/master/20180410132811.png?raw=true" alt="看不到图的你退群吧"></p>
-<p>图中红线为(A,B)<br>蓝线以及平行于蓝线的所有直线姑且称作等积线吧<br>向量(x,y)的终点落在同一等积线上的任意一点时, Ax+By都会对应同一个值   </p>
-<p><img src="https://github.com/SilentSpiral/my-markdown-test-area/blob/master/20180410133416.png?raw=true" alt="看不到图的你退群吧"></p>
-<p>红:(A,B)<br>蓝: 等积线<br>绿: 临界等积线<br>易知若等积线被xy正半轴所截大于$\sqrt [] {A^2+B^2}$,则在第一象限一定经过某一点<br>等积线上两个整点的横坐标差最小必定为B, 纵坐标差最小A  (AB互质才有的这个性质)  </p>
-<p>绿线以外的等积线, 其对应的得数一定可以被表示出来, 因为它们在第一象限一定经过整点  </p>
-<p>所有只需要考虑蓝绿线间的所有等积线即可:  </p>
-<ul>
-<li>每一个等积线都可以由一个整点唯一的标示出来, 易知黑色+绿色的框可以标示蓝绿线间的所有等积线  </li>
-<li>对于蓝绿线间的所有等积线, 如果在第一象限没有经过整点的话,则此等积线对应的乘积不可表示</li>
-<li>绿色的框及黑色框的边界标示的等积线都可以在第一象限找到经过的整点</li>
-<li>黑框以内点标示的等积线则找不到第一象限对应的整点</li>
-<li>黑框不含边界, 共包含(A-1)(B-1)/2个整点</li>
-</ul>
-<p>其中在(A,B)上投影最远的点:(-1,A-1)<br>(A,B)*(-1,A-1)=AB-B-A<br>此即为最大不能表示的数  </p>
-<p>注:  excel设置列宽为4行高26时方格为正方形  </p>
-<h2 id="网上找到的看不懂的证明"><a href="#网上找到的看不懂的证明" class="headerlink" title="网上找到的看不懂的证明:"></a>网上找到的看不懂的证明:</h2><blockquote>
-<p>题意：给定A和B，A和B互质，求最大不能组合数，和不能组合数的个数。  </p>
-<p>基础知识：<br>Gcd(A, B) = 1 → Lcm(A, B) = AB<br>剩余类，把所有整数划分成m个等价类，每个等价类由相互同余的整数组成  </p>
-<p>任何数分成m个剩余类，分别为 mk，mk+1，mk+2，……，mk+(m-1)<br>分别记为{0(mod m)}，{1(mod m)}……<br>而n的倍数肯定分布在这m个剩余类中<br>因为Gcd(m，n)=1，所以每个剩余类中都有一些数是n的倍数，并且是平均分配它的旁证，可见HDOJ 1222 Wolf and Rabbit<br>设 kmin = min{ k | nk ∈ {i (mod m)} }, i ∈ [0, m)<br>则 nkmin 是{i (mod m)}中n的最小倍数。特别的，nm ∈ {0 (mod m)}<br>nkmin 是个标志，它表明{i (mod m)}中nkmin 后面所有数，即nkmin + jm必定都能被组合出来<br>那也说明最大不能组合数必定小于nkmin<br>我们开始寻找max{ nkmin }<br>Lcm(m, n) = mn，所以很明显(m-1)n是最大的<br>因为(m-1)n是nkmin 中的最大值，所以在剩下的m-1个剩余类中，必定有比它小并且能被m和n组合，这些数就是(m-1)n -1，(m-1)n -2，……，(m-1)n -(m-1)<br>所以最大不能被组合数就是(m-1)n -m  </p>
-<p>如果m和n不互素，那{1 (mod m)}不能被m组合，同样也不能被n和m组合  </p>
-<p>我们能求出各个剩余类的nkmin之后，不能组合数的个数就是每个剩余类中小于各自nkmin的数的个数总和。<br>观察如下：<br>M = 5，N = 3<br>{0(mod 5)}：0，5，10，15……<br>{1(mod 5)}：1，6，11，16……<br>{2(mod 5)}：2，7，12，17……<br>{3(mod 5)}：3，8，13，18……<br>{4(mod 5)}：4，9，14，19……<br>红色的就是不能组合数，可以看出在剩余类中它的数目有规律<br>Total = [0+1+2] + [0+1]<br>因为m和n互质，必有一个不完全周期<br>整理以后，可得公式 Total = (n-1)*(m-1)/2  </p>
+<p>应该想到, 该算式有不能表示的数, 是因为<span class="math inline">\(x, y\)</span>为正整数的约束<br>
+那么若没有这一约束, <span class="math inline">\(Ax+By\)</span>是否可以表示任意整数呢?</p>
+<blockquote>
+<p><strong>证明</strong>:<br>
+由裴蜀定理(也叫贝祖定理)<br>
+对于任意的<span class="math inline">\((A,B)\)</span>总存在一对<span class="math inline">\((x,y)\)</span><br>
+使得 <span class="math inline">\(Ax+By=gcd(A,B)\)</span><br>
+由于此处<span class="math inline">\(A,B\)</span>互质<br>
+则存在<span class="math inline">\((x_{0},y_{0})\)</span>使得<span class="math inline">\(Ax_{0}+By_{0}=gcd(A,B)=1\)</span><br>
+所以<span class="math inline">\(A(kx_{0})+B(ky_{0})=k\)</span><br>
+所以对于任意整数 <span class="math inline">\(k\)</span>, 总存在 <span class="math inline">\((kx_{0},ky_{0})\)</span> 满足要求</p>
 </blockquote>
-<h3 id="看懂了跟我说一声-谢谢"><a href="#看懂了跟我说一声-谢谢" class="headerlink" title="看懂了跟我说一声, 谢谢"></a>看懂了跟我说一声, 谢谢</h3></div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/数论/">数论</a></li><li class="post__tag__item"><a class="post__tag__link" href="/tags/算法/">算法</a></li></ul></footer></article><div class="comments" id="lv-container" data-id="city" data-uid="your uid"><script>(function(d, s) {var j, e = d.getElementsByTagName(s)[0];if (typeof LivereTower === 'function') { return; } j = d.createElement(s);j.src = 'https://cdn-city.livere.com/js/embed.dist.js';j.async = true;e.parentNode.insertBefore(j, e);})(document, 'script');</script></div></main><footer class="foot"><div class="foot-copy">&copy; 2018 WeiSch</div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
+<p>接下来该考虑如何建立约束了<br>
+注意到算式可以看作向量内积的形式<br>
+<span class="math display">\[Ax+By=(A,B)*(x,y)\]</span></p>
+<figure>
+<img src="https://github.com/SilentSpiral/my-markdown-test-area/blob/master/20180410132811.png?raw=true" alt="看不到图的你退群吧"><figcaption>看不到图的你退群吧</figcaption>
+</figure>
+<p>图中红线为 <span class="math inline">\((A,B)\)</span><br>
+蓝线以及平行于蓝线的所有直线姑且称作等积线吧<br>
+向量 <span class="math inline">\((x,y)\)</span> 的终点落在同一等积线上的任意一点时, <span class="math inline">\(Ax+By\)</span> 都会对应同一个值</p>
+<figure>
+<img src="https://github.com/SilentSpiral/my-markdown-test-area/blob/master/20180410133416.png?raw=true" alt="看不到图的你退群吧"><figcaption>看不到图的你退群吧</figcaption>
+</figure>
+<p>红:<span class="math inline">\((A,B)\)</span><br>
+蓝: 等积线<br>
+绿: 临界等积线<br>
+易知若等积线被<span class="math inline">\(xy\)</span>正半轴所截大于<span class="math inline">\(\sqrt [] {A^{2} + B^{2}}\)</span> ,则在第一象限一定经过某一点<br>
+等积线上两个整点的横坐标差最小必定为<span class="math inline">\(B\)</span>, 纵坐标差最小<span class="math inline">\(A\)</span> (<span class="math inline">\(AB\)</span>互质才有的这个性质)</p>
+<p>绿线以外的等积线, 其对应的得数一定可以被表示出来, 因为它们在第一象限一定经过整点</p>
+<p>所有只需要考虑蓝绿线间的所有等积线即可:<br>
+- 每一个等积线都可以由一个整点唯一的标示出来, 易知黑色+绿色的框可以标示蓝绿线间的所有等积线<br>
+- 对于蓝绿线间的所有等积线, 如果在第一象限没有经过整点的话,则此等积线对应的乘积不可表示 - 绿色的框及黑色框的边界标示的等积线都可以在第一象限找到经过的整点 - 黑框以内点标示的等积线则找不到第一象限对应的整点 - 黑框不含边界, 共包含<span class="math inline">\((A-1)(B-1)/2\)</span>个整点</p>
+<p>其中在<span class="math inline">\((A,B)\)</span>上投影最远的点:<span class="math inline">\((-1,A-1)\)</span><br>
+<span class="math inline">\((A,B)*(-1,A-1)=AB-B-A\)</span><br>
+此即为最大不能表示的数</p>
+<p>注: excel设置列宽为4行高26时方格为正方形</p>
+<h2 id="网上找到的看不懂的证明">网上找到的看不懂的证明:</h2>
+<blockquote>
+<p>题意：给定A和B，A和B互质，求最大不能组合数，和不能组合数的个数。</p>
+<p>基础知识：<br>
+$Gcd(A, B) = 1 → Lcm(A, B) = AB $ 剩余类，把所有整数划分成m个等价类，每个等价类由相互同余的整数组成</p>
+<p>任何数分成m个剩余类，分别为 $mk，mk+1，mk+2，……，mk+(m-1) $<br>
+分别记为<span class="math inline">\({0(mod m)}，{1(mod m)}\)</span>……<br>
+而n的倍数肯定分布在这m个剩余类中<br>
+因为<span class="math inline">\(Gcd(m，n)=1\)</span>，所以每个剩余类中都有一些数是n的倍数，并且是平均分配它的旁证，可见HDOJ 1222 Wolf and Rabbit<br>
+设 $kmin = min{ k | nk ∈ {i (mod m)} }, i ∈ [0, m) $<br>
+则 <span class="math inline">\(nkmin\)</span> 是<span class="math inline">\({i (mod m)}\)</span>中n的最小倍数。特别的，$nm ∈ {0 (mod m)} $<br>
+$nkmin <span class="math inline">\(是个标志，它表明\)</span>{i (mod m)}<span class="math inline">\(中\)</span>nkmin <span class="math inline">\(后面所有数，即\)</span>nkmin + jm<span class="math inline">\(必定都能被组合出来 那也说明最大不能组合数必定小于\)</span>nkmin $<br>
+我们开始寻找<span class="math inline">\(max{ nkmin }\)</span><br>
+<span class="math inline">\(Lcm(m, n) = mn\)</span>，所以很明显<span class="math inline">\((m-1)n\)</span>是最大的<br>
+因为<span class="math inline">\((m-1)n\)</span>是$nkmin <span class="math inline">\(中的最大值，所以在剩下的\)</span>m-1<span class="math inline">\(个剩余类中，必定有比它小并且能被m和n组合，这些数就是\)</span>(m-1)n -1，(m-1)n -2，……，(m-1)n -(m-1)$<br>
+所以最大不能被组合数就是$(m-1)n -m $</p>
+<p>如果m和n不互素，那${1 (mod m)}<strong>不能</strong>被m组合，同样也不能被n和m组合</p>
+<p>我们能求出各个剩余类的nkmin之后，不能组合数的个数就是每个剩余类中小于各自nkmin的数的个数总和。<br>
+观察如下：</p>
+<p><span class="math inline">\(M = 5，N = 3\)</span><br>
+<span class="math inline">\({0(mod 5)}：0，5，10，15……\)</span><br>
+${1(mod 5)}：1，6，11，16…… $<br>
+${2(mod 5)}：2，7，12，17…… $<br>
+${3(mod 5)}：3，8，13，18…… $<br>
+<span class="math inline">\({4(mod 5)}：4，9，14，19……\)</span><br>
+红色的就是不能组合数，可以看出在剩余类中它的数目有规律<br>
+<span class="math inline">\(Total = [0+1+2] + [0+1]\)</span><br>
+因为m和n互质，必有一个不完全周期<br>
+整理以后，可得公式 <span class="math inline">\(Total = (n-1)*(m-1)/2\)</span></p>
+</blockquote>
+<h3 id="看懂了给我讲一下-谢谢">看懂了给我讲一下, 谢谢</h3>
+</div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/数论/">数论</a></li><li class="post__tag__item"><a class="post__tag__link" href="/tags/算法/">算法</a></li></ul></footer></article><div class="comments" id="lv-container" data-id="city" data-uid="your uid"><script>(function(d, s) {var j, e = d.getElementsByTagName(s)[0];if (typeof LivereTower === 'function') { return; } j = d.createElement(s);j.src = 'https://cdn-city.livere.com/js/embed.dist.js';j.async = true;e.parentNode.insertBefore(j, e);})(document, 'script');</script></div></main><footer class="foot"><div class="foot-copy">&copy; 2018 WeiSch<!--mathjax config similar to math.stackexchange--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true
+  }
+});</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});</script><script async type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script></div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>

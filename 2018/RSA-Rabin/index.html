@@ -1,38 +1,115 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title>RSA与Rabin - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-03-31T06:01:50.000Z">March 31, 2018</time><h1 class="post__title"><a href="/2018/RSA-Rabin/">RSA与Rabin</a></h1><div class="post__main echo"><p>先简述一下这两个算法:  </p>
-<h2 id="RSA"><a href="#RSA" class="headerlink" title="RSA:"></a>RSA:</h2><h3 id="原理-欧拉定理-用不到用不到用不到费马小定理"><a href="#原理-欧拉定理-用不到用不到用不到费马小定理" class="headerlink" title="原理: 欧拉定理 (用不到用不到用不到费马小定理!!!  )"></a>原理: 欧拉定理 (用不到用不到用不到费马小定理!!!  )</h3><blockquote>
-<p>a<sup>φ(n)</sup>≡1 （mod n）<br>φ(n)为欧拉函数, 用以表示小于n的正整数中与n互质的数的数目 (钦定 φ(1) = 1)<br>　　易知当n=p时 (p为素数), φ(p) = p-1<br>　　φ(p<sup>k</sup>) = (p-1)*p<sup>k-1</sup><br>　　φ(a*b) = φ(a)*φ(b)<br>　　φ(p*q) = φ(p)*φ(q) = (p-1)(q-1)<br>对于任意的整数n, 若不能将其完全分解为质因数之积, 是无法求出φ(n)的  </p>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title>RSA与Rabin - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-03-31T06:01:50.000Z">March 31, 2018</time><h1 class="post__title"><a href="/2018/RSA-Rabin/">RSA与Rabin</a></h1><div class="post__main echo"><p>先简述一下这两个算法:<br>
+## RSA:<br>
+### 原理: 欧拉定理 (用不到用不到用不到费马小定理!!! )<br>
+&gt; a<sup>φ(n)</sup>≡1 （mod n）<br>
+&gt; φ(n)为欧拉函数, 用以表示小于n的正整数中与n互质的数的数目 (钦定 φ(1) = 1)<br>
+&gt; 　　易知当n=p时 (p为素数), φ(p) = p-1<br>
+&gt; 　　φ(p<sup>k</sup>) = (p-1)*p<sup>k-1</sup><br>
+&gt; 　　φ(a*b) = φ(a)*φ(b)<br>
+&gt; 　　φ(p*q) = φ(p)*φ(q) = (p-1)(q-1)<br>
+&gt; 对于任意的整数n, 若不能将其完全分解为质因数之积, 是无法求出φ(n)的</p>
+<h3 id="构造">构造:</h3>
+<blockquote>
+<p>随机生成素数 p,q, n=p*q (反复生成随机数, 能通过miller-rabin素性检测即为素数)<br>
+计算 φ(n) = φ(p*q) = φ(p)*φ(q) = (p-1)(q-1)<br>
+随机选取与φ(n)互质的加密公钥 e (为方便快速幂算法, 通常取e=65537)<br>
+用广义欧几里得算法计算 d = e<sup>-1</sup> (mod φ(n))<br>
+公开公钥&lt;e,n&gt;<br>
+保存私钥&lt;d,n&gt; (亦需要对关键参数&lt;p,q,φ(n)&gt;保密) 记明文为M, 密文为C<br>
+加密: C ≡ M<sup>e</sup> (mod n)<br>
+解密: M ≡ C<sup>d</sup> (mod n)</p>
 </blockquote>
-<h3 id="构造"><a href="#构造" class="headerlink" title="构造:"></a>构造:</h3><blockquote>
-<p>随机生成素数 p,q, n=p*q        (反复生成随机数, 能通过miller-rabin素性检测即为素数)<br>计算 φ(n) = φ(p*q) = φ(p)*φ(q) = (p-1)(q-1)<br>随机选取与φ(n)互质的加密公钥 e   (为方便快速幂算法, 通常取e=65537)<br>用广义欧几里得算法计算 d = e<sup>-1</sup> (mod φ(n))<br>公开公钥&lt;e,n&gt;<br>保存私钥&lt;d,n&gt;    (亦需要对关键参数&lt;p,q,φ(n)&gt;保密)<br>记明文为M, 密文为C<br>加密: C ≡ M<sup>e</sup> (mod n)<br>解密: M ≡ C<sup>d</sup> (mod n)  </p>
-</blockquote>
-<h3 id="证明"><a href="#证明" class="headerlink" title="证明:"></a>证明:</h3><blockquote>
-<p>ed ≡ 1 (mod φ(n)) =&gt; ed = 1+k*φ(n)<br>M ≡ C<sup>d</sup> ≡ M<sup>ed</sup> ≡ M<sup>1+k*φ(n)</sup> ≡ M*M<sup>k*φ(n)</sup> ≡ M*(M<sup>φ(n)</sup>)<sup>k</sup> ≡ M (mod n)</p>
+<h3 id="证明">证明:</h3>
+<blockquote>
+<p>ed ≡ 1 (mod φ(n)) =&gt; ed = 1+k*φ(n) M ≡ C<sup>d</sup> ≡ M<sup>ed</sup> ≡ M<sup>1+k*φ(n)</sup> ≡ M*M<sup>k*φ(n)</sup> ≡ M*(M<sup>φ(n)</sup>)<sup>k</sup> ≡ M (mod n)</p>
 </blockquote>
 <hr>
-<h2 id="Rabin"><a href="#Rabin" class="headerlink" title="Rabin:"></a>Rabin:</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理:"></a>原理:</h3><blockquote>
-<p><strong>二次剩余</strong><br>若p是奇质数且p不能整除d, 则方程 x<sup>2</sup> ≡ d (mod p)有解的充要条件是:<br>d<sup>(p-1)/2</sup> ≡ 1 (mod p)       (欧拉判别准则)<br>特殊的, 若p ≡ 3 (mod 4)<br>则可进一步解出来 x ≡ d<sup>(p+1)/4</sup>(mod p)<br>　　事实上这是一个极为精妙的构造解:<br>　　d<sup>(p-1)/2</sup> ≡ 1 (mod p) ,两边同乘d得:<br>　　d<sup>(p+1)/2</sup>≡ d (mod p)<br>　　因为 p ≡ 3 (mod 4), 故(p+1)/4是一个整数<br>　　　　(d<sup>(p+1)/4</sup>)<sup>2</sup> ≡ d (mod p)<br>　　　　观察得: x ≡ ±d<sup>(p+1)/4</sup> (mod p)<br>　　　　<br><strong>中国剩余定理</strong><br>对于一次同余方程组:<br>　　x ≡ a (mod p)<br>　　x ≡ b (mod q)<br>可解得 x ≡ [a*q*(q<sup>-1</sup>(mod p)) + b*p*(p<sup>-1</sup>(mod q)) ] (mod pq)  </p>
+<h2 id="rabin">Rabin:</h2>
+<h3 id="原理">原理:</h3>
+<blockquote>
+<p><strong>二次剩余</strong><br>
+若p是奇质数且p不能整除d, 则方程 x<sup>2</sup> ≡ d (mod p)有解的充要条件是:<br>
+d<sup>(p-1)/2</sup> ≡ 1 (mod p) (欧拉判别准则)<br>
+特殊的, 若p ≡ 3 (mod 4)<br>
+则可进一步解出来 x ≡ d<sup>(p+1)/4</sup>(mod p)<br>
+　　事实上这是一个极为精妙的构造解: 　　d<sup>(p-1)/2</sup> ≡ 1 (mod p) ,两边同乘d得:<br>
+　　d<sup>(p+1)/2</sup>≡ d (mod p)<br>
+　　因为 p ≡ 3 (mod 4), 故(p+1)/4是一个整数<br>
+　　　　(d<sup>(p+1)/4</sup>)<sup>2</sup> ≡ d (mod p)<br>
+　　　　观察得: x ≡ ±d<sup>(p+1)/4</sup> (mod p)<br>
+　　　　 <strong>中国剩余定理</strong><br>
+对于一次同余方程组:<br>
+　　x ≡ a (mod p)<br>
+　　x ≡ b (mod q)<br>
+可解得 x ≡ [a*q*(q<sup>-1</sup>(mod p)) + b*p*(p<sup>-1</sup>(mod q)) ] (mod pq)</p>
 </blockquote>
-<h3 id="构造-1"><a href="#构造-1" class="headerlink" title="构造:"></a>构造:</h3><blockquote>
-<p>随机选取素数p≡q≡3 (mod 4)<br>公钥&lt;2,n=pq&gt;<br>私钥&lt;p,q&gt;<br>记明文为M, 密文为C<br>加密: C ≡ M<sup>2</sup> (mod pq)          (Rabin加密是真的快)<br>解密: 此处解同余方程组<br>　　x<sup>2</sup> ≡ C (mod p)<br>　　x<sup>2</sup> ≡ C (mod q)      注:有效明文一定有解<br>运用公式 x ≡ ±d<sup>(p+1)/4</sup> (mod p), 可迅速解得:<br>　　x ≡ ±m (mod p)<br>　　x ≡ ±m (mod q)<br>随后得到了4个一次同余方程组<br>　　{x ≡ m (mod p), x ≡ m (mod q)}<br>　　{x ≡ m (mod p), x ≡ -m (mod q)}<br>　　{x ≡ -m (mod p), x ≡ m (mod q)}<br>　　{x ≡ -m (mod p), x ≡ -m (mod q)}<br>可由<strong>中国剩余定理</strong>解出4个解, 则明文为其中的一个, 需附加语义(或校验码)进行判断  </p>
+<h3 id="构造-1">构造:</h3>
+<blockquote>
+<p>随机选取素数p≡q≡3 (mod 4)<br>
+公钥&lt;2,n=pq&gt;<br>
+私钥&lt;p,q&gt;<br>
+记明文为M, 密文为C<br>
+加密: C ≡ M<sup>2</sup> (mod pq) (Rabin加密是真的快)<br>
+解密: 此处解同余方程组<br>
+　　x<sup>2</sup> ≡ C (mod p)<br>
+　　x<sup>2</sup> ≡ C (mod q) 注:有效明文一定有解<br>
+运用公式 x ≡ ±d<sup>(p+1)/4</sup> (mod p), 可迅速解得:<br>
+　　x ≡ ±m (mod p)<br>
+　　x ≡ ±m (mod q)<br>
+随后得到了4个一次同余方程组<br>
+　　{x ≡ m (mod p), x ≡ m (mod q)}<br>
+　　{x ≡ m (mod p), x ≡ -m (mod q)}<br>
+　　{x ≡ -m (mod p), x ≡ m (mod q)}<br>
+　　{x ≡ -m (mod p), x ≡ -m (mod q)}<br>
+可由<strong>中国剩余定理</strong>解出4个解, 则明文为其中的一个, 需附加语义(或校验码)进行判断</p>
 </blockquote>
 <hr>
-<p>可以看出, RSA与Rabin的保密性都取决于大整数分解问题<br>在量子计算时代, 大整数分解问题可由<strong>量子shor算法</strong>在多项式时间内解决<br>即便对于传统大规模集成电路计算机来说, 大整数分解问题也是远比离散对数弱得多的, 更比不上建立在椭圆曲线域上的离散对数问题, 后者甚至不存在亚指数时间复杂度的算法</p>
+<p>可以看出, RSA与Rabin的保密性都取决于大整数分解问题 在量子计算时代, 大整数分解问题可由<strong>量子shor算法</strong>在多项式时间内解决 即便对于传统大规模集成电路计算机来说, 大整数分解问题也是远比离散对数弱得多的, 更比不上建立在椭圆曲线域上的离散对数问题, 后者甚至不存在亚指数时间复杂度的算法</p>
 <p>但仅仅从数学的角度来看, 建立在大整数分解难问题的这两个算法, 无疑又比类Elgamal系列算法优雅的多, 或许是由于RSA和Rabin明文密文实质性的参与了加解密运算的缘故吧</p>
 <blockquote>
 <ul>
-<li>Rabin比RSA安全的理由:<br>Rabin已被证实安全性与大整数分解难问题等价, 想要破解密钥, 就必须分解大整数n<br>而RSA的安全性仍未被证明, 个人臆测原因主要有两点:<ol>
-<li>不排除存在无需私钥d即可反求明文的方法, 譬如求周期的攻击<br>(但这个攻击代价比分解n还高)  </li>
-<li>由私钥d无法反推 φ(n), 说明求出d与求出φ(n)在求解难度上并不等价<br>但求出 φ(n)和分解n在难度上却是近乎等价的:<br>　　φ(n) = (p-1)(q-1) = pq-(p+q)+1<br>　　p+q = pq+1-φ(n) = n+1-φ(n)<br>　　(p-q)<sup>2</sup> = (p+q)<sup>2</sup> - 4pq = [n+1-φ(n)]<sup>2</sup> - 4n<br>　　而后可开方得到(p-q); 再由(p+q)和(p-q)求出p,q是容易的  </li>
-</ol>
+<li>Rabin比RSA安全的理由:<br>
+Rabin已被证实安全性与大整数分解难问题等价, 想要破解密钥, 就必须分解大整数n<br>
+而RSA的安全性仍未被证明, 个人臆测原因主要有两点:
+<ol type="1">
+<li>不排除存在无需私钥d即可反求明文的方法, 譬如求周期的攻击<br>
+(但这个攻击代价比分解n还高)<br>
 </li>
+<li>由私钥d无法反推 φ(n), 说明求出d与求出φ(n)在求解难度上并不等价<br>
+但求出 φ(n)和分解n在难度上却是近乎等价的:<br>
+　　φ(n) = (p-1)(q-1) = pq-(p+q)+1<br>
+　　p+q = pq+1-φ(n) = n+1-φ(n)<br>
+　　(p-q)<sup>2</sup> = (p+q)<sup>2</sup> - 4pq = [n+1-φ(n)]<sup>2</sup> - 4n<br>
+　　而后可开方得到(p-q); 再由(p+q)和(p-q)求出p,q是容易的</li>
+</ol></li>
 </ul>
 <hr>
 <ul>
-<li>RSA比Rabin安全的理由:<br>Rabin的素数必须满足p≡q≡3 (mod 4), 这无疑在暴力破解n的时候减小了近一半的搜索空间<br>Rabin的公钥为2, 在明文较短的情况下, 可以尝试开方破解<br>(在RSA取e=3的情况下同样存在此问题 )  </li>
+<li>RSA比Rabin安全的理由:<br>
+Rabin的素数必须满足p≡q≡3 (mod 4), 这无疑在暴力破解n的时候减小了近一半的搜索空间<br>
+Rabin的公钥为2, 在明文较短的情况下, 可以尝试开方破解<br>
+(在RSA取e=3的情况下同样存在此问题 )</li>
 </ul>
 </blockquote>
 <hr>
-<h2 id="是否可以说Rabin是RSA令e-2的特例"><a href="#是否可以说Rabin是RSA令e-2的特例" class="headerlink" title="是否可以说Rabin是RSA令e=2的特例?"></a>是否可以说Rabin是RSA令e=2的特例?</h2><blockquote>
-<p>我认为这个是难以说得通的<br>首先二者的原理差的有点远, 二次剩余算是一个比较独特的领域了<br>其次吧… RSA要求 e与 φ(n)互质<br>φ(n) = (p-1)(q-1) ,一定是个偶数<br>所以e=2的时候, e不存在模 φ(n)的逆<br>无法以RSA的方式对Rabin密文进行解密<br>更遑论Rabin是建立在RSA的基础上的  </p>
+<h2 id="是否可以说rabin是rsa令e2的特例">是否可以说Rabin是RSA令e=2的特例?</h2>
+<blockquote>
+<p>我认为这个是难以说得通的<br>
+首先二者的原理差的有点远, 二次剩余算是一个比较独特的领域了<br>
+其次吧… RSA要求 e与 φ(n)互质<br>
+φ(n) = (p-1)(q-1) ,一定是个偶数<br>
+所以e=2的时候, e不存在模 φ(n)的逆<br>
+无法以RSA的方式对Rabin密文进行解密<br>
+更遑论Rabin是建立在RSA的基础上的</p>
 </blockquote>
-</div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/算法/">算法</a></li><li class="post__tag__item"><a class="post__tag__link" href="/tags/密码学/">密码学</a></li></ul></footer></article><div class="comments" id="lv-container" data-id="city" data-uid="your uid"><script>(function(d, s) {var j, e = d.getElementsByTagName(s)[0];if (typeof LivereTower === 'function') { return; } j = d.createElement(s);j.src = 'https://cdn-city.livere.com/js/embed.dist.js';j.async = true;e.parentNode.insertBefore(j, e);})(document, 'script');</script></div></main><footer class="foot"><div class="foot-copy">&copy; 2018 WeiSch</div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
+</div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/算法/">算法</a></li><li class="post__tag__item"><a class="post__tag__link" href="/tags/密码学/">密码学</a></li></ul></footer></article><div class="comments" id="lv-container" data-id="city" data-uid="your uid"><script>(function(d, s) {var j, e = d.getElementsByTagName(s)[0];if (typeof LivereTower === 'function') { return; } j = d.createElement(s);j.src = 'https://cdn-city.livere.com/js/embed.dist.js';j.async = true;e.parentNode.insertBefore(j, e);})(document, 'script');</script></div></main><footer class="foot"><div class="foot-copy">&copy; 2018 WeiSch<!--mathjax config similar to math.stackexchange--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true
+  }
+});</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});</script><script async type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script></div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
