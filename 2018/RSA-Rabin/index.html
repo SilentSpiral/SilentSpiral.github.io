@@ -1,14 +1,16 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title>RSA与Rabin - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-03-31T06:01:50.000Z">March 31, 2018</time><h1 class="post__title"><a href="/2018/RSA-Rabin/">RSA与Rabin</a></h1><div class="post__main echo"><p>先简述一下这两个算法:<br>
-## RSA:<br>
-### 原理: 欧拉定理 (用不到用不到用不到费马小定理!!! )<br>
-&gt; a<sup>φ(n)</sup>≡1 （mod n）<br>
-&gt; φ(n)为欧拉函数, 用以表示小于n的正整数中与n互质的数的数目 (钦定 φ(1) = 1)<br>
-&gt; 　　易知当n=p时 (p为素数), φ(p) = p-1<br>
-&gt; 　　φ(p<sup>k</sup>) = (p-1)*p<sup>k-1</sup><br>
-&gt; 　　φ(a*b) = φ(a)*φ(b)<br>
-&gt; 　　φ(p*q) = φ(p)*φ(q) = (p-1)(q-1)<br>
-&gt; 对于任意的整数n, 若不能将其完全分解为质因数之积, 是无法求出φ(n)的</p>
-<h3 id="构造">构造:</h3>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title>RSA与Rabin - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-03-31T06:01:50.000Z">March 31, 2018</time><h1 class="post__title"><a href="/2018/RSA-Rabin/">RSA与Rabin</a></h1><div class="post__main echo"><p>先简述一下这两个算法:</p>
+<h2 id="rsa">RSA</h2>
+<h3 id="原理-欧拉定理-用不到用不到用不到费马小定理">原理: 欧拉定理 (用不到用不到用不到费马小定理!!! )</h3>
+<blockquote>
+<p>a<sup>φ(n)</sup>≡1 （mod n）<br>
+φ(n)为欧拉函数, 用以表示小于n的正整数中与n互质的数的数目 (钦定 φ(1) = 1)<br>
+　　易知当n=p时 (p为素数), φ(p) = p-1<br>
+　　φ(p<sup>k</sup>) = (p-1)*p<sup>k-1</sup><br>
+　　φ(a*b) = φ(a)*φ(b)<br>
+　　φ(p*q) = φ(p)*φ(q) = (p-1)(q-1)<br>
+对于任意的整数n, 若不能将其完全分解为质因数之积, 是无法求出φ(n)的</p>
+</blockquote>
+<h3 id="构造">构造</h3>
 <blockquote>
 <p>随机生成素数 p,q, n=p*q (反复生成随机数, 能通过miller-rabin素性检测即为素数)<br>
 计算 φ(n) = φ(p*q) = φ(p)*φ(q) = (p-1)(q-1)<br>
@@ -19,7 +21,7 @@
 加密: C ≡ M<sup>e</sup> (mod n)<br>
 解密: M ≡ C<sup>d</sup> (mod n)</p>
 </blockquote>
-<h3 id="证明">证明:</h3>
+<h3 id="证明">证明</h3>
 <blockquote>
 <p>ed ≡ 1 (mod φ(n)) =&gt; ed = 1+k*φ(n) M ≡ C<sup>d</sup> ≡ M<sup>ed</sup> ≡ M<sup>1+k*φ(n)</sup> ≡ M*M<sup>k*φ(n)</sup> ≡ M*(M<sup>φ(n)</sup>)<sup>k</sup> ≡ M (mod n)</p>
 </blockquote>
@@ -36,8 +38,8 @@ d<sup>(p-1)/2</sup> ≡ 1 (mod p) (欧拉判别准则)<br>
 　　d<sup>(p+1)/2</sup>≡ d (mod p)<br>
 　　因为 p ≡ 3 (mod 4), 故(p+1)/4是一个整数<br>
 　　　　(d<sup>(p+1)/4</sup>)<sup>2</sup> ≡ d (mod p)<br>
-　　　　观察得: x ≡ ±d<sup>(p+1)/4</sup> (mod p)<br>
-　　　　 <strong>中国剩余定理</strong><br>
+　　　　观察得: x ≡ ±d<sup>(p+1)/4</sup> (mod p)</p>
+<p><strong>中国剩余定理</strong><br>
 对于一次同余方程组:<br>
 　　x ≡ a (mod p)<br>
 　　x ≡ b (mod q)<br>

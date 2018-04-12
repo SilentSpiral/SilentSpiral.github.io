@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title>不定方程plus - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-04-10T15:15:35.000Z">April 10, 2018</time><h1 class="post__title"><a href="/2018/Diophantus2/">不定方程plus</a></h1><div class="post__main echo"><h1 id="题目">题目</h1>
 <blockquote>
-<p>给定互质的<span class="math inline">\(A,B\)</span><br>
+<p>(HDU 1792) 给定互质的<span class="math inline">\(A,B\)</span><br>
 <span class="math inline">\(x, y\)</span>为任意正整数<br>
 求算式 <span class="math inline">\(Ax+By\)</span>所不能表示的最大的数<br>
 以及其所不能表示的数的个数</p>
@@ -20,15 +20,11 @@
 <p>接下来该考虑如何建立约束了<br>
 注意到算式可以看作向量内积的形式<br>
 <span class="math display">\[Ax+By=(A,B)*(x,y)\]</span></p>
-<figure>
-<img src="https://github.com/SilentSpiral/my-markdown-test-area/blob/master/20180410132811.png?raw=true" alt="看不到图的你退群吧"><figcaption>看不到图的你退群吧</figcaption>
-</figure>
+<p><img src="https://github.com/SilentSpiral/my-markdown-test-area/blob/master/20180410132811.png?raw=true"></p>
 <p>图中红线为 <span class="math inline">\((A,B)\)</span><br>
 蓝线以及平行于蓝线的所有直线姑且称作等积线吧<br>
 向量 <span class="math inline">\((x,y)\)</span> 的终点落在同一等积线上的任意一点时, <span class="math inline">\(Ax+By\)</span> 都会对应同一个值</p>
-<figure>
-<img src="https://github.com/SilentSpiral/my-markdown-test-area/blob/master/20180410133416.png?raw=true" alt="看不到图的你退群吧"><figcaption>看不到图的你退群吧</figcaption>
-</figure>
+<p><img src="https://github.com/SilentSpiral/my-markdown-test-area/blob/master/20180410133416.png?raw=true"></p>
 <p>红:<span class="math inline">\((A,B)\)</span><br>
 蓝: 等积线<br>
 绿: 临界等积线<br>
@@ -49,7 +45,7 @@
 此即为最大不能表示的数</p>
 <p><em>注: excel设置列宽为4行高26时方格为正方形</em></p>
 <h1 id="代码本体">代码本体</h1>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print((A<span class="number">-1</span>)*(B<span class="number">-1</span>)//<span class="number">2</span>)</span><br><span class="line">print(A*B-B-A)</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> A,B;</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;A,&amp;B)!=EOF)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d %d\n"</span>,A*B-A-B,(A<span class="number">-1</span>)*(B<span class="number">-1</span>)/<span class="number">2</span>);</span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h1 id="网上找到的看不懂的证明">网上找到的看不懂的证明</h1>
 <blockquote>
 <p>题意：给定A和B，A和B互质，求最大不能组合数，和不能组合数的个数。</p>
