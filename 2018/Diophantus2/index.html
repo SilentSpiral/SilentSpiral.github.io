@@ -38,7 +38,7 @@
 <li>对于蓝绿线间的所有等积线, 如果在第一象限没有经过整点的话,则此等积线对应的乘积不可表示</li>
 <li>绿色的框及黑色框的边界标示的等积线都可以在第一象限找到经过的整点</li>
 <li>黑框以内点标示的等积线则找不到第一象限对应的整点</li>
-<li>黑框不含边界, 共包含<span class="math inline">\((A-1)(B-1)/2\)</span>个整点</li>
+<li>黑框不含边界, 共包含<span class="math inline">\(\frac{(A-1)(B-1)}{2}\)</span>个整点</li>
 </ul>
 <p>其中在<span class="math inline">\((A,B)\)</span>上投影最远的点:<span class="math inline">\((-1,A-1)\)</span><br>
 <span class="math inline">\((A,B)*(-1,A-1)=AB-B-A\)</span><br>
@@ -59,20 +59,24 @@ $mk，mk+1，mk+2，……，mk+(m-1) $<br>
 可见HDOJ 1222 Wolf and Rabbit<br>
 设 $kmin = min{ k | nk ∈ {i, (mod,m)} }, i ∈ [0, m) $<br>
 则 <span class="math inline">\(nkmin\)</span> 是<span class="math inline">\({i\,(mod\,m)}\)</span>中n的最小倍数。特别的，$nm ∈ {0,(mod,m)} $<br>
-$nkmin <span class="math inline">\(是个标志，它表明\)</span>{i,(mod,m)}<span class="math inline">\(中\)</span>nkmin <span class="math inline">\(后面所有数 即\)</span>nkmin + jm<span class="math inline">\(必定都能被组合出来 那也说明最大不能组合数必定小于\)</span>nkmin $<br>
-我们开始寻找<span class="math inline">\(max{ nkmin }\)</span><br>
-<span class="math inline">\(Lcm(m, n) = mn\)</span>，所以很明显<span class="math inline">\((m-1)n\)</span>是最大的<br>
-因为<span class="math inline">\((m-1)n\)</span>是$nkmin <span class="math inline">\(中的最大值，所以在剩下的\)</span>m-1<span class="math inline">\(个剩余类中， 必定有比它小并且能被m和n组合， 这些数就是\)</span>(m-1)n -1，(m-1)n -2，……，(m-1)n -(m-1)$<br>
-所以最大不能被组合数就是$(m-1)n -m $</p>
+<span class="math inline">\(nkmin​\)</span>是个标志，它表明<span class="math inline">\(\{i\,(mod\,m)\}\)</span>中<span class="math inline">\(nkmin​\)</span>后面所有数<br>
+即<span class="math inline">\(nkmin + jm\)</span>必定都能被组合出来<br>
+那也说明最大不能组合数必定小于$nkmin $<br>
+我们开始寻找<span class="math inline">\(max\{nkmin\}\)</span><br>
+<span class="math inline">\(Lcm(m, n) = mn​\)</span>，所以很明显<span class="math inline">\((m-1)n​\)</span>是最大的<br>
+因为<span class="math inline">\((m-1)n\)</span>是<span class="math inline">\(nkmin​\)</span>中的最大值，所以在剩下的<span class="math inline">\(m-1\)</span>个剩余类中，<br>
+必定有比它小并且能被m和n组合，<br>
+这些数就是<span class="math inline">\((m-1)n -1，(m-1)n -2，……，(m-1)n -(m-1)\)</span><br>
+所以最大不能被组合数就是<span class="math inline">\((m-1)n -m​\)</span></p>
 <p>如果m和n不互素，那<span class="math inline">\(\{1\,(mod\,m)\}\)</span><strong>不能</strong>被m组合，同样也不能被n和m组合</p>
 <p>我们能求出各个剩余类的nkmin之后，不能组合数的个数就是每个剩余类中小于各自nkmin的数的个数总和。<br>
 观察如下：</p>
 <p><span class="math inline">\(M = 5，N = 3\)</span><br>
-<span class="math inline">\({0(mod 5)}：0，5，10，15……\)</span><br>
-${1(mod 5)}：1，6，11，16…… $<br>
-${2(mod 5)}：2，7，12，17…… $<br>
-${3(mod 5)}：3，8，13，18…… $<br>
-<span class="math inline">\({4(mod 5)}：4，9，14，19……\)</span><br>
+<span class="math inline">\({0(mod\,5)}：0，5，10，15……\)</span><br>
+${1(mod,5)}：1，6，11，16…… $<br>
+${2(mod,5)}：2，7，12，17…… $<br>
+${3(mod,5)}：3，8，13，18…… $<br>
+<span class="math inline">\({4(mod\,5)}：4，9，14，19……\)</span><br>
 红色的就是不能组合数，可以看出在剩余类中它的数目有规律<br>
 <span class="math inline">\(Total = [0+1+2] + [0+1]\)</span><br>
 因为m和n互质，必有一个不完全周期<br>
