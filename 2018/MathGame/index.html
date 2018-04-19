@@ -1,9 +1,12 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/img/favicon.ico"><title>一些偏数学的题目 - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-04-19T16:52:00.000Z">April 20, 2018</time><h1 class="post__title"><a href="/2018/MathGame/">一些偏数学的题目</a></h1><div class="post__main echo"><p>#洗牌<br>
-洗牌是这样一个过程： 先把一堆牌从正中间分成两堆，前一半是第一堆，后一半是第二堆。然后以第二堆的第一张，第一堆的第一张，第二堆的第二张，第一堆的第二张… …这样的顺序重排。52张牌洗牌几次可以回到最初的顺序？<br>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/img/favicon.ico"><title>一些偏数学的题目 - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-04-19T16:52:00.000Z">April 20, 2018</time><h1 class="post__title"><a href="/2018/MathGame/">一些偏数学的题目</a></h1><div class="post__main echo"><h1 id="洗牌">洗牌</h1>
+<p>洗牌是这样一个过程： 先把一堆牌从正中间分成两堆，前一半是第一堆，后一半是第二堆。然后以第二堆的第一张，第一堆的第一张，第二堆的第二张，第一堆的第二张… …这样的顺序重排。52张牌洗牌几次可以回到最初的顺序？<br>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">a=<span class="string">"abcdefghijklmnopqrstuvwxyz"</span></span><br><span class="line">b=a+a.upper()</span><br><span class="line">c=b</span><br><span class="line">cnt=<span class="number">0</span></span><br><span class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</span><br><span class="line">	c=<span class="string">""</span>.join([i+j <span class="keyword">for</span> i,j <span class="keyword">in</span> zip(C[:<span class="number">26</span>],c[<span class="number">26</span>:])])</span><br><span class="line">	cnt+=<span class="number">1</span></span><br><span class="line">	<span class="keyword">if</span>(c==b):</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">print(cnt)</span><br></pre></td></tr></table></figure></p>
 <h1 id="异或的期望">异或的期望</h1>
-<p>从1,2,3，……98,99,2015这100个数中任意选择若干个数(可能为0)求异或，试求异或的期望值<br>
-根据期望的性质, <span class="math inline">\(E(X+Y)=E(X)+E(Y)\)</span><br>
+<h2 id="题目">题目</h2>
+<blockquote>
+<p>从1,2,3，……98,99,2015这100个数中任意选择若干个数(可能为0)求异或，试求异或的期望值</p>
+</blockquote>
+<p>根据期望的性质, <span class="math inline">\(E(X+Y)=E(X)+E(Y)\)</span><br>
 可以把这些数按位拆分, 逐位来处理期望值<br>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>bin(<span class="number">2015</span>)</span><br><span class="line"><span class="string">'0b11111011111'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2015</span>%<span class="number">128</span></span><br><span class="line"><span class="number">95</span></span><br></pre></td></tr></table></figure></p>
 <p>注意到除了2015外, 每个数都小于128, 故可以单独处理高四位和低七位</p>
@@ -11,7 +14,7 @@
 <p>我们已经得到了这十一个二进制位上1的个数分别是<br>
 [1, 1, 1, 1, 51, 51, 49, 49, 49, 36, 37]</p>
 <p>所以问题转化为100个元素里有k个元素a, 任取若干(可为0)元素其中元素a的个数为奇数的概率<br>
-<span class="math inline">\(\begin{align}P(括号里不知道写啥) &amp; = \cfrac{(C_{k}^{1}+C_{k}^{3}+C_{k}^{5}+C_{k}^{7}+...)2^{100-k}}{2^{100}}\\ &amp;= \cfrac{(C_{k}^{1}+C_{k}^{3}+C_{k}^{5}+C_{k}^{7}+...)}{2^{k}}\\ &amp;= \cfrac{2^{k}/2}{2^{k}}\\ &amp;= \cfrac{1}{2}\end{align}\)</span></p>
+<span class="math display">\[\begin{align}P(不知道写啥) &amp; = \cfrac{(C_{k}^{1}+C_{k}^{3}+C_{k}^{5}+C_{k}^{7}+...)2^{100-k}}{2^{100}}\\ &amp;= \cfrac{(C_{k}^{1}+C_{k}^{3}+C_{k}^{5}+C_{k}^{7}+...)}{2^{k}}\\ &amp;= \cfrac{2^{k}/2}{2^{k}}\\ &amp;= \cfrac{1}{2}\end{align}\]</span></p>
 <p>首先解释一下这个算式的意义, 分母为100个元素的全部子集的个数, 分子则是K个元素取到奇数的情况个数与其余100-k个元素的全部子集数的乘积, 这个弹夹和背包连在一起, 它就是一个平底锅, 我想大家是没有异议的</p>
 <blockquote>
 <p>而后嘛, 带大家复习一下高中的知识了<br>
@@ -19,17 +22,19 @@
 天理何在?<br>
 虽然我并不是很喜欢二项式定理来证明这个, 但无疑它是打出来说清楚比较方便的<br>
 <span class="math inline">\((a+b)^n=C_{n}^{0}a^{n}+C_{n}^{1}a^{n-1}b^{1}+C_{n}^{2}a^{n-2}b^{2}+C_{n}^{3}a^{n-3}b^{3}+...\)</span><br>
+令a=1可以得到<br>
 <span class="math inline">\((1+x)^n=C_{n}^{0}+C_{n}^{1}x^{1}+C_{n}^{2}x^{2}+C_{n}^{3}x^{3}+...\)</span><br>
+再分别令x=1, x=-1得<br>
 <span class="math inline">\((1+1)^n=C_{n}^{0}+C_{n}^{1}+C_{n}^{2}+C_{n}^{3}+C_{n}^{4}+C_{n}^{5}+C_{n}^{6}+C_{n}^{7}+...\)</span><br>
 <span class="math inline">\((1-1)^n=C_{n}^{0}-C_{n}^{1}+C_{n}^{2}-C_{n}^{3}+C_{n}^{4}-C_{n}^{5}+C_{n}^{6}-C_{n}^{7}+...\)</span><br>
 <span class="math inline">\((1+1)^n-(1-1)^n=2(C_{n}^{1}+C_{n}^{3}+C_{n}^{5}+C_{n}^{7}+...)\)</span><br>
 <span class="math inline">\(C_{n}^{1}+C_{n}^{3}+C_{n}^{5}+C_{n}^{7}+...=\cfrac{(1+1)^n-(1-1)^n}{2}=\cfrac{2^n}{2}\)</span><br>
-其实用杨辉三角可以立得奇偶次项系数和一样多<br>
+其实观察杨辉三角可以立得奇偶次项系数和一样多(都等于上一行系数和)<br>
 尝试了一下, 无论是画图还是用组合数恒等式, 都说不清, 果断弃疗</p>
 </blockquote>
 <p>既然每一位上的异或结果为1的概率都是1/2<br>
-那么答案就理所当然的是(11111111111)<sub>2</sub>/2 = 2047/2 = 1023.5</p>
-<p>……吗?</p>
+那么答案就理所当然的是(11111111111)<sub>2</sub>/2 = 2047/2 = 1023.5<br>
+　 　 　 　 　 　　……吗?</p>
 <blockquote>
 <p><span class="math inline">\(C_{n}^{1}+C_{n}^{3}+C_{n}^{5}+C_{n}^{7}+...=\cfrac{(1+1)^n-(1-1)^n}{2}=\cfrac{2^n}{2}\)</span><br>
 第一个等号没问题<br>
@@ -41,7 +46,7 @@
 此时<span class="math inline">\(\cfrac{(1+1)^0-(1-1)^0}{2}=0\)</span></p>
 <p>换一个角度想, 0个元素中取到奇数个元素的情况裆燃是有0种</p>
 </blockquote>
-<p>所以当k=0时取到奇数个元素a的概率为0, k不为0时概率为1/2</p>
+<h2 id="所以当k0时取到奇数个a的概率为0-否则概率为12">所以当k=0时取到奇数个a的概率为0, 否则概率为1/2</h2>
 <p>像之前那样求出来每一位上1的个数并非必要<br>
 such as [1, 1, 1, 1, 51, 51, 49, 49, 49, 36, 37]<br>
 只需要判断每一位上是否有1即可<br>
