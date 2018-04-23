@@ -84,13 +84,13 @@ n=16时,数据太大跑不出来, 内存没炸也真是神奇</p>
 统计其个数便可得该向量生成直线的个数<br>
 <strong>cnt = (n-x)(n-y) - (n-2x)(n-2y)</strong><br>
 应该注意到, 这其实是在隐性要求 <strong>(n-2x)(n-2y)</strong> 都大于0<br>
-如果 <strong>2x＞n</strong> 则会有蓝色方框被挤出正方形以外, 不再被统计<br>
+如果 <strong>2x&gt;n</strong> 或<strong>2y&gt;n</strong> 则会有蓝色方框被挤出正方形以外, 不再被统计<br>
 此时有<strong>cnt = (n-x)(n-y)</strong></p>
-<p>而后猜想三维的形式, 对于其是否奏效并无绝地的把握<br>
-n＞2*max(x,y,z)时:<br>
-cnt = (n-x)(n-y)(n-z) - (n-2x)(n-2y)(n-2z)<br>
+<p>而后猜想三维的形式, 对于其是否奏效并无绝对的把握<br>
+<strong>n＞2*max(x,y,z)</strong>时:<br>
+<strong>cnt = (n-x)(n-y)(n-z) - (n-2x)(n-2y)(n-2z)</strong><br>
 else:<br>
-cnt = (n-x)(n-y)(n-z)</p>
+<strong>cnt = (n-x)(n-y)(n-z)</strong></p>
 <p>幸运的是跑通了, 答案无误, 心有余悸<br>
 炼丹,炼丹……<br>
 时间复杂度<strong>O(n<sup>3</sup>)</strong>, 空间复杂度O(n<sup>3</sup>)<br>
@@ -118,10 +118,10 @@ cnt = (n-x)(n-y)(n-z)</p>
 </li>
 <li>C：z最大，x≤z，y&lt;z<br>
 </li>
-<li>D：x=y=z<br>
-(这里添等号的方式一共只有两种,都可以)<br>
-ABC只用算其中一类即可, 结果乘3再加上D的结果就可以了</li>
+<li>D：x=y=z</li>
 </ul>
+<p>(这里添等号的方式一共只有两种,都可以)<br>
+ABC只用算其中一类即可, 结果乘3再加上D的结果就可以了</p>
 <p>时间复杂度O(n<sup>3</sup>), 空间复杂度O(1)<br>
 <strong>n=16时耗时约0.005秒</strong><br>
 <strong>n=100时耗时约5.5秒</strong></p>
@@ -143,11 +143,11 @@ ABC只用算其中一类即可, 结果乘3再加上D的结果就可以了</li>
 但仍有对称未用尽, 事实上剩余的对称性是难以利用的, 当初也考虑过, 但并未实现<br>
 后来发现可以把第九版的遍历范围当作跳板, 即仅需考虑由对称生成第九版代码中的范围即可</p>
 <ul>
-<li>A：x最大，y≤x，z&lt;x =&gt; { x≥y＞z; x＞z＞y; x＞z=y}<br>
+<li>A：x最大，y≤x，z&lt;x =&gt; { x≥y&gt;z; x&gt;z&gt;y; x&gt;z=y}<br>
 </li>
-<li>B：y最大，z≤y，x&lt;y =&gt; { y≥z＞x; y＞x＞z; y＞x=z}<br>
+<li>B：y最大，z≤y，x&lt;y =&gt; { y≥z&gt;x; y&gt;x&gt;z; y&gt;x=z}<br>
 </li>
-<li>C：z最大，x≤z，y&lt;z =&gt; { z≥x＞y; z＞y＞x; z＞y=x}<br>
+<li>C：z最大，x≤z，y&lt;z =&gt; { z≥x&gt;y; z&gt;y&gt;x; z&gt;y=x}<br>
 </li>
 <li>D：x=y=z</li>
 </ul>
@@ -169,7 +169,8 @@ ABC只用算其中一类即可, 结果乘3再加上D的结果就可以了</li>
 <strong>n=400时耗时约2.8秒</strong></p>
 <h2 id="version-xplusplusplusplus"><a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cubeXplusplusplusplus.py" target="_blank" rel="noopener">version Xplusplusplusplus</a></h2>
 <p>当r不为1时, 按照等差数列求和失败<br>
-具体来说因为r可能是合数, 所以要先分解再容斥原理才能够求和</p>
+具体来说因为r可能是合数, 所以要先分解再容斥原理才能够求和<br>
+呵, 容斥原理, 债见</p>
 <p>后来想到了利用周期性的解决方案<br>
 z的遍历范围以r为周期划分<br>
 周期内遍历, 周期间根据周期个数等差求和<br>
