@@ -1,0 +1,188 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/img/favicon.ico"><title>Counting Lines In A Cube - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-04-23T10:29:06.000Z">April 23, 2018</time><h1 class="post__title"><a href="/2018/countlines/">Counting Lines In A Cube</a></h1><div class="post__main echo"><p>大佬提出的问题, 来源又双叒叕是<a href="http://oeis.org/A222267" target="_blank" rel="noopener">oeis:</a></p>
+<blockquote>
+<p>x,y,z三个坐标都在0到 n(原题是16)的范围内(包含边界) 这其中所有的整点每两个点确定一条直线,一共有多少条不同的直线？</p>
+</blockquote>
+<p style="font-size:em;text-align:center">
+“我要向锤雷世界通话”
+</p>
+<h2 id="雪地工程-version-1"><a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cube-%E9%9B%AA%E5%9C%B0%E5%B7%A5%E7%A8%8B(%E5%A4%B1%E8%B4%A5).py" target="_blank" rel="noopener">雪地工程 ( Version 1 )</a></h2>
+<p>寒假的时候试着写了一下, 期望以python的集合来搞定这个问题, 于是有了代码的第一个版本</p>
+<p>于我来说问题的瓶颈在于直线查重是困难的, 需要一种方式把每一个直线唯一的标示出来以供查重, 我的想法是这个直线一定会在最外层的六个平面中的两个或者更多平面上有交点, 不妨以这些交点来唯一的标示每一个直线,(比较像三体里的雪地工程) 即每个直线由一个六个交点坐标的六元组来表示</p>
+<ul>
+<li>若不存在交点或直线在某一平面上(无数个交点), 则计为None<br>
+</li>
+<li>若交点在正方体棱或顶点, 则此交点算入相关的每一个平面上</li>
+</ul>
+<p>譬如n=4的时候, (1,1,1)和(2,2,2)所确定的直线可表示为((0,0),(0,0),(0,0),(1,1),(1,1),(1,1))</p>
+<p>结果并不如愿, n=1~3时答案都对, n=4时算得ans=6025, 多了, 我猜也许是浮点数精度问题<br>
+n=16时,数据太大跑不出来, 内存没炸也真是神奇</p>
+<h2 id="航迹-version-2"><a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cube2-%E8%88%AA%E8%BF%B9.py" target="_blank" rel="noopener">航迹 ( Version 2 )</a></h2>
+<p>这个灵感是返校后想到的, 为了这个还特地去复习直线在空间中的表示方法.<br>
+一个空间直线可以由直线上某一点及方向向量确定, 但不是唯一确定, 因为点只要在直线上即符合要求, 方向向量也可以倍增或者倍减<br>
+想要唯一确定直线, 需要怎么做呢</p>
+<p>对于方向向量而言, 由于直线都是由整点两两连线确定, 所有每个方向向量都可以化为一组互质的正整数, 我们可以通过一个三重循环生成(0,0,0)出发终点且在正方体内(及其表面,下同)所有互质的向量, 之后遍历这些向量, 对每一个向量遍历一遍所有的点</p>
+<p>既然直线是由立方体内及其表面上的整点确定的, 那么直线一定经过正方体内或其表面的整点, 这样一来, 我们可以对于每个向量维护一个对应此正方体且初值皆为0的数组, 对于每一个为0的点, 若通过当前向量可达正方体内别的点, 则该点置1, 经此点达到的其他点置-1, (在想象中的正方体里, 每一个点生成直线的染色过程就像三体舰队留下航迹一样, 因而得名), 点的遍历完成后统计数组里1的个数即可</p>
+<p>因为互质求起来遇到0比较麻烦,故将向量分类如下(名字乱起的, 勿深究):</p>
+<ul>
+<li>原则: 不互质则平凡, 有0则降维<br>
+</li>
+<li>三维非平凡向量: xyz皆不为0, 且xyz没有公因子(这里并不是两两互质)<br>
+</li>
+<li>二维非平凡向量: xyz有且只有一个为0, 且其余二者互质<br>
+</li>
+<li>一维向量: (0,0,1) or (0,1,0) or (1,0,0)<br>
+</li>
+<li>平凡向量: 在其所在维度下不满足互质要求</li>
+</ul>
+<p>其中一维向量可生成直线3(n+1)<sup>2</sup>个</p>
+<p><strong>三维非平凡向量</strong> 所生成直线的总数 (记作sum1,后改为cnt) 需要乘<strong>4</strong><br>
+因为一个顶点生成的所有向量都可以被其体被对角线连接的另一顶点对应表示, 譬如(0,0,0)指向(x,y,z)的向量与(n,n,n)指向(n-x,n-y,n-z)的向量<br>
+立方体共有4对顶点, 分为4组, 每一个顶点生成的三维向量不可被组外的顶点生成(而生成的二维向量可以,这也是为什么把二维三维的分开考虑)</p>
+<p><strong>二维非平凡向量</strong> 在平面上生成的直线总数 (记作sum2,后改为pcnt) 要乘 <strong>6(n+1)</strong><br>
+正方形内顶点可分为 <strong>两组</strong><br>
+而后正方体内可以找到平行于xoy,yoz,zox的平面各 <strong>(n+1)</strong> 个</p>
+<p>answer=3(n+1)<sup>2</sup>+4*sum1+2*3*(n+1)*sum2</p>
+<p>在写代码的时候,由于觉得三个数调用好多遍求公因子的函数太麻烦, 所以写了个o(n)的四不像来判断是否互质<br>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gcd</span><span class="params">(x,y,z,n)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>,n):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> any((x%i,y%i,z%i)):</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">True</span></span><br></pre></td></tr></table></figure></p>
+<p>具体在每一个点通过向量对其他点染色时, 我会事先计算向量的模长, 再用体对角线长度除以该值, 记作k, 每一个点生成的通过-k到k个向量,都可以遍历这条直线在立方体里面的所有整点</p>
+<p>时间复杂度O(n<sup>6</sup>),空间复杂度O(n<sup>3</sup>)<br>
+<strong>跑n=16时耗费40秒左右, 事实上的第一个可行版本, 能够做出来已经是0的突破了</strong></p>
+<h2 id="version-3"><a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cube3.py" target="_blank" rel="noopener">version 3</a></h2>
+<p>做完versoin2后, 入睡前猛然想到-k到k的遍历是不必要的, 并将此作为一个猜想向北锤世界留言<br>
+第二天尝试了一下, 确实猜想是对的</p>
+<blockquote>
+<p>解释:<br>
+向量(X,Y,Z), 点(a2,b2,c2)若可通过该向量被点(a1,b1,c1)染色, 则必有a2＞a1,b2＞b1,c2＞c1<br>
+否则一定会先遍历到(a2,b2,c2),此时已经将(a1,b1,c1)染色, 不会再遍历该点<br>
+所以-k到k的遍历是没有必要的</p>
+</blockquote>
+<p>代码只减少了一行, 时间空间复杂度仍是O(n<sup>6</sup>)和O(n<sup>3</sup>)<br>
+<strong>跑n=16时耗费20秒左右</strong></p>
+<h2 id="version-45"><a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cube4.py" target="_blank" rel="noopener">version 4</a>&amp;<a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cube5.py" target="_blank" rel="noopener">5</a></h2>
+<p>乏善可陈<br>
+第四版把之前的染色后统计改为了在循环中cnt+1, 以及把列表改成了bool型, 并未有显著加速<br>
+第五版仅仅做了些模块化的工作, 把主过程拆成了一个个函数, 事实证明这个工作开始的过早了, 后面的代码改进还需要再把这些模块重新rua到一起</p>
+<h2 id="科学边界-version-6"><a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cube6-%E7%A7%91%E5%AD%A6%E8%BE%B9%E7%95%8C.py" target="_blank" rel="noopener">科学边界 (version 6)</a></h2>
+<p>鉴于我们在第三版里染色全改成了单向的<br>
+那么对于向量(X,Y,Z)而言, 并不需要遍历到x＞n-X, y＞n-Y, z＞n-Z的这些点<br>
+每一个向量的遍历范围都有其自己的边界<br>
+故得名<strong>科学边界</strong><br>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(n+<span class="number">1</span>):</span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> range(n+<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> z <span class="keyword">in</span> range(n+<span class="number">1</span>):</span><br></pre></td></tr></table></figure></p>
+<p>循环结构更改如下:<br>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(n+<span class="number">1</span>-X):</span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> range(n+<span class="number">1</span>-Y):</span><br><span class="line">        <span class="keyword">for</span> z <span class="keyword">in</span> range(n+<span class="number">1</span>-Z):</span><br></pre></td></tr></table></figure></p>
+<p>时间空间复杂度仍是O(n<sup>6</sup>)和O(n<sup>3</sup>)<br>
+<strong>跑n=16时耗费4秒左右</strong></p>
+<h2 id="降维打击-version-7"><a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cube7-%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB.py" target="_blank" rel="noopener">降维打击 (version 7)</a></h2>
+<p>算是一个历史性进展了, 时间复杂度由O(n<sup>6</sup>)降到O(n<sup>3</sup>)<br>
+空间复杂度仍是O(n<sup>3</sup>), 因为仍需保存非平凡向量</p>
+<p>受到科学边界的启发, 我发现有些点在遍历时是无用的, 能不能进一步削减遍历范围呢?<br>
+三维不好想, 不妨先想明白二维的形式<br>
+<img src="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/scienceEdge.png?raw=true"><br>
+此图是为n=12的情形, 图中向量为(5,3), 黑色方框为其科学边界<br>
+观察可知蓝色方框内的点必定可达黑色框内其他点<br>
+故黑色方框减去蓝色方框剩下的格点,可以唯一的表示出该向量在正方体内生成的所有直线<br>
+统计其个数便可得该向量生成直线的个数<br>
+<strong>cnt = (n-x)(n-y) - (n-2x)(n-2y)</strong><br>
+应该注意到, 这其实是在隐性要求 <strong>(n-2x)(n-2y)</strong> 都大于0<br>
+如果 <strong>2x＞n</strong> 则会有蓝色方框被挤出正方形以外, 不再被统计<br>
+此时有<strong>cnt = (n-x)(n-y)</strong></p>
+<p>而后猜想三维的形式, 对于其是否奏效并无绝地的把握<br>
+n＞2*max(x,y,z)时:<br>
+cnt = (n-x)(n-y)(n-z) - (n-2x)(n-2y)(n-2z)<br>
+else:<br>
+cnt = (n-x)(n-y)(n-z)</p>
+<p>幸运的是跑通了, 答案无误, 心有余悸<br>
+炼丹,炼丹……<br>
+时间复杂度<strong>O(n<sup>3</sup>)</strong>, 空间复杂度O(n<sup>3</sup>)<br>
+<strong>n=16时耗时约0.02秒</strong><br>
+<strong>n=100时耗时约17秒</strong></p>
+<h2 id="version-8"><a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cube8.py" target="_blank" rel="noopener">version 8</a></h2>
+<p>这个版本主要是把直线计数写进生成向量的循环里了,也就不必保存向量了,空间复杂度跳楼大甩卖<br>
+以及把二维时的二重循环合并进三维时的三重循环中</p>
+<p>发现传入n(正方体边长)时, 主过程里面几乎全是n+1参与运算<br>
+经锤雷大神指点, 改为传入n+1(正方体边上点的个数), 后面的版本都沿袭了这个</p>
+<p>时间复杂度O(n<sup>3</sup>), 空间复杂度<strong>O(1)</strong><br>
+<strong>n=16时耗时约0.016秒</strong><br>
+<strong>n=100时耗时约17秒 (你个不争气的玩仍)</strong></p>
+<h2 id="version-9"><a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cube9.py" target="_blank" rel="noopener">version 9</a></h2>
+<p>我们考虑到了正方体四对顶点的对称性, 所以生成向量时实际上减小了3/4的工作量<br>
+但对称性仍然没有用尽</p>
+<p>这个版本里又将工作量降低了2/3, 希望不靠几何的前提下说清楚吧, 毕竟画图废<br>
+三维可以模糊的分成三类分别是<br>
+{A: x最大; B: y最大; C: z最大}</p>
+<p>进一步处理</p>
+<ul>
+<li>A：x最大，y≤x，z&lt;x<br>
+</li>
+<li>B：y最大，z≤y，x&lt;y<br>
+</li>
+<li>C：z最大，x≤z，y&lt;z<br>
+</li>
+<li>D：x=y=z<br>
+(这里添等号的方式一共只有两种,都可以)<br>
+ABC只用算其中一类即可, 结果乘3再加上D的结果就可以了</li>
+</ul>
+<p>时间复杂度O(n<sup>3</sup>), 空间复杂度O(1)<br>
+<strong>n=16时耗时约0.005秒</strong><br>
+<strong>n=100时耗时约5.5秒</strong></p>
+<h2 id="version-10-10_gcd"><a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cube10.py" target="_blank" rel="noopener">version 10</a> &amp; <a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cube10_gcd.py" target="_blank" rel="noopener">10_gcd</a></h2>
+<p>循环中需要判断 if n＞2*max(x,y,z)<br>
+因为在第九版中改成了x最大, 所以有max(x,y,z)=x<br>
+但并不需要再做比较, 可以直接将最外层x的循环拆开<br>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>,n//<span class="number">2</span>+<span class="number">1</span>):  </span><br><span class="line">    ......</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(n//<span class="number">2</span>+<span class="number">1</span>,n):  </span><br><span class="line">    ......</span><br></pre></td></tr></table></figure></p>
+<p>时间复杂度O(n<sup>3</sup>), 空间复杂度O(1)<br>
+<strong>n=16时耗时约0.005秒</strong><br>
+<strong>n=100时耗时约5.2秒</strong></p>
+<p>gcd版本是用O(logn)的gcd函数代替了O(n)的原有遍历判断是否公因子的函数<br>
+没想到居然可以快这么多<br>
+<strong>n=16时耗时约0.0011秒</strong><br>
+<strong>n=100时耗时约0.18秒</strong><br>
+<strong>n=400时耗时约12秒</strong></p>
+<h2 id="version-xplus"><a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cubeXplus.py" target="_blank" rel="noopener">version Xplus</a></h2>
+<p>第九版虽改进了生成向量的遍历过程<br>
+但仍有对称未用尽, 事实上剩余的对称性是难以利用的, 当初也考虑过, 但并未实现<br>
+后来发现可以把第九版的遍历范围当作跳板, 即仅需考虑由对称生成第九版代码中的范围即可</p>
+<ul>
+<li>A：x最大，y≤x，z&lt;x =&gt; { x≥y＞z; x＞z＞y; x＞z=y}<br>
+</li>
+<li>B：y最大，z≤y，x&lt;y =&gt; { y≥z＞x; y＞x＞z; y＞x=z}<br>
+</li>
+<li>C：z最大，x≤z，y&lt;z =&gt; { z≥x＞y; z＞y＞x; z＞y=x}<br>
+</li>
+<li>D：x=y=z</li>
+</ul>
+<p>至此我自以为对称性被压榨到极致了, 仅需遍历所有向量的1/24即可<br>
+除此之外也用了几个临时变量减少重复运算</p>
+<h2 id="从此算法再无可读性"><strong>从此算法再无可读性</strong></h2>
+<p><strong>n=16时耗时约0.0007秒</strong><br>
+<strong>n=100时耗时约0.11秒</strong><br>
+<strong>n=400时耗时约7.2秒</strong></p>
+<h2 id="version-xplusplus"><a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cubeXplusplus.py" target="_blank" rel="noopener">version Xplusplus</a></h2>
+<p>在循环中提取公因式, 显著减少乘法的运行次数<br>
+<strong>n=400时耗时约6秒</strong></p>
+<h2 id="version-xplusplusplus"><a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cubeXplusplusplus.py" target="_blank" rel="noopener">version Xplusplusplus</a></h2>
+<p>若r=1, 则必有gcd(r,z)=1<br>
+这里不必对于每个z都调用gcd<br>
+在r=1的时候cnt的增量可由等差数列求和得到<br>
+原本不觉得这个会有多少优化, 仅仅试着改了一下<br>
+没想到效果拔群<br>
+<strong>n=400时耗时约2.8秒</strong></p>
+<h2 id="version-xplusplusplusplus"><a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cubeXplusplusplusplus.py" target="_blank" rel="noopener">version Xplusplusplusplus</a></h2>
+<p>当r不为1时, 按照等差数列求和失败<br>
+具体来说因为r可能是合数, 所以要先分解再容斥原理才能够求和</p>
+<p>后来想到了利用周期性的解决方案<br>
+z的遍历范围以r为周期划分<br>
+周期内遍历, 周期间根据周期个数等差求和<br>
+最后不足一周期者再单独求和即可<br>
+<strong>n=400时耗时约0.43秒</strong></p>
+</div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/算法/">算法</a></li><li class="post__tag__item"><a class="post__tag__link" href="/tags/几何/">几何</a></li></ul></footer></article><!--include plugins/reward.pug--><!--include plugins/livere.pug--></main><footer class="foot"><div class="foot-copy">&copy; 2018 WeiSch<!--mathjax config similar to math.stackexchange--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true
+  }
+});</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});</script><script async type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script></div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
