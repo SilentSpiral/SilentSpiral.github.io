@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/img/favicon.ico"><title>一些偏数学的题目 - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-04-19T16:52:00.000Z">April 20, 2018</time><h1 class="post__title"><a href="/2018/MathGame/">一些偏数学的题目</a></h1><div class="post__main echo"><h1 id="洗牌">洗牌</h1>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/img/favicon.ico"><title>数学游戏 - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-04-19T16:52:00.000Z">April 20, 2018</time><h1 class="post__title"><a href="/2018/MathGame/">数学游戏</a></h1><div class="post__main echo"><h1 id="洗牌">洗牌</h1>
 <p>洗牌是这样一个过程： 先把一堆牌从正中间分成两堆，前一半是第一堆，后一半是第二堆。然后以第二堆的第一张，第一堆的第一张，第二堆的第二张，第一堆的第二张… …这样的顺序重排。52张牌洗牌几次可以回到最初的顺序？<br>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">a=<span class="string">"abcdefghijklmnopqrstuvwxyz"</span></span><br><span class="line">b=a+a.upper()</span><br><span class="line">c=b</span><br><span class="line">cnt=<span class="number">0</span></span><br><span class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</span><br><span class="line">	c=<span class="string">""</span>.join([i+j <span class="keyword">for</span> i,j <span class="keyword">in</span> zip(C[:<span class="number">26</span>],c[<span class="number">26</span>:])])</span><br><span class="line">	cnt+=<span class="number">1</span></span><br><span class="line">	<span class="keyword">if</span>(c==b):</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">print(cnt)</span><br></pre></td></tr></table></figure></p>
 <h1 id="异或的期望">异或的期望</h1>
@@ -52,6 +52,100 @@ such as [1, 1, 1, 1, 51, 51, 49, 49, 49, 36, 37]<br>
 只需要判断每一位上是否有1即可<br>
 譬如在此题目中把2015(11111011111)换成1887(11101011111)<br>
 最终答案就变成了1919/2=959.5 (快拿去坑害他人吧233333)</p>
+<h1 id="猜硬币">猜硬币</h1>
+<blockquote>
+<p>孙膑庞涓张仪都是鬼谷子的徒弟.一天鬼谷子出了这道题目: 鬼谷子抛一枚均匀的硬币三次，分别把三次的结果写在三个人额头上.每个人都可以看到别人头上的字但看不到自己头上的字.现在三个人同时猜自己头上的字.可以猜正，反，或者跳过.如果至少有一人猜对自己的字且无人猜错(猜跳过既不算对也不算错)，则集体获胜.如果三人都会采取最佳策略，且这一点本身也成为共识，那么获胜的概率是多少?</p>
+</blockquote>
+<p><strong>策略: 仅在看到另两人额头上字相同时, 猜与其相反的结果, 否则跳过.</strong></p>
+<p>这种策略获胜的概率是75%</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">真实情况</th>
+<th style="text-align: center;">孙膑</th>
+<th style="text-align: center;">庞涓</th>
+<th style="text-align: center;">张仪</th>
+<th style="text-align: center;">结果</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">000</td>
+<td style="text-align: center;">猜错</td>
+<td style="text-align: center;">猜错</td>
+<td style="text-align: center;">猜错</td>
+<td style="text-align: center;">失败</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">001</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">猜对</td>
+<td style="text-align: center;">获胜</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">010</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">猜对</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">获胜</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">011</td>
+<td style="text-align: center;">猜对</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">获胜</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">100</td>
+<td style="text-align: center;">猜对</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">获胜</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">101</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">猜对</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">获胜</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">110</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">猜对</td>
+<td style="text-align: center;">获胜</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">111</td>
+<td style="text-align: center;">猜错</td>
+<td style="text-align: center;">猜错</td>
+<td style="text-align: center;">猜错</td>
+<td style="text-align: center;">失败</td>
+</tr>
+</tbody>
+</table>
+<p>可以看到每个人都有两次猜对两次猜错, 猜对猜错的总数都是6次<br>
+此种策略把猜错的可能性尽可能的集中到了两种具体的情况中去, 岂不美哉</p>
+<h1 id="构造递推">构造递推</h1>
+<blockquote>
+<p>一个数只用 1,2,3,4这四种数字组成，而且相近的两位数永远相差1，比如1234321, 1212121等。 这样的n位数有多少个？</p>
+</blockquote>
+<p>不妨把每一位上的数字分成两组, {1,4}和{2,3}<br>
+前一位是 {1,4}的情况下, 当前位可以是 {2,3}<br>
+前一位是 {2,3}的情况下, 当前位可以是 {1,2,3,4} = {1,4} + {2,3}<br>
+自左向右数第n位为{2,3}的数字的个数计为<span class="math inline">\(A_{n}\)</span>, 为{1,4}的个数计为<span class="math inline">\(B_{n}\)</span><br>
+易知$A_{1}=B_{1}=2 $<br>
+我们所求的个数记作$C_{n}=A_{n}+B_{n} $<br>
+由之前的叙述可得递推关系:<br>
+$A_{n+1}=A_{n}+B_{n} $<br>
+$B_{n+1}=A_{n} $<br>
+故可以消去数列<span class="math inline">\(B_{n}\)</span>有:<br>
+$ A_{0}=B_{1}=2$<br>
+$C_{n}=A_{n+1}=A_{n}+A_{n-1} $</p>
+<p>而后即是求解斐波那契数列了, 方法很多, 就不写了, 我比较喜欢矩阵快速幂的方法, 不涉及浮点数运算, 真的优雅</p>
 </div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/数学/">数学</a></li></ul></footer></article><!--include plugins/reward.pug--><!--include plugins/livere.pug--></main><footer class="foot"><div class="foot-copy">&copy; 2018 WeiSch<!--mathjax config similar to math.stackexchange--><script type="text/x-mathjax-config">MathJax.Hub.Config({
   tex2jax: {
     inlineMath: [ ['$','$'], ["\\(","\\)"] ],
