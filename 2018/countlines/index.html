@@ -5,6 +5,10 @@
 <p style="font-size:em;text-align:center">
 “我要向锤雷世界通话”
 </p>
+<blockquote>
+<p>由于几何不易说清, 又没有制图的工具<br>
+这里仅仅给出一个思路的框架</p>
+</blockquote>
 <h2 id="雪地工程-version-1"><a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cube-%E9%9B%AA%E5%9C%B0%E5%B7%A5%E7%A8%8B(%E5%A4%B1%E8%B4%A5).py" target="_blank" rel="noopener">雪地工程 ( Version 1 )</a></h2>
 <p>寒假的时候试着写了一下, 期望以python的集合来搞定这个问题, 于是有了代码的第一个版本</p>
 <p>于我来说问题的瓶颈在于直线查重是困难的, 需要一种方式把每一个直线唯一的标示出来以供查重, 我的想法是这个直线一定会在最外层的六个平面中的两个或者更多平面上有交点, 不妨以这些交点来唯一的标示每一个直线,(比较像三体里的雪地工程) 即每个直线由一个六个交点坐标的六元组来表示</p>
@@ -161,6 +165,8 @@ ABC只用算其中一类即可, 结果乘3再加上D的结果就可以了</p>
 <p>在循环中提取公因式, 显著减少乘法的运行次数<br>
 <strong>n=400时耗时约6秒</strong></p>
 <h2 id="version-xplusplusplus"><a href="https://github.com/SilentSpiral/Count-Lines-In-a-Cube/blob/master/cubeXplusplusplus.py" target="_blank" rel="noopener">version Xplusplusplus</a></h2>
+<p>原本想把这个算法迁到cpp的,结果写出来了一个怎么改也改不对的bug, 在不断的思考debug的过程中, 一不小心灵光乍现想到了这个优化思路<br>
+<strong>可是cpp的那个bug至今没找出来</strong></p>
 <p>若r=1, 则必有gcd(r,z)=1<br>
 这里不必对于每个z都调用gcd<br>
 在r=1的时候cnt的增量可由等差数列求和得到<br>
