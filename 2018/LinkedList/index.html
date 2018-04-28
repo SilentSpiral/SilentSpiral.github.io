@@ -5,7 +5,9 @@
 </li>
 <li>寻找链表成环位置<br>
 </li>
-<li>判断链表是否<del>交尾</del>共尾</li>
+<li>判断链表是否<del>交尾</del>共尾<br>
+</li>
+<li>链表实现二分查找</li>
 </ol>
 </blockquote>
 <hr>
@@ -68,6 +70,17 @@ t≡-l (mod k)<br>
 <h2 id="q3判断链表是否交尾共尾">Q3:判断链表是否<del>交尾</del>共尾</h2>
 <p>其实分别遍历到最后一个节点就可以了, 但还有一个有趣的思路:<br>
 将链表1的尾节点指向链表2的首节点, 再从链表2开始用快慢指针遍历判断是否成环</p>
+<hr>
+<h2 id="q4链表实现二分查找">Q4:链表实现二分查找</h2>
+<p><a href="https://www.cnblogs.com/George1994/p/7635731.html" target="_blank" rel="noopener">跳跃表</a>了解一下</p>
+<p>它允许快速查询一个有序连续元素的数据链表，它的效率可以做到和二分相同，都是O(logn)的平均时间复杂度，其空间复杂度为O(n)<br>
+具体来说,其占用空间不会超过2n<br>
+<span class="math inline">\(n+\frac{n}{2}+\frac{n}{4}+\frac{n}{8}+...=\cfrac{n(1-(1/2)^n)}{1-1/2}≤2n​\)</span></p>
+<blockquote>
+<p>跳跃列表是在很多应用中有可能替代平衡树而作为实现方法的一种数据结构。<br>
+跳跃列表的算法有同平衡树一样的渐进的预期时间边界，并且更简单、更快速和使用更少的空间。—-by 发明者<br>
+<strong>像是redis中有序集合就使用到了跳跃表。</strong> (面试官的微笑)</p>
+</blockquote>
 </div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/数论/">数论</a></li><li class="post__tag__item"><a class="post__tag__link" href="/tags/算法/">算法</a></li></ul></footer></article><!--include plugins/reward.pug--><!--include plugins/livere.pug--></main><footer class="foot"><div class="foot-copy">&copy; 2018 WeiSch<!--mathjax config similar to math.stackexchange--><script type="text/x-mathjax-config">MathJax.Hub.Config({
   tex2jax: {
     inlineMath: [ ['$','$'], ["\\(","\\)"] ],
