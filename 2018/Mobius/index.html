@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/img/favicon.ico"><title>莫比乌斯反演 - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-05-06T10:55:55.000Z">May 6, 2018</time><h1 class="post__title"><a href="/2018/Mobius/">莫比乌斯反演</a></h1><div class="post__main echo"><h1 id="q1-可见点">Q1 <a href="http://acm.whu.edu.cn/weblearn/problem/420" target="_blank" rel="noopener">可见点</a></h1>
+<blockquote>
+<p>平面上有m*n个整点，他们的坐标(x, y)满足1&lt;=x&lt;=m, 1&lt;=y&lt;=n, x,y都是整数。求从原点能看到的点的数量(如果某点与原点的连线上没有其他点，则该点能被原点看到)。</p>
+</blockquote>
+<p><span class="math display">\[
+\sum_{i=1}^{m}\sum_{j=1}^{n}{[gcd(i,j)==1]}
+\]</span></p>
+<h1 id="q2-能量收集">Q2 <a href="https://blog.csdn.net/rlt1296/article/details/70162989" target="_blank" rel="noopener">能量收集</a></h1>
+<blockquote>
+<p>栋栋有一块长方形的地，他在地上种了一种能量植物，这种植物可以采集太阳光的能量。在这些植物采集能量后，栋栋再使用一个能量汇集机器把这些植物采集到的能量汇集到一起。</p>
+<p>栋栋的植物种得非常整齐，一共有n列，每列有m棵，植物的横竖间距都一样，因此对于每一棵植物，栋栋可以用一个坐标(x, y)来表示，其中x的范围是1至n，表示是在第x列，y的范围是1至m，表示是在第x列的第y棵。</p>
+<p>由于能量汇集机器较大，不便移动，栋栋将它放在了一个角上，坐标正好是(0, 0)。</p>
+<p>能量汇集机器在汇集的过程中有一定的能量损失。如果一棵植物与能量汇集机器连接而成的线段上有k棵植物，则能 量的损失为2k + 1。例如，当能量汇集机器收集坐标为(2, 4)的植物时，由于连接线段上存在一棵植物(1, 2)，会产生3的能量损失。注意，如果一棵植物与能量汇集机器连接的线段上没有植物，则能量损失为1。现在要计算总的能量损失。</p>
+</blockquote>
+<p><strong>这里是翻译成人话后的版本</strong></p>
+<blockquote>
+<p>在平面直角坐标系中，点(x,y)的代价定义为它和原点的连线中经过多少的其他整点个数*2+1。求横坐标在1<sub>n且纵坐标在1</sub>m的所有点的代价和。</p>
+</blockquote>
+<p><span class="math display">\[
+\sum_{i=1}^{m}\sum_{j=1}^{n}{[2gcd(i,j) -1]}
+\]</span></p>
+<h1 id="q3-countlines">Q3 CountLines</h1>
+<blockquote>
+<p>确认过眼神, 还是熟悉的味道<br>
+x,y,z三个坐标都在0到n的范围内(包含边界) 这其中所有的整点每两个点确定一条直线,一共有多少条不同的直线？</p>
+</blockquote>
+<p><span class="math display">\[
+\sum_{x=1}^{m}\sum_{y=1}^{n}\sum_{z=1}^{n}{[gcd(x,y,z)==1]count(x,y,z,N)}
+\]</span> count(x,y,z,N)表示向量(x,y,z)在边长为n的立方体中生成的直线数目,传入的N=n+1<br>
+具体的计算公式可以参考另一篇文章<br>
+<span class="math display">\[
+\begin{align}
+count(x,y,z,N)=&amp;(N-x)(N-y)(N-z)- \\
+&amp;(N-2x)(N-2y)(N-2z)max(N-2max(x,y,z),0)
+\end{align}
+\]</span></p>
+<p>这些题正面刚都会遇到数不尽的gcd(), 给访问过的gcd打个表也许能够以空间换时间吧<br>
+(为什么冥冥中感觉这句有点政治敏感??????)<br>
+但也不是太巧的办法<br>
+如果在一个规则的两重循环中, 形如<span class="math inline">\(\sum_{x=1}^{m}\sum_{y=1}^{n}\)</span>需要调用gcd(), 考虑到周期性<br>
+对于每一个x可以只遍历1≤y≤x的, y&gt;x的部分可以用周期性来解决<br>
+这样一来, 需要调用<span class="math inline">\({m(m-1)}\over{2}\)</span>次gcd(), 并没有带来时间复杂度本质上的减少</p>
+<h2 id="这个时候就需要莫比乌斯大佬来教你做人了">这个时候就需要莫比乌斯大佬来教你做人了</h2>
+<blockquote>
+<p><strong>约数版莫比乌斯反演:</strong><br>
+若: <span class="math inline">\(f(n)=\sum_{d|n}g(d)​\)</span><br>
+则: <span class="math inline">\(g(n)=\sum_{d|n}\mu(d)f(\frac{n}{d}) ​\)</span></p>
+<p><strong>倍数版莫比乌斯反演:</strong><br>
+若: <span class="math inline">\(f(n)=\sum_{n|d}g(d)​\)</span><br>
+则: <span class="math inline">\(g(n)=\sum_{n|d}\mu(\frac{d}{n})f(d) ​\)</span></p>
+</blockquote>
+<p>其中的<span class="math inline">\(\mu(x)\)</span>定义如下:<br>
+<span class="math display">\[
+\mu(x) =
+\begin{cases}
+1, &amp; \text{x=1}  \\
+0, &amp; \text{x有平方因子} \\
+-1, &amp; \text{x有奇数个因子} \\
+1, &amp; \text{x有偶数个因子}
+\end{cases}
+\]</span></p>
+<p>难以理解是因为, 人们总希望以简单解构复杂, 而非由复杂解构简单<br>
+g(d)是难求的, 那么由很多g(d)累加得到的f(n)至少在形式上是复杂的<br>
+而f(n)在计算上却未必比g(d)难</p>
+<p>由复杂解构简单, 需要你有构造的能力</p>
+<p>借由第一个问题解释吧:<br>
+不妨记<span class="math inline">\(g(d)=\sum_{i=1}^{m}\sum_{j=1}^{n}{[gcd(i,j)==d]}\)</span><br>
+根据想用的第二组反演公式, f(x)应该是若干个g(x)的和。<br>
+记N=min(n,m)，也就是gcd的上限<br>
+<span class="math inline">\(f(d)=g(d)+g(2d)+g(3d)+...+g(⌊\frac{N}{d}⌋d)\)</span><br>
+<span class="math inline">\(f(d)=\sum_{i=1}^{m}\sum_{j=1}^{n}{[gcd(i,j)\%d==0]}\)</span><br>
+f(x)指的是满足gcd(i,j)是d的倍数的数对的个数<br>
+显然有<span class="math inline">\(f(x)=⌊\frac{n}{x}⌋⌊\frac{m}{x}⌋\)</span></p>
+<p>此时有<span class="math inline">\(f(d)=\sum_{d|p}g(p)\quad (p&lt;=N)\)</span><br>
+反演得到 <span class="math inline">\(g(d)=\sum_{d|p}\mu( \frac{p}{d} )f(p) ​\)</span></p>
+<p>直观的来看, 这也是一种容斥原理, 哪一项加,哪一项减,哪一项不要,由<span class="math inline">\(\mu(x) ​\)</span> 控制<br>
+至于计算<span class="math inline">\(\mu(x) ​\)</span>, 裆燃不用傻傻的分解质因数, 而是打表</p>
+<hr>
+<p>放上来我第三个问题的解法吧, 剩下两个有空再补上来<br>
+时间复杂度终于降到O(n)了,撒花<br>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time,os</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Mobius</span><span class="params">(M)</span>:</span></span><br><span class="line">    block=[<span class="keyword">True</span>]*M</span><br><span class="line">    mbs=[<span class="number">1</span>]*M    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>,M//<span class="number">2</span>):    </span><br><span class="line">        <span class="keyword">if</span> block[i]==<span class="keyword">True</span>:</span><br><span class="line">            mbs[i]= <span class="number">-1</span></span><br><span class="line">            j=<span class="number">2</span></span><br><span class="line">            <span class="keyword">while</span> j*i &lt;M:</span><br><span class="line">                block[j*i] = <span class="keyword">False</span></span><br><span class="line">                mbs[j*i]*= <span class="number">-1</span></span><br><span class="line">                j+=<span class="number">1</span></span><br><span class="line">            j=<span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> j*i*i &lt;M:</span><br><span class="line">                mbs[j*i*i] = <span class="number">0</span></span><br><span class="line">                j+=<span class="number">1</span></span><br><span class="line">                </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(M//<span class="number">2</span>,M):    </span><br><span class="line">        <span class="keyword">if</span> block[i]==<span class="keyword">True</span>:</span><br><span class="line">            mbs[i]= <span class="number">-1</span></span><br><span class="line">    <span class="keyword">return</span>(mbs)</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(d,n)</span>:</span></span><br><span class="line">    r=(n<span class="number">-1</span>)//d</span><br><span class="line">    q=r&gt;&gt;<span class="number">1</span></span><br><span class="line">    tmp1=(<span class="number">2</span>*n-(r+<span class="number">1</span>)*d)*r&gt;&gt;<span class="number">1</span></span><br><span class="line">    tmp2=q*(n-(q+<span class="number">1</span>)*d)</span><br><span class="line">    <span class="keyword">return</span> (tmp1**<span class="number">2</span>-tmp2**<span class="number">2</span>,tmp1**<span class="number">3</span>-tmp2**<span class="number">3</span>)</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve</span><span class="params">(n)</span>:</span></span><br><span class="line">    pcnt=cnt=<span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n):</span><br><span class="line">        <span class="keyword">if</span> mbs[i]:</span><br><span class="line">            a1,a2=f(i,n)</span><br><span class="line">            pcnt+=mbs[i]*a1</span><br><span class="line">            cnt+=mbs[i]*a2</span><br><span class="line">    print(<span class="string">"ans="</span>,<span class="number">3</span>*n*n+cnt*<span class="number">4</span>+pcnt*<span class="number">6</span>*n) <span class="comment">#(n*2+pcnt*2)</span></span><br><span class="line"></span><br><span class="line">n=<span class="number">400</span></span><br><span class="line">n+=<span class="number">1</span></span><br><span class="line">mbs=Mobius(n)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>,n):</span><br><span class="line">    print(<span class="string">"边长="</span>,i)</span><br><span class="line">    solve(i+<span class="number">1</span>)<span class="comment">#传入n+1</span></span><br></pre></td></tr></table></figure></p>
+</div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/数论/">数论</a></li><li class="post__tag__item"><a class="post__tag__link" href="/tags/算法/">算法</a></li></ul></footer></article><!--include plugins/reward.pug--><!--include plugins/livere.pug--></main><footer class="foot"><div class="foot-copy">&copy; 2018 WeiSch<!--mathjax config similar to math.stackexchange--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true
+  }
+});</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});</script><script async type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script></div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
