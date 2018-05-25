@@ -33,7 +33,7 @@
 尝试了一下, 无论是画图还是用组合数恒等式, 都说不清, 果断弃疗</p>
 </blockquote>
 <p>既然每一位上的异或结果为1的概率都是1/2<br>
-那么答案就理所当然的是(11111111111)<sub>2</sub>/2 = 2047/2 = 1023.5<br>
+那么答案就理所当然的是(11111111111)<sub>2</sub>&gt;/2 = 2047/2 = 1023.5<br>
 　 　 　 　 　 　　……吗?</p>
 <blockquote>
 <p><span class="math inline">\(C_{n}^{1}+C_{n}^{3}+C_{n}^{5}+C_{n}^{7}+...=\cfrac{(1+1)^n-(1-1)^n}{2}=\cfrac{2^n}{2}\)</span><br>
@@ -148,6 +148,49 @@ $B_{n+1}=A_{n} $<br>
 $ A_{0}=B_{1}=2$<br>
 $C_{n}=A_{n+1}=A_{n}+A_{n-1} $</p>
 <p>而后即是求解斐波那契数列了, 方法很多, 就不写了, 我比较喜欢矩阵快速幂的方法, 不涉及浮点数运算, 真的优雅</p>
+<h1 id="鸽巢原理">鸽巢原理</h1>
+<blockquote>
+<p>一个十进制的正整数完全由0和3组成，这个数可不可以是2018的倍数？</p>
+</blockquote>
+<p>分析:<br>
+设此数为K, K|2018<br>
+2018=2*1009 (1009为素数)<br>
+则有K|1009, K|2<br>
+易知K的各位之和为3的倍数, K|3<br>
+只需要找到满足为1009的倍数的k=K/3<br>
+若此数非2的倍数, 乘10即可</p>
+<h2 id="解法1">解法1</h2>
+<blockquote>
+<p>费马小定理<br>
+a为任意整数, p为素数<br>
+$ a^{p}≡a ​$<br>
+特殊的, 若gcd(a,p)=1<br>
+$ a^{p-1}≡1 $</p>
+</blockquote>
+<p>$ 10^{1009-1}≡1  $<br>
+$ 10^{1009-1}-1 ≡0 $<br>
+$ K=$<br>
+K的每一位都是3, 但K并不被2整除, 故10K即为我们要找的数字</p>
+<h2 id="解法2">解法2</h2>
+<p>构造数列1,11,111,1111……<br>
+易知其有无穷项<br>
+但其对1009取模只有有限项, 由鸽巢原理, 必有 a<sub>m</sub> - a<sub>n</sub> ≡ 0 mod 1009<br>
+a<sub>m</sub> - a<sub>n</sub> 必定为前m-n位为1, 后n位为0的形式, 所以一定是2的倍数<br>
+K = 3( a<sub>m</sub> - a<sub>n</sub> ), 即为所求</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">K=<span class="number">3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333330</span></span><br></pre></td></tr></table></figure>
+<p>十进制下只有253位, 相较费马小定理已经小了太多了</p>
+<p>这种数列未考虑项中各位有0的情况, 但如果考虑的话, 又可能造成相减后未必仍符合要求的问题</p>
+<h2 id="解法3">解法3</h2>
+<p>$ k m 1009$</p>
+<p>对于每一个m, 总能找到最小的k<sub>min</sub>,<br>
+而后我们爆破a = int( bin(i)[2:] + str(k<sub>min</sub>) ) , 寻找模1009余m的最小a<br>
+3(a-k<sub>min</sub>)即为所求</p>
+<p>在这里令m = 1<br>
+爆破得a = 100100011111111<br>
+K = 3(a-k<sub>min</sub>) = 300300033333330 = 297621440370*1009</p>
+<p>而100100011111111=int(bin(18686)[2:]+str(k<sub>min</sub>))<br>
+可以爆破一下, 寻找更小的答案 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">18687</span>):</span><br><span class="line">	r=int(bin(i)[<span class="number">2</span>:])*<span class="number">3</span></span><br><span class="line">	m=r%<span class="number">2018</span></span><br><span class="line">	<span class="keyword">if</span> m==<span class="number">0</span>:</span><br><span class="line">		print(r,i)</span><br></pre></td></tr></table></figure></p>
+<p>运行结果显示不存在更小的答案了</p>
 </div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/数学/">数学</a></li></ul></footer></article><!--include plugins/reward.pug--><!--include plugins/livere.pug--></main><footer class="foot"><div class="foot-copy">&copy; 2018 WeiSch<!--mathjax config similar to math.stackexchange--><script type="text/x-mathjax-config">MathJax.Hub.Config({
   tex2jax: {
     inlineMath: [ ['$','$'], ["\\(","\\)"] ],
