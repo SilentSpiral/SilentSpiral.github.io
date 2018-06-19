@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/img/favicon.ico"><title>WHUoj - 归档 - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/archives">catalog</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"> <time class="post__time" datetime="2018-06-19T04:32:16.000Z">June 19, 2018</time><h1 class="post__title"><a href="/2018/WHUoj/">WHUoj - 归档</a></h1><div class="post__main echo"><h1 id="exchange"><a href="http://acm.whu.edu.cn/weblearn/problem/58" target="_blank" rel="noopener">58.Exchange</a></h1>
+<blockquote>
+<p>题意: 你有一张n元钱的支票, 现在你可以把它换成面值1/2/3元的硬币, 问共有多少种换法</p>
+</blockquote>
+<p>譬如n=6的时候, 共有7种换法</p>
+<p>1,1,1,1,1,1<br>
+2,1,1,1,1<br>
+2,2,1,1<br>
+2,2,2<br>
+3,1,1,1<br>
+3,2,1<br>
+3,3</p>
+<h2 id="思路">思路:</h2>
+<p>对于每一个n, 将其组合的方式f(n)分类:<br>
+1. 只有1<br>
+2. 不含3, 必须有2<br>
+3. 至少有一个3</p>
+<p>对于这三种情况</p>
+<p>第一种只含1的有1种<br>
+第二种需要统计最多能够容纳的2的个数所以共$ $种<br>
+第三种至少有一个3所以拿掉这个3之后可以递归到f(n-3)</p>
+<p><span class="math display">\[ f(n)=1+\lfloor \cfrac{n}{2} \rfloor+f(n-3)\\f(0)=1=1+\lfloor \cfrac{0}{2} \rfloor\\f(1)=1=1+\lfloor \cfrac{1}{2} \rfloor\\f(2)=2=1+\lfloor \cfrac{2}{2} \rfloor \]</span></p>
+<p>共需递归<span class="math inline">\(\lfloor \cfrac{n}{3} \rfloor\)</span>次, 共有<span class="math inline">\(\lfloor \cfrac{n}{3} \rfloor+1\)</span>项</p>
+<p><span class="math display">\[
+f(n)=\lfloor \cfrac{n}{3} \rfloor+1+\sum_{i=0}^{\lfloor n/3 \rfloor}\lfloor {\cfrac{n\ mod\ 3+3i}{2} \rfloor}\\
+f(n)=\lfloor \cfrac{n}{3} \rfloor+1+\sum_{i=0}^{\lfloor n/3 \rfloor}\lfloor {\cfrac{n-3i}{2} \rfloor}
+\]</span></p>
+<p>两种写法都对, 方向是反着的, 比较麻烦的是取整问题, 否则就可以按照等差数列来求和了<br>
+考虑到<span class="math inline">\((\lfloor \frac{n}{2} \rfloor+\lfloor \frac{n-3}{2} \rfloor)=(\lfloor \frac{n-6}{2} \rfloor+\lfloor \frac{n-9}{2} \rfloor)+6\)</span><br>
+采用了并项的方式, 对新的等差数列进行求和, 并单独讨论原数列项数为奇数的情况</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="number">1</span>):</span><br><span class="line">	n=int(input())</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> n:</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">	p=(n+<span class="number">3</span>)//<span class="number">3</span>  <span class="comment">#项数</span></span><br><span class="line">	m=p&gt;&gt;<span class="number">1</span>      <span class="comment">#并项</span></span><br><span class="line">	ans=(((n&gt;&gt;<span class="number">1</span>)+((n<span class="number">-3</span>)&gt;&gt;<span class="number">1</span>)+((n+<span class="number">6</span>-m*<span class="number">6</span>)&gt;&gt;<span class="number">1</span>)+((n+<span class="number">3</span>-m*<span class="number">6</span>)&gt;&gt;<span class="number">1</span>))*m&gt;&gt;<span class="number">1</span>)+p</span><br><span class="line">	<span class="keyword">if</span> p&amp;<span class="number">1</span>:     <span class="comment">#未合并项</span></span><br><span class="line">		ans+=(n%<span class="number">3</span>)//<span class="number">2</span></span><br><span class="line">	print(ans)</span><br></pre></td></tr></table></figure>
+<h1 id="a-simple-math-problem"><a href="http://acm.whu.edu.cn/weblearn/problem/470" target="_blank" rel="noopener">470. A Simple Math Problem</a></h1>
+<blockquote>
+<p>题意: 对于给定的输入n, 将1~n连起来写成一个整数, 求这个整数模11的值<br>
+tips:<br>
+1 ≡ 1 ( mod 11)<br>
+1234567891011121314151617181920 ≡ 5 ( mod 11)<br>
+123456789101112131415161718192021 ≡ 4 ( mod 11)</p>
+</blockquote>
+<p>易知</p>
+<p><span class="math display">\[10^{2i}≡1\  \ (\ mod\ 11) \\ 10^{2i+1}≡10≡-1\  \ (\ mod\ 11)\]</span></p>
+<p>记所求为f(n)</p>
+<p><span class="math inline">\(f(n)≡f(n-1)10^{\lfloor lgn \rfloor}+n\  \ (\ mod\ 11)\)</span></p>
+<p>需要根据<span class="math inline">\(\lfloor lgn \rfloor\)</span>对f(n)进行分段求解</p>
+<p>一个思路是把每一段开始时的数保存起来作为基础偏移, 这样只需要在一个段内进行求解就可以了<br>
+base=[0,5,4,3,2,1,0,10,9,8,7,6,5,4,3,2,1,0,10]<br>
+这个偏移笔算都可以… 算错了会误差扩散<br>
+基础偏移并不能直接用,<br>
+具体来说如果段内位置与<span class="math inline">\(\lfloor lgn \rfloor\)</span>皆为奇数, 那么基础偏移要取相反数</p>
+<p>当<span class="math inline">\(\lfloor lgn \rfloor\)</span>为奇数时, 段内为等差数列, 直接求和即可<br>
+当<span class="math inline">\(\lfloor lgn \rfloor\)</span>为偶数时, 段内各项绝对值为等差数列, 且正负项交错, 需要并项求和</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">base=[<span class="number">0</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">10</span>,<span class="number">9</span>,<span class="number">8</span>,<span class="number">7</span>,<span class="number">6</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">10</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve</span><span class="params">()</span>:</span></span><br><span class="line">	n=input()</span><br><span class="line">	n=int(n)</span><br><span class="line">	s=len(str(n))</span><br><span class="line">	Bs=<span class="number">10</span>**(s<span class="number">-1</span>)   <span class="comment">#段首项</span></span><br><span class="line">	k=n+<span class="number">1</span>-Bs       <span class="comment">#段内位置</span></span><br><span class="line">	ans=base[s<span class="number">-1</span>]  <span class="comment">#取基础偏移</span></span><br><span class="line">	<span class="keyword">if</span> s&amp;<span class="number">1</span>:</span><br><span class="line">		<span class="keyword">if</span> k&amp;<span class="number">1</span>:</span><br><span class="line">			<span class="comment">#ans=pow(-1,s%2)*ans+(Bs)%11+(k&gt;&gt;1)  #偏移取相反数,段首项(未合并项),并项和</span></span><br><span class="line">			ans=-ans+<span class="number">1</span>+(k&gt;&gt;<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			ans+=(k&gt;&gt;<span class="number">1</span>)          <span class="comment">#并项和</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="comment">#ans+=(k*(n+Bs))//2      #等差数列求和</span></span><br><span class="line">		ans+=(((k%<span class="number">22</span>)*((n+Bs)%<span class="number">22</span>))//<span class="number">2</span>)    </span><br><span class="line">	ans%=<span class="number">11</span></span><br><span class="line">	print(ans)</span><br><span class="line">	<span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line">solve()</span><br></pre></td></tr></table></figure>
+<p>不知道为什么网上搜出来的都是矩阵快速幂…</p>
+<h1 id="k尾相等数"><a href="http://acm.whu.edu.cn/weblearn/problem/313" target="_blank" rel="noopener">313. K尾相等数</a></h1>
+<blockquote>
+<p>从键盘输入一个自然数K(K&gt;1),若存在自然数M和N(M&gt;N),使得K<sup>M</sup>和K<sup>N</sup>均大于或等于1000、且它们的末尾三位数相等，则称K<sup>M</sup>和K<sup>N</sup>是一对<strong>K尾相等数</strong>。请编写程序，输出M+N值最小的K尾相等数。</p>
+</blockquote>
+<p>a<sup>x</sup> mod 1000, 又是个离散对数问题<br>
+根据在原根那里学到的性质<br>
+a的周期, 应当是<span class="math inline">\(φ {(1000)}=400\)</span>的因子</p>
+<p>A=[1,2,4,5,8,10,16,20,25,32,40,50,100,125,200,250,400]<br>
+但1000又没有原根, 所以至少400是取不到的</p>
+<blockquote>
+<p>模m有原根的<strong>充要条件</strong>:<br>
+m = 1, 2, 4, p, 2p, p<sup>n</sup><br>
+其中p是奇质数，n是任意正整数</p>
+</blockquote>
+<h2 id="编程寻找所有周期">编程寻找所有周期</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">A=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">10</span>,<span class="number">16</span>,<span class="number">20</span>,<span class="number">25</span>,<span class="number">32</span>,<span class="number">40</span>,<span class="number">50</span>,<span class="number">100</span>,<span class="number">125</span>,<span class="number">200</span>,<span class="number">250</span>,<span class="number">400</span>]</span><br><span class="line">B=set()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>,<span class="number">1000</span>):</span><br><span class="line">	<span class="keyword">for</span> d <span class="keyword">in</span> A:</span><br><span class="line">		<span class="keyword">if</span> pow(i,<span class="number">500</span>+d,<span class="number">1000</span>)==pow(i,<span class="number">500</span>+<span class="number">2</span>*d,<span class="number">1000</span>):</span><br><span class="line">			B.add(d)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">print(B)</span><br></pre></td></tr></table></figure>
+<p>运行结果{1, 2, 100, 5, 4, 10, 50, 20, 25}</p>
+<p>因为需要从头遍历寻找最小周期, 故手动排序得 [1, 2, 4, 5, 10, 20, 25, 50, 100]</p>
+<p>同时发现有些数并不直接进入循环, 譬如2的周期为100<br>
+002和004都不在周期里<br>
+002-&gt;004-&gt;008…<br>
+752-&gt;504-&gt;008,而后才有周期<br>
+实际上周期从008开始<br>
+所以判别条件pow(i,100+d,1000)==pow(i,100+2*d,1000)<br>
+其实为了确保万无一失应该加1000的, 但是反正提交通过了就没管他</p>
+<p>后来编程发现3次方后大于1000的所有数都能进入循环<br>
+所以其实只需要让2的幂大于1000即可<br>
+<code>if pow(i,10+d,1000)==pow(i,10+2*d,1000):</code><br>
+最终代码里懒得改了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">A=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">25</span>, <span class="number">50</span>, <span class="number">100</span>]</span><br><span class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</span><br><span class="line">	r=<span class="number">1000</span></span><br><span class="line">	i=int(input())</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> i:</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">	<span class="keyword">for</span> d <span class="keyword">in</span> A:</span><br><span class="line">		<span class="keyword">if</span> pow(i,<span class="number">100</span>+d,<span class="number">1000</span>)==pow(i,<span class="number">100</span>+<span class="number">2</span>*d,<span class="number">1000</span>):</span><br><span class="line">			<span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">				<span class="keyword">if</span> i**j&gt;=<span class="number">1000</span> <span class="keyword">and</span> pow(i,j,<span class="number">1000</span>)==pow(i,j+d,<span class="number">1000</span>):</span><br><span class="line">					print(<span class="number">2</span>*j+d)</span><br><span class="line">					<span class="keyword">break</span></span><br><span class="line">			<span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+</div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/算法/">算法</a></li></ul></footer></article><!--include plugins/reward.pug--><!--include plugins/livere.pug--></main><footer class="foot"><div class="foot-copy">&copy; 2018 WeiSch<!--mathjax config similar to math.stackexchange--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true
+  }
+});</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});</script><script async type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script></div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
