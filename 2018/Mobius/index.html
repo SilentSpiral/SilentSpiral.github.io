@@ -25,15 +25,15 @@
 x,y,z三个坐标都在0到n的范围内(包含边界) 这其中所有的整点每两个点确定一条直线,一共有多少条不同的直线？</p>
 </blockquote>
 <p><span class="math display">\[
-\sum_{x=1}^{m}\sum_{y=1}^{n}\sum_{z=1}^{n}{[gcd(x,y,z)==1]count(x,y,z,N)}
+\sum_{x=1}^{n-1}\sum_{y=1}^{n-1}\sum_{z=1}^{n-1}{[gcd(x,y,z)==1]count(x,y,z,n)}
 \]</span> count(x,y,z,N)表示向量(x,y,z)在边长为n的立方体中生成的直线数目,传入的N=n+1<br>
 具体的计算公式可以参考另一篇文章<br>
 <span class="math display">\[
 f(x,y,z,N)=(N-x)(N-y)(N-z) \\
 count(x,y,z,N)=
 \begin{cases}
-f(x,y,z,N)  &amp; \text{N≥2max(x,y,z)}  \\
-f(x,y,z,N)-f(2x,2y,2z,N) &amp; \text{N&lt;2max(x,y,z)} \\
+f(x,y,z,N)  &amp; \text{N≤2max(x,y,z)}  \\
+f(x,y,z,N)-f(2x,2y,2z,N) &amp; \text{N&gt;2max(x,y,z)} \\
 \end{cases}
 \]</span></p>
 <p>这些题正面刚都会遇到数不尽的gcd(), 给访问过的gcd打个表也许能够以空间换时间吧<br>
