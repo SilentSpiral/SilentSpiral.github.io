@@ -17,13 +17,15 @@
 随机选取与φ(n)互质的加密公钥 e (为方便快速幂算法, 通常取e=65537)<br>
 用广义欧几里得算法计算 d = e<sup>-1</sup> (mod φ(n))<br>
 公开公钥&lt;e,n&gt;<br>
-保存私钥&lt;d,n&gt; (亦需要对关键参数&lt;p,q,φ(n)&gt;保密) 记明文为M, 密文为C<br>
+保存私钥&lt;d,n&gt; (亦需要对关键参数&lt;p,q,φ(n)&gt;保密)<br>
+记明文为M, 密文为C<br>
 加密: C ≡ M<sup>e</sup> (mod n)<br>
 解密: M ≡ C<sup>d</sup> (mod n)</p>
 </blockquote>
 <h3 id="证明">证明</h3>
 <blockquote>
-<p>ed ≡ 1 (mod φ(n)) =&gt; ed = 1+k*φ(n) M ≡ C<sup>d</sup> ≡ M<sup>ed</sup> ≡ M<sup>1+k*φ(n)</sup> ≡ M*M<sup>k*φ(n)</sup> ≡ M*(M<sup>φ(n)</sup>)<sup>k</sup> ≡ M (mod n)</p>
+<p>ed ≡ 1 (mod φ(n)) =&gt; ed = 1+k*φ(n)<br>
+M ≡ C<sup>d</sup> ≡ M<sup>ed</sup> ≡ M<sup>1+k*φ(n)</sup> ≡ M*M<sup>k*φ(n)</sup> ≡ M*(M<sup>φ(n)</sup>)<sup>k</sup> ≡ M (mod n)</p>
 </blockquote>
 <hr>
 <h2 id="rabin">Rabin:</h2>
@@ -34,7 +36,8 @@
 d<sup>(p-1)/2</sup> ≡ 1 (mod p) (欧拉判别准则)<br>
 特殊的, 若p ≡ 3 (mod 4)<br>
 则可进一步解出来 x ≡ d<sup>(p+1)/4</sup>(mod p)<br>
-　　事实上这是一个极为精妙的构造解: 　　d<sup>(p-1)/2</sup> ≡ 1 (mod p) ,两边同乘d得:<br>
+　　事实上这是一个极为精妙的构造解:<br>
+　　d<sup>(p-1)/2</sup> ≡ 1 (mod p) ,两边同乘d得:<br>
 　　d<sup>(p+1)/2</sup>≡ d (mod p)<br>
 　　因为 p ≡ 3 (mod 4), 故(p+1)/4是一个整数<br>
 　　　　(d<sup>(p+1)/4</sup>)<sup>2</sup> ≡ d (mod p)<br>
@@ -66,7 +69,9 @@ d<sup>(p-1)/2</sup> ≡ 1 (mod p) (欧拉判别准则)<br>
 可由<strong>中国剩余定理</strong>解出4个解, 则明文为其中的一个, 需附加语义(或校验码)进行判断</p>
 </blockquote>
 <hr>
-<p>可以看出, RSA与Rabin的保密性都取决于大整数分解问题 在量子计算时代, 大整数分解问题可由<strong>量子shor算法</strong>在多项式时间内解决 即便对于传统大规模集成电路计算机来说, 大整数分解问题也是远比离散对数弱得多的, 更比不上建立在椭圆曲线域上的离散对数问题, 后者甚至不存在亚指数时间复杂度的算法</p>
+<p>可以看出, RSA与Rabin的保密性都取决于大整数分解问题<br>
+在量子计算时代, 大整数分解问题可由<strong>量子shor算法</strong>在多项式时间内解决<br>
+即便对于传统大规模集成电路计算机来说, 大整数分解问题也是远比离散对数弱得多的, 更比不上建立在椭圆曲线域上的离散对数问题, 后者甚至不存在亚指数时间复杂度的算法</p>
 <p>但仅仅从数学的角度来看, 建立在大整数分解难问题的这两个算法, 无疑又比类Elgamal系列算法优雅的多, 或许是由于RSA和Rabin明文密文实质性的参与了加解密运算的缘故吧</p>
 <blockquote>
 <ul>
