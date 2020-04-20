@@ -46,10 +46,10 @@ f(x,y,z,N)-f(2x,2y,2z,N) &amp; \text{N&gt;2max(x,y,z)} \\
 <blockquote>
 <p><strong>约数版莫比乌斯反演:</strong><br>
 若: <span class="math inline">\(f(n)=\sum_{d|n}g(d)\)</span><br>
-则: $g(n)=_{ab=n}(a)f(b) $</p>
+则: $g(n)=_{ab=n} μ (a)f(b) $</p>
 <p><strong>倍数版莫比乌斯反演:</strong><br>
 若: <span class="math inline">\(f(n)=\sum_{n|d}g(d)\)</span><br>
-则: $g(n)=_{d=kn}(k)f(d) $</p>
+则: $g(n)=_{d=kn} μ (k)f(d) $</p>
 </blockquote>
 <p>其中的<span class="math inline">\(\mu(x)\)</span>定义如下:<br>
 <span class="math display">\[
@@ -74,9 +74,9 @@ g(d)是难求的, 那么由很多g(d)累加得到的f(n)至少在形式上是复
 f(x)指的是满足gcd(i,j)是d的倍数的数对的个数<br>
 显然有<span class="math inline">\(f(x)=⌊\frac{n}{x}⌋⌊\frac{m}{x}⌋\)</span></p>
 <p>此时有<span class="math inline">\(f(d)=\sum_{d|p}g(p)\quad (p&lt;=N)\)</span><br>
-反演得到 $g(d)=_{p=kd&lt;N}( k)f(p) $</p>
-<p>直观的来看, 这也是一种容斥原理, 哪一项加,哪一项减,哪一项不要,由$(x) $ 控制<br>
-至于计算$(x) $, 裆燃不用傻傻的分解质因数, 而是打表(据说这叫线性筛)</p>
+反演得到 $g(d)=_{p=kd&lt;N} μ ( k)f(p) $</p>
+<p>直观的来看, 这也是一种容斥原理, 哪一项加,哪一项减,哪一项不要,由$ μ (x) $ 控制<br>
+至于计算$ μ (x) $, 裆燃不用傻傻的分解质因数, 而是打表(据说这叫线性筛)</p>
 <hr>
 <p>放上来我第三个问题的解法吧, 剩下两个有空再补上来<br>
 时间复杂度终于降到O(n)了,撒花</p>
