@@ -1,0 +1,141 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/img/favicon.ico"><title>BitRing &amp; EulerCircuit - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/tags">标签</a></li><li class="head-nav__item"><a class="head-nav__link" href="/archives">目录</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"><time class="post__time" datetime="2019-12-10T09:19:55.000Z">2019 - 12 - 10 17:19:55</time><h1 class="post__title"><a href="/2019/BitRing/">BitRing &amp; EulerCircuit</a></h1><div class="post__main echo"><h1 id="题目">题目</h1>
+<blockquote>
+<p>一个环上有 2<sup>n</sup> 个位置，把他们填上0或1，使得每连续n位都能组成二进制下不互相重复的数，求出一个序列即可。</p>
+</blockquote>
+<h2 id="思路">思路</h2>
+<p>譬如n=3的时候环上是8个位置<br>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">00101110  </span><br><span class="line">001 = 1  </span><br><span class="line"> 010 = 2  </span><br><span class="line">  101 = 5  </span><br><span class="line">   011 = 3  </span><br><span class="line">    111 = 7  </span><br><span class="line">     110 = 6  </span><br><span class="line">      100 = 4  </span><br><span class="line">       000 = 0</span><br></pre></td></tr></table></figure></p>
+<p>现在需要把 0 ~ 2<sup>n</sup>-1 这些数字串起来<br>
+考察每个比特串的 <strong>前n-1位</strong> 和 <strong>后n-1位</strong></p>
+<p>以n=3为例</p>
+<p>所有可能出现的组合</p>
+<table>
+<thead>
+<tr class="header">
+<th>组合</th>
+<th style="text-align: left;">接续关系</th>
+<th>接续关系（Dec）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>000</td>
+<td style="text-align: left;">00 –&gt; 00</td>
+<td>0 –&gt; 0</td>
+</tr>
+<tr class="even">
+<td>001</td>
+<td style="text-align: left;">00 –&gt; 01</td>
+<td>0 –&gt; 1</td>
+</tr>
+<tr class="odd">
+<td>010</td>
+<td style="text-align: left;">01 –&gt; 10</td>
+<td>1 –&gt; 2</td>
+</tr>
+<tr class="even">
+<td>011</td>
+<td style="text-align: left;">01 –&gt; 11</td>
+<td>1 –&gt; 3</td>
+</tr>
+<tr class="odd">
+<td>100</td>
+<td style="text-align: left;">10 –&gt; 00</td>
+<td>2 –&gt; 0</td>
+</tr>
+<tr class="even">
+<td>101</td>
+<td style="text-align: left;">10 –&gt; 01</td>
+<td>2 –&gt; 1</td>
+</tr>
+<tr class="odd">
+<td>110</td>
+<td style="text-align: left;">11 –&gt; 10</td>
+<td>3 –&gt; 2</td>
+</tr>
+<tr class="even">
+<td>111</td>
+<td style="text-align: left;">11 –&gt; 11</td>
+<td>3 –&gt; 3</td>
+</tr>
+</tbody>
+</table>
+<p>考虑右侧的组合关系，这是个有向图，每一条边代表连续n位，也就是在上面那个表里的一个箭头关系<br>
+（2指向0就是10拼上00，得100=4）<br>
+你需要做的是找出欧拉回路，即把它一笔画下来</p>
+<p>那么矛盾就集中在找欧拉回路上了<br>
+0 –&gt; 0<br>
+0 –&gt; 1<br>
+1 –&gt; 2<br>
+1 –&gt; 3<br>
+2 –&gt; 0<br>
+2 –&gt; 1<br>
+3 –&gt; 2<br>
+3 –&gt; 3</p>
+<p>经整理，可得 <strong>邻接表</strong> ：</p>
+<blockquote>
+<p>0 –&gt; 0，1<br>
+1 –&gt; 2，3<br>
+2 –&gt; 0，1<br>
+3 –&gt; 2，3</p>
+</blockquote>
+<h2 id="question-1">Question 1：</h2>
+<p>根据这个表可否推广n=4，5，6…时的邻接表？<br>
+（当然可以）</p>
+<h2 id="question-2">Question 2：</h2>
+<p>这个图是否一定存在欧拉回路？<br>
+（必须的）<br>
+根据：每个节点都有两个入度两个出度，而且是联通图。</p>
+<h1 id="欧拉回路">欧拉回路</h1>
+<p>欧拉回路怎么求<br>
+1、从任意一个点起，在图中寻找任意一个（不需要遍历全图的）回路，最终必定以回到这个点作为结束。<br>
+2、从图中拿掉一个回路，剩下的必定是若干个回路，且和已有回路存在公共点<br>
+3、前一条性质其实是在做减法。所以我们可以反过来用加法的形式，从一个简单回路开始不断在公共点处添加回路以拼接，直到最终生成欧拉回路。</p>
+<h2 id="算法">算法</h2>
+<blockquote>
+<p>求欧拉回路的算法：<br>
+1、初始回路[0，0]，并手动修改生成了此回路后的邻接表<br>
+2、cnt=2^n-2<br>
+循环（当cnt不为0）：<br>
+cnt，L，index=AddSubRing(cnt，L，index)</p>
+</blockquote>
+<h2 id="伪代码">伪代码</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">AddSubRing(cnt，L，index)：  </span><br><span class="line">    index是下标，用它扫描L  </span><br><span class="line">    若扫到邻接表未全访问过的节点则更新index并从这个节点X开始生成子回路  </span><br><span class="line">   从X生成回路：  </span><br><span class="line">   while(节点邻接表未被全访问过)  </span><br><span class="line">        if 第一个邻节点未被访问：  </span><br><span class="line">              添加到回路(第一个)  </span><br><span class="line">              修改visited（）  </span><br><span class="line">              往后拨  </span><br><span class="line">        else：  </span><br><span class="line">              添加到回路(第二个)  </span><br><span class="line">              修改visited（）  </span><br><span class="line">              往后拨  </span><br><span class="line">         cnt-=1  </span><br><span class="line">     从公共点(index)合并两个回路   </span><br><span class="line">    返回 cnt，L，index</span><br></pre></td></tr></table></figure>
+<h2 id="存储结构">存储结构</h2>
+<p>邻接表：<br>
+$ (x mod (M&gt;&gt;1)) $<br>
+$ (x mod (M&gt;&gt;1))+1 $</p>
+<p>欧拉回路：<br>
+链表（C语言） List（Python）</p>
+<h1 id="代码">代码</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">n=int(input())</span><br><span class="line">M=(<span class="number">1</span>&lt;&lt;(n<span class="number">-1</span>))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edge</span><span class="params">(x)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> (x%(M&gt;&gt;<span class="number">1</span>))&lt;&lt;<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">findSubRing</span><span class="params">(L,index,cnt)</span>:</span></span><br><span class="line">	<span class="keyword">while</span> index&lt;=len(L):</span><br><span class="line">		index+=<span class="number">1</span></span><br><span class="line">		<span class="keyword">if</span> arcs[L[index]]!=<span class="number">2</span>:</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">	tmp=L[index]</span><br><span class="line">	nList=[tmp,]</span><br><span class="line">	<span class="keyword">while</span> arcs[tmp]!=<span class="number">2</span>:</span><br><span class="line">		q=tmp</span><br><span class="line">		<span class="keyword">if</span> arcs[tmp]==<span class="number">0</span>:</span><br><span class="line">			tmp=edge(tmp)  <span class="comment">#向后拨</span></span><br><span class="line">			nList.append(tmp)</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			tmp=edge(tmp)+<span class="number">1</span></span><br><span class="line">			nList.append(tmp)</span><br><span class="line">		cnt-=<span class="number">1</span></span><br><span class="line">		arcs[q]+=<span class="number">1</span></span><br><span class="line">	NList=L[:index]+nList+L[index+<span class="number">1</span>:]</span><br><span class="line">	<span class="comment">#print(nList,NList)</span></span><br><span class="line">	<span class="keyword">return</span>(NList,index,cnt)</span><br><span class="line"></span><br><span class="line">arcs=[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(M)]</span><br><span class="line">arcs[<span class="number">0</span>]=<span class="number">1</span>   <span class="comment">#手动初始化第一个回路</span></span><br><span class="line">arcs[M&gt;&gt;<span class="number">1</span>]=<span class="number">1</span></span><br><span class="line">res=[<span class="number">0</span>,<span class="number">0</span>]</span><br><span class="line"><span class="comment">#print([edge(x) for x in range(4)])</span></span><br><span class="line">cnt=<span class="number">2</span>*M<span class="number">-2</span></span><br><span class="line">index=<span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> cnt:</span><br><span class="line">	res,index,cnt=findSubRing(res,index,cnt)</span><br><span class="line">	<span class="comment">#print(res)</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">"\n欧拉回路:\n"</span>,res)</span><br><span class="line">BitsRing=[x&amp;<span class="number">1</span> <span class="keyword">for</span> x <span class="keyword">in</span> res]</span><br><span class="line">print(<span class="string">"\nBitsRing:\n"</span>,<span class="string">""</span>.join([<span class="string">"%d"</span>%i <span class="keyword">for</span> i <span class="keyword">in</span> BitsRing]))</span><br><span class="line">numbers=[res[(i+n<span class="number">-2</span>)%(<span class="number">2</span>*M)]*<span class="number">2</span>+(res[(i+n<span class="number">-1</span>)%(<span class="number">2</span>*M)]&amp;<span class="number">1</span>)    <span class="keyword">for</span> i <span class="keyword">in</span> range(M*<span class="number">2</span>)]</span><br><span class="line">print(<span class="string">"\nnums:\n"</span>,numbers)</span><br></pre></td></tr></table></figure>
+</div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/图论/">图论</a></li><li class="post__tag__item"><a class="post__tag__link" href="/tags/算法/">算法</a></li></ul></footer></article><section class="reward"><a class="btn-reward" href="#">打赏</a><div class="reward-wrapper clearfix"><img src="/img/wechat.png" title="微信"></div></section><div class="comments" id="v-container"><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="/js/Valine.min.js"></script><script>new Valine({
+  av: AV,
+  el: '#v-container',
+  app_id: 'IQzWzzCuitLQe0yLWG4VzRS6-gzGzoHsz',
+  app_key: 'cs2RLiJ2qtHhAcFv0GnEELvz',
+  avatar: 'retro',
+  avatarForce: false,
+  notify: false,
+  verify: false,
+  lang: 'zh-cn',
+  placeholder: '来啊快活啊~',
+  pageSize: 10,
+  visitor: true,
+  highlight: true,
+  emoticon_url: '/img/alu',
+  emoticon_list: ["吐.png","喷血.png","狂汗.png","不说话.png","汗.png","坐等.png","献花.png","不高兴.png","中刀.png","害羞.png","皱眉.png","小眼睛.png","中指.png","尴尬.png","瞅你.png","想一想.png","中枪.png","得意.png","肿包.png","扇耳光.png","亲亲.png","惊喜.png","脸红.png","无所谓.png","便便.png","愤怒.png","蜡烛.png","献黄瓜.png","内伤.png","投降.png","观察.png","看不见.png","击掌.png","抠鼻.png","邪恶.png","看热闹.png","口水.png","抽烟.png","锁眉.png","装大款.png","吐舌.png","无奈.png","长草.png","赞一个.png","呲牙.png","无语.png","阴暗.png","不出所料.png","咽气.png","期待.png","高兴.png","吐血倒地.png","哭泣.png","欢呼.png","黑线.png","喜极而泣.png","喷水.png","深思.png","鼓掌.png","暗地观察.png"],
+});</script></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script></main><footer class="foot"><div class="foot-copy">&copy; 2018 - 2020 WeiSch</div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
