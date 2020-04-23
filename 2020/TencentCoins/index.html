@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="WeiSch"><link rel="alternative" href="/atom.xml" title="SilentSpiral" type="application/atom+xml"><link rel="icon" href="/img/favicon.ico"><title>腾讯笔试-拼凑硬币 - SilentSpiral</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">SilentSpiral</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a class="head-nav__link" href="/tags">标签</a></li><li class="head-nav__item"><a class="head-nav__link" href="/archives">目录</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head"><time class="post__time" datetime="2020-04-23T13:29:26.000Z">2020 - 04 - 23 21:29:26</time><h1 class="post__title"><a href="/2020/TencentCoins/">腾讯笔试-拼凑硬币</a></h1><div class="post__main echo"><h1 id="拼凑硬币"><strong>拼凑硬币</strong></h1>
+<p>腾讯2017年的笔试题目</p>
+<h2 id="描述"><strong>描述</strong>:</h2>
+<blockquote>
+<p>小Q十分富有，拥有非常多的硬币，小Q拥有的硬币是有规律的，对于所有的非负整数K，小Q恰好各有两个面值为2<sup>K</sup>的硬币，所以小Q拥有的硬币就是1,1,2,2,4,4,8,8,…。小Q有一天去商店购买东西需要支付n元钱，小Q想知道有多少种方案从他拥有的硬币中选取一些拼凑起来恰好是n元。</p>
+<p>（如果两种方案某个面值的硬币选取的个数不一样就考虑为不一样的方案）</p>
+</blockquote>
+<h2 id="输入"><strong>输入</strong>：</h2>
+<p>输入包括一个整数 <strong>n</strong> (1 ≤ n ≤ 10<sup>18</sup>)，表示小Q需要支付多少钱。注意n的范围。</p>
+<h2 id="输出"><strong>输出</strong>：</h2>
+<p>输出一个整数，表示小Q可以拼凑出n元钱放的方案数。</p>
+<h1 id="解答"><strong>解答</strong></h1>
+<p>此解答来源于<a href="https://blog.csdn.net/uncle_gy/article/details/77977436" target="_blank" rel="noopener">网络</a>，初看即惊为天人</p>
+<blockquote>
+<p>将硬币分为两份：1，2，4，8，16，…..和1，2，4，8，16….<br>
+组成两个数值为a,b的两个数字，他们的和是a+b=n;<br>
+a在每一份中只可能有一种组合方式（二进制的思想）。<br>
+将a和b使用二进制表示，那么对于n=11，有a=101，b=110这种组合，即a=1+0+4=5,b=0+2+4=6。但是，请注意，对于a和b，在相同位取不同值，只有一种组合方法。<br>
+如111+100和101+110（即交换中间位）本质上都是同一种组合方法，因此对于该类型<strong>可以使用二进制异或进行去重</strong>。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;set&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">WithXor</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt; countset;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=n/<span class="number">2</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> result =i|(n-i);</span><br><span class="line">        <span class="comment">//cout&lt;&lt;i&lt;&lt;" "&lt;&lt;n-i&lt;&lt;" "&lt;&lt;(i^(n-i))&lt;&lt;endl;</span></span><br><span class="line">        countset.insert(result);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> countset.size();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="争鸣"><strong>争鸣</strong></h1>
+<p>而(前)锤雷大佬发表了对此发表了<a href="https://lhy1024.github.io/coin_tencent/" target="_blank" rel="noopener">反对意见</a>, 引述如下：</p>
+<blockquote>
+<p>但是异或,有一个天然性问题,当硬币用两次和用零次是一个效果<br>
+所以参考它的解法,还是将硬币分成两堆,然后统计他用的零次一次和二次,将这个序列作为key插入到set.</p>
+<ol type="1">
+<li>因为5+6等价于6+5所以只需要循环到一半.</li>
+<li>对于2的整数次幂需要特判一发.如果2的整数次幂,n,存在0和n的分法,在算法的循环中,l=0会被跳过.</li>
+</ol>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fakeXor</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="built_in">set</span>&lt;<span class="built_in">string</span>&gt; countset;</span><br><span class="line">    <span class="keyword">int</span> l,r;</span><br><span class="line">    <span class="built_in">string</span> key;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=n/<span class="number">2</span>;i++)&#123;</span><br><span class="line">        l=i,r=n-i,key.clear();</span><br><span class="line">        <span class="keyword">while</span>(l||r)&#123;</span><br><span class="line">            key+=<span class="keyword">char</span>((l&amp;<span class="number">1</span>)+(r&amp;<span class="number">1</span>));</span><br><span class="line">            l&gt;&gt;=<span class="number">1</span>,r&gt;&gt;=<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        countset.insert(key);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> countset.size()+((n<span class="number">-1</span>)&amp;n==<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="思考"><strong>思考</strong></h1>
+<p>对于用异或作为每种方案的标示以去重的原因，原答案未加以解释。<br>
+在我看来这种操作可能是有效的。</p>
+<h2 id="一个简单的思路"><strong>一个简单的思路：</strong></h2>
+<p>反对意见认为在异或后的结果中<strong>硬币用两次和用零次是一个效果</strong><br>
+所以<strong>可能会出现不同方案异或特征的碰撞</strong></p>
+<p>考虑到除了异或值以外，两个二进制数<strong>仍需要满足a+b=n的要求</strong><br>
+假设存在两个发生碰撞的硬币拼凑方案，在某一位上都是0，但一个是2枚，一个是0枚：<br>
+那么<strong>为了保证两个方案的总钱数n相等</strong>，这两个方案必然会有至少一个别的同为0位上产生相反的分歧。</p>
+<p>所以对于<strong>异或值碰撞的两个方案AB</strong>，仅考察异或值为0的位，必然有一部分位A是2枚B是0枚，另一部分位上A是0枚B是2枚，且这两部分各自组成的二进制数相等。即<strong><em>存在有两个在二进制下表示不同的数，其值相等</em></strong>。考虑到<strong>二进制数表示法的唯一性</strong>，这是不可能的，所以假设不成立。</p>
+<h2 id="再数学一点"><strong>再数学一点</strong></h2>
+<p>前面的思路其实并不那么清晰，可能不够严谨，下面换一种思路。</p>
+<p>如果每一个拼凑方案对应了唯一的异或值，那么作为简单的数学变换，理应可以<strong>由异或值反求出对应的拼凑方案</strong>。</p>
+<blockquote>
+<p>记 :<br>
+A = a xor b 表示a,b中所有<strong>和为1</strong>的位所组成的二进制数<br>
+B = a and b 表示a,b中所有<strong>和为2</strong>的位所组成的二进制数<br>
+C = a or b 表示a,b中所有<strong>不为0</strong>的位所组成的二进制数</p>
+<p><strong><em>知道了B和C，即意味着可以还原出对应的拼凑方案</em></strong></p>
+<p>易知：<br>
+1. A + 2B= n<br>
+2. A + B = C<br>
+3. B + C = n</p>
+</blockquote>
+<p>由这三组对应关系（其实是两组）知，<strong>在我们知道n和A的时候，可以快速的求出B，C。</strong><br>
+在知道n和B 或n和C时，也容易求出剩余的两个量。<br>
+所以ABC都可以当作唯一的标识。</p>
+<p>即a与b的<strong>异或，与，或</strong>值都可以作为唯一的标识。</p>
+<h2 id="改进程序"><strong>改进程序</strong></h2>
+<p>得到结论以后，可以着手借结论进一步优化程序。</p>
+<p>思路是遍历所有可能的标识，判断是否可以得到<strong>合法</strong>的拼凑方案，并对之计数。<br>
+这里的合法即是对标识的约束<br>
+易知(a and b) and (a xor b) = 0 ; 即 A and B=0<br>
+在对A或B进行遍历时可以检查这一条件<br>
+又易知(a and b) and (a <strong>or</strong> b) = (a and b)；即 B and C = B<br>
+或者其变形(a and b) or (a <strong>or</strong> b) = (a or b)；即 B or C = C<br>
+对C或B进行遍历时也可以检查这一条件</p>
+<p>三者殊途同归，仅就其中一种形式编写 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">WithAnd</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> cnt=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=(n&gt;&gt;<span class="number">1</span>);i++) <span class="comment">//i表示a与b，至于范围就不写了</span></span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="number">0</span>==(i&amp;(n<span class="number">-2</span>*i)))</span><br><span class="line">	cnt++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> cnt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>空间复杂度降到了O(1)</p>
+<p>考虑到c++里的set是用红黑树实现的，可能时间复杂度也降低了logn级别 (怂)</p>
+<h1 id="动态规划解法"><a href="https://segmentfault.com/a/1190000011202631" target="_blank" rel="noopener"><strong>动态规划解法</strong></a></h1>
+<p>使用res[n,i]表示：使用1，1，2，2，4，4，…，2<sup>i</sup>，2<sup>i</sup>可以组合出n的方案数<br>
+可见</p>
+<blockquote>
+<p>res[n,i]=1，当n=0，即所有面值的硬币所取数目都为0<br>
+res[n,i]=1，当n=1，即只取一个一元的硬币<br>
+res[2,0]=1，即只取两个一元硬币<br>
+res[n,0]=0，当n&gt;=3，因为无法只使用1，1组成大于等于3的组合<br>
+res[n,i]=sum(res[n-2<sup>i</sup>*m,i-1]) n,i 取其他，0=&lt;m&lt;=2</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span>  <span class="keyword">int</span> n;  <span class="comment">//支付数</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> count=<span class="number">0</span>;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span>[][]res=<span class="keyword">null</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//初始化数组</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">double</span> lo=Math.log(n)/Math.log(<span class="number">2</span>);</span><br><span class="line">        <span class="keyword">int</span> length=(<span class="keyword">int</span>)lo+<span class="number">1</span>;</span><br><span class="line">        res=<span class="keyword">new</span> <span class="keyword">int</span>[n+<span class="number">1</span>][length];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;res[<span class="number">0</span>].length;i++)&#123;</span><br><span class="line">            res[<span class="number">0</span>][i]=<span class="number">1</span>;</span><br><span class="line">            res[<span class="number">1</span>][i]=<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        res[<span class="number">1</span>][<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">        res[<span class="number">2</span>][<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//动态规划</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(n==<span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        init();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;n+<span class="number">1</span>;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;res[<span class="number">0</span>].length;j++)&#123;</span><br><span class="line">                <span class="keyword">int</span> sum=<span class="number">0</span>;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> m=<span class="number">0</span>;m&lt;<span class="number">3</span>;m++)&#123;</span><br><span class="line">                    <span class="keyword">int</span> rest=(<span class="keyword">int</span>) (i-Math.pow(<span class="number">2</span>, j)*m);</span><br><span class="line">                    <span class="keyword">if</span>(rest&gt;=<span class="number">0</span>)</span><br><span class="line">                    &#123;</span><br><span class="line">                        sum+=res[rest][j-<span class="number">1</span>];</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                res[i][j]=sum;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res[n][res[<span class="number">0</span>].length-<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Scanner scanner=<span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        n=scanner.nextInt();</span><br><span class="line">        scanner.close();</span><br><span class="line">        <span class="keyword">double</span> start=System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">int</span> result=solve();</span><br><span class="line">        System.out.println(result);</span><br><span class="line">        System.out.println(<span class="string">"use time="</span>+(System.currentTimeMillis()-start));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可能在这种情况下写成备忘录法更优雅吧。有空试一试，<strong>下次一定</strong>。</p>
+</div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/算法/">算法</a></li><li class="post__tag__item"><a class="post__tag__link" href="/tags/异或/">异或</a></li></ul></footer></article><section class="reward"><a class="btn-reward" href="#">打赏</a><div class="reward-wrapper clearfix"><img src="/img/wechat.png" title="微信"></div></section><div class="comments" id="v-container"><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="/js/Valine.min.js"></script><script>new Valine({
+  av: AV,
+  el: '#v-container',
+  app_id: 'IQzWzzCuitLQe0yLWG4VzRS6-gzGzoHsz',
+  app_key: 'cs2RLiJ2qtHhAcFv0GnEELvz',
+  avatar: 'retro',
+  avatarForce: false,
+  notify: false,
+  verify: false,
+  lang: 'zh-cn',
+  placeholder: '来啊快活啊~',
+  pageSize: 10,
+  visitor: true,
+  highlight: true,
+  emoticon_url: '/img/alu',
+  emoticon_list: ["吐.png","喷血.png","狂汗.png","不说话.png","汗.png","坐等.png","献花.png","不高兴.png","中刀.png","害羞.png","皱眉.png","小眼睛.png","中指.png","尴尬.png","瞅你.png","想一想.png","中枪.png","得意.png","肿包.png","扇耳光.png","亲亲.png","惊喜.png","脸红.png","无所谓.png","便便.png","愤怒.png","蜡烛.png","献黄瓜.png","内伤.png","投降.png","观察.png","看不见.png","击掌.png","抠鼻.png","邪恶.png","看热闹.png","口水.png","抽烟.png","锁眉.png","装大款.png","吐舌.png","无奈.png","长草.png","赞一个.png","呲牙.png","无语.png","阴暗.png","不出所料.png","咽气.png","期待.png","高兴.png","吐血倒地.png","哭泣.png","欢呼.png","黑线.png","喜极而泣.png","喷水.png","深思.png","鼓掌.png","暗地观察.png"],
+});</script></div></main><footer class="foot"><div class="foot-copy">&copy; 2018 - 2020 WeiSch</div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
