@@ -23,19 +23,20 @@
 如果不互质，那么需要穿gcd(n,k)次, 因为每次会成一个环路<br>
 需要一个变量保存开始穿针的位置<br>
 或者更高段位的做法只要next&lt;gcd就结束<br>
-考虑nk互质的情况<br>
-只有nk互质a才能遍历0~n-1<br>
-k ≡ a*m<sup>-1</sup> mod n<br>
-用数论的话说，k是模n的循环群的生成元<br>
-这里是证明nk互质一定能一次穿针引线解决问题的</p>
+考虑n,k互质的情况<br>
+只有n,k互质a才能遍历0~n-1<br>
+a ≡ m*k mod n<br>
+m ≡ a*k<sup>-1</sup> mod n<br>
+用数论的角度，k是模n的循环群的生成元<br>
+这里是证明n,k互质一定能一次穿针引线解决问题的</p>
 </blockquote>
-<p>一次穿针引线遍历的所有点，我们称之为一个环路<br>
+<p>一次穿针引线遍历的所有点，我们称之为一个<strong>环路</strong><br>
 (不知道这对应什么代数结构, 想说是群又怕被打脸, 真鸡儿丢人退群退群)</p>
 <p>设gcd(k,n)=g, 则k = Ag，n = Bg，gcd(A,B) = 1<br>
 mAg ≡ a mod Bg &lt;=&gt; mAg = a+rBg<br>
-再同时对g取模得mAg ≡ a mod B<br>
+再同时对B取模得mAg ≡ a mod B<br>
 于是有mk ≡ a mod B ……浪费我感情…<br>
-目前得到的情报: <strong>每次穿针引线能够遍历B = n/g个点, 每个环路有B个元素</strong></p>
+目前得到的情报: <strong>每次穿针引线能够遍历B = n/g个点, 即每个环路有B个元素</strong></p>
 <p><strong>如果p和q在一个环路里, 那么说明p+mk ≡ q mod n </strong><br>
 如果0和1在一个环路里, 就是0+mk ≡ 1 mod n<br>
 观察0+mk ≡ 1 mod n这个式子, 好了两边+1<br>
@@ -52,10 +53,9 @@ mAg ≡ a mod Bg &lt;=&gt; mAg = a+rBg<br>
 <blockquote>
 <p>那么，1到gcd之间，能不能有两个数属于同一个环路呢？<br>
 譬如x和x+r吧，x+r&lt;g<br>
-那么x，x+r，x+2r，x+3r…x+(n/g)r(都小于n, 不必取模)都属于一个环路了吧<br>
-一共有B+1个元素, 与前述矛盾<br>
-—<br>
-我知道你关心什么:<br>
+那么x, x+r, x+2r, x+3r, … , x+(n/g)r(都小于n, 不必取模)都属于一个环路了吧</p>
+<h2 id="一共至少有b1个元素-与前述矛盾">一共(至少)有B+1个元素, 与前述矛盾</h2>
+<p>我知道你关心什么:<br>
 接下来要证明x+(n/g)r&lt;n<br>
 　x+r &lt; g　=&gt;　r &lt; g-x<br>
 x + nr/g &lt; x + n(g-x)/g = x + n - xn/g = n - x(n-g)/g &lt; n (反正减掉的是个正数)<br>
