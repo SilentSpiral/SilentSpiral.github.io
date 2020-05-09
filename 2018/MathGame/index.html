@@ -18,7 +18,7 @@
 <p>首先解释一下这个算式的意义, 分母为100个元素的全部子集的个数, 分子则是K个元素取到奇数的情况个数与其余100-k个元素的全部子集数的乘积, 这个弹夹和背包连在一起, 它就是一个平底锅, 我想大家是没有异议的</p>
 <blockquote>
 <p>而后嘛, 带大家复习一下高中的知识了<br>
-<span class="math inline">\((C_{k}^{1}+C_{k}^{3}+C_{k}^{5}+C_{k}^{7}+...)=2^k/2​\)</span><br>
+<span class="math inline">\((C_{k}^{1}+C_{k}^{3}+C_{k}^{5}+C_{k}^{7}+...)=2^k/2\)</span><br>
 天理何在?<br>
 虽然我并不是很喜欢二项式定理来证明这个, 但无疑它是打出来说清楚比较方便的<br>
 <span class="math inline">\((a+b)^n=C_{n}^{0}a^{n}+C_{n}^{1}a^{n-1}b^{1}+C_{n}^{2}a^{n-2}b^{2}+C_{n}^{3}a^{n-3}b^{3}+...\)</span><br>
@@ -139,14 +139,14 @@ such as [1, 1, 1, 1, 51, 51, 49, 49, 49, 36, 37]<br>
 前一位是 {1,4}的情况下, 当前位可以是 {2,3}<br>
 前一位是 {2,3}的情况下, 当前位可以是 {1,2,3,4} = {1,4} + {2,3}<br>
 自左向右数第n位为{2,3}的数字的个数计为<span class="math inline">\(A_{n}\)</span>, 为{1,4}的个数计为<span class="math inline">\(B_{n}\)</span><br>
-易知$A_{1}=B_{1}=2 $<br>
-我们所求的个数记作$C_{n}=A_{n}+B_{n} $<br>
+易知<span class="math inline">\(A_{1}=B_{1}=2\)</span><br>
+我们所求的个数记作<span class="math inline">\(C_{n}=A_{n}+B_{n}\)</span><br>
 由之前的叙述可得递推关系:<br>
-$A_{n+1}=A_{n}+B_{n} $<br>
-$B_{n+1}=A_{n} $<br>
+<span class="math inline">\(A_{n+1}=A_{n}+B_{n}\)</span><br>
+<span class="math inline">\(B_{n+1}=A_{n}\)</span><br>
 故可以消去数列<span class="math inline">\(B_{n}\)</span>有:<br>
-$ A_{0}=B_{1}=2$<br>
-$C_{n}=A_{n+1}=A_{n}+A_{n-1} $</p>
+<span class="math inline">\(A_{0}=B_{1}=2\)</span><br>
+<span class="math inline">\(C_{n}=A_{n+1}=A_{n}+A_{n-1}\)</span></p>
 <p>而后即是求解斐波那契数列了, 方法很多, 就不写了, 我比较喜欢矩阵快速幂的方法, 不涉及浮点数运算, 真的优雅</p>
 <h1 id="鸽巢原理">鸽巢原理</h1>
 <blockquote>
@@ -163,13 +163,13 @@ $C_{n}=A_{n+1}=A_{n}+A_{n-1} $</p>
 <blockquote>
 <p>费马小定理<br>
 a为任意整数, p为素数<br>
-$ a^{p}≡a $<br>
+<span class="math inline">\(a^{p}≡a \mod{p}\)</span><br>
 特殊的, 若gcd(a,p)=1<br>
-$ a^{p-1}≡1 $</p>
+<span class="math inline">\(a^{p-1}≡1 \mod{p}\)</span></p>
 </blockquote>
-<p>$ 10^{1009-1}≡1  $<br>
-$ 10^{1009-1}-1 ≡0 $<br>
-$ K=$<br>
+<p><span class="math inline">\(10^{1009-1}≡1 \mod{1009}\)</span><br>
+<span class="math inline">\(10^{1009-1}-1 ≡0\mod{1009}\)</span><br>
+<span class="math inline">\(K=\cfrac{10^{1009-1}-1}{3}\)</span><br>
 K的每一位都是3, 但K并不被2整除, 故10K即为我们要找的数字</p>
 <h2 id="解法2">解法2</h2>
 <p>构造数列1,11,111,1111……<br>
@@ -181,7 +181,7 @@ K = 3( a<sub>m</sub> - a<sub>n</sub> ), 即为所求</p>
 <p>十进制下只有253位, 相较费马小定理已经小了太多了</p>
 <p>这种数列未考虑项中各位有0的情况, 但如果考虑的话, 又可能造成相减后未必仍符合要求的问题</p>
 <h2 id="解法3">解法3</h2>
-<p>$ {k} $</p>
+<p><span class="math inline">\({k}\equiv{m} \mod{ 1009}\)</span></p>
 <p>对于每一个m, 总能找到最小的k<sub>min</sub>,<br>
 而后我们爆破a = int( bin(i)[2:] + str(k<sub>min</sub>) ) , 寻找模1009余m的最小a<br>
 3(a-k<sub>min</sub>)即为所求</p>
@@ -189,7 +189,8 @@ K = 3( a<sub>m</sub> - a<sub>n</sub> ), 即为所求</p>
 爆破得a = 100100011111111<br>
 K = 3(a-k<sub>min</sub>) = 300300033333330 = 297621440370*1009</p>
 <p>而100100011111111=int(bin(18686)[2:]+str(k<sub>min</sub>))<br>
-可以爆破一下, 寻找更小的答案 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">18687</span>):</span><br><span class="line">	r=int(bin(i)[<span class="number">2</span>:])*<span class="number">3</span></span><br><span class="line">	m=r%<span class="number">2018</span></span><br><span class="line">	<span class="keyword">if</span> m==<span class="number">0</span>:</span><br><span class="line">		print(r,i)</span><br></pre></td></tr></table></figure></p>
+可以爆破一下, 寻找更小的答案</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">18687</span>):</span><br><span class="line">	r=int(bin(i)[<span class="number">2</span>:])*<span class="number">3</span></span><br><span class="line">	m=r%<span class="number">2018</span></span><br><span class="line">	<span class="keyword">if</span> m==<span class="number">0</span>:</span><br><span class="line">		print(r,i)</span><br></pre></td></tr></table></figure>
 <p>运行结果显示不存在更小的答案了</p>
 </div></header><footer class="post__foot u-cf"><ul class="post__tag u-fl"><li class="post__tag__item"><a class="post__tag__link" href="/tags/数学/">数学</a></li></ul></footer></article><section class="reward"><a class="btn-reward" href="#">打赏</a><div class="reward-wrapper clearfix"><img src="/img/wechat.png" title="微信"></div></section><div class="comments" id="v-container"><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="/js/Valine.min.js"></script><script>new Valine({
   av: AV,

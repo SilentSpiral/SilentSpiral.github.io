@@ -56,27 +56,27 @@ $Gcd(A, B) = 1 → Lcm(A, B) = AB $ <strong>剩余类:</strong> 把所有整数�
 $mk，mk+1，mk+2，……，mk+(m-1) $<br>
 分别记为<span class="math inline">\({0\,(mod \,m)}，{1\,(mod\,m)}\)</span>……<br>
 而n的倍数肯定分布在这m个剩余类中<br>
-因为<span class="math inline">\(Gcd(m,n)=1​\)</span>，所以每个剩余类中都有一些数是n的倍数，并且是平均分配它的旁证<br>
+因为<span class="math inline">\(Gcd(m,n)=1\)</span>，所以每个剩余类中都有一些数是n的倍数，并且是平均分配它的旁证<br>
 可见HDOJ 1222 Wolf and Rabbit<br>
-设 $kmin = min{ k | nk ∈ {i, (mod,m)} }, i ∈ [0, m) $<br>
-则 <span class="math inline">\(nkmin\)</span> 是<span class="math inline">\({i\,(mod\,m)}\)</span>中n的最小倍数。特别的，$nm ∈ {0,(mod,m)} $<br>
-<span class="math inline">\(nkmin​\)</span>是个标志，它表明<span class="math inline">\(\{i\,(mod\,m)\}\)</span>中<span class="math inline">\(nkmin​\)</span>后面所有数<br>
-即<span class="math inline">\(nkmin + jm\)</span>必定都能被组合出来<br>
-那也说明最大不能组合数必定小于$nkmin $<br>
-我们开始寻找<span class="math inline">\(max\{nkmin\}\)</span><br>
-<span class="math inline">\(Lcm(m, n) = mn​\)</span>，所以很明显<span class="math inline">\((m-1)n​\)</span>是最大的<br>
-因为<span class="math inline">\((m-1)n\)</span>是<span class="math inline">\(nkmin​\)</span>中的最大值，所以在剩下的<span class="math inline">\(m-1\)</span>个剩余类中，<br>
+设 <span class="math inline">\(k_{min} = min\{ k | nk ∈ \{i (\mod{m})\} \}, i ∈ [0, m)\)</span><br>
+则 <span class="math inline">\(nk_{min}\)</span> 是<span class="math inline">\({i\,(mod\,m)}\)</span>中n的最小倍数。特别的，$nm ∈ {0,(mod,m)} $<br>
+<span class="math inline">\(nkmin\)</span>是个标志，它表明<span class="math inline">\(\{i\,(mod\,m)\}\)</span>中<span class="math inline">\(nk_{min}\)</span>后面所有数<br>
+即<span class="math inline">\(nk_{min} + jm\)</span>必定都能被组合出来<br>
+那也说明最大不能组合数必定小于<span class="math inline">\(nk_{min}\)</span><br>
+我们开始寻找<span class="math inline">\(max\{nk_{min}\}\)</span><br>
+<span class="math inline">\(Lcm(m, n) = mn\)</span>，所以很明显<span class="math inline">\((m-1)n\)</span>是最大的<br>
+因为<span class="math inline">\((m-1)n\)</span>是<span class="math inline">\(nk_{min}\)</span>中的最大值，所以在剩下的<span class="math inline">\(m-1\)</span>个剩余类中，<br>
 必定有比它小并且能被m和n组合，<br>
 这些数就是<span class="math inline">\((m-1)n -1，(m-1)n -2，……，(m-1)n -(m-1)\)</span><br>
-所以最大不能被组合数就是<span class="math inline">\((m-1)n -m​\)</span></p>
+所以最大不能被组合数就是<span class="math inline">\((m-1)n -m\)</span></p>
 <p>如果m和n不互素，那<span class="math inline">\(\{1\,(mod\,m)\}\)</span><strong>不能</strong>被m组合，同样也不能被n和m组合</p>
-<p>我们能求出各个剩余类的nkmin之后，不能组合数的个数就是每个剩余类中小于各自nkmin的数的个数总和。<br>
+<p>我们能求出各个剩余类的nk<sub>min</sub>之后，不能组合数的个数就是每个剩余类中小于各自nkmin的数的个数总和。<br>
 观察如下：</p>
 <p><span class="math inline">\(M = 5，N = 3\)</span><br>
 <span class="math inline">\({0(mod\,5)}：0，5，10，15……\)</span><br>
-${1(mod,5)}：1，6，11，16…… $<br>
-${2(mod,5)}：2，7，12，17…… $<br>
-${3(mod,5)}：3，8，13，18…… $<br>
+<span class="math inline">\({1(mod\,5)}：1，6，11，16……\)</span><br>
+<span class="math inline">\({2(mod\,5)}：2，7，12，17……\)</span><br>
+<span class="math inline">\({3(mod\,5)}：3，8，13，18……\)</span><br>
 <span class="math inline">\({4(mod\,5)}：4，9，14，19……\)</span><br>
 红色的就是不能组合数，可以看出在剩余类中它的数目有规律<br>
 <span class="math inline">\(Total = [0+1+2] + [0+1]\)</span><br>

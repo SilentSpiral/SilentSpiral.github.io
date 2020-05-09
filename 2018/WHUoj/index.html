@@ -19,15 +19,17 @@
 <p>第一种只含1的有1种<br>
 第二种需要统计最多能够容纳的2的个数所以共$ $种<br>
 第三种至少有一个3所以拿掉这个3之后可以递归到f(n-3)</p>
-<p><span class="math display">\[ f(n)=1+\lfloor \cfrac{n}{2} \rfloor+f(n-3)\\f(0)=1=1+\lfloor \cfrac{0}{2} \rfloor\\f(1)=1=1+\lfloor \cfrac{1}{2} \rfloor\\f(2)=2=1+\lfloor \cfrac{2}{2} \rfloor \]</span></p>
+<p><span class="math display">\[
+f(n)=1+\lfloor \cfrac{n}{2} \rfloor+f(n-3)\\f(0)=1=1+\lfloor \cfrac{0}{2} \rfloor\\f(1)=1=1+\lfloor \cfrac{1}{2} \rfloor\\f(2)=2=1+\lfloor \cfrac{2}{2} \rfloor
+\]</span></p>
 <p>共需递归<span class="math inline">\(\lfloor \cfrac{n}{3} \rfloor\)</span>次, 共有<span class="math inline">\(\lfloor \cfrac{n}{3} \rfloor+1\)</span>项</p>
 <p><span class="math display">\[
-f(n)=\lfloor \cfrac{n}{3} \rfloor+1+\sum_{i=0}^{\lfloor n/3 \rfloor}\lfloor {\cfrac{n\ mod\ 3+3i}{2} \rfloor}\\
+f(n)=\lfloor \cfrac{n}{3} \rfloor+1+\sum_{i=0}^{\lfloor n/3 \rfloor}\lfloor {\cfrac{n\ (mod\ 3)+3i}{2} \rfloor}\\
 f(n)=\lfloor \cfrac{n}{3} \rfloor+1+\sum_{i=0}^{\lfloor n/3 \rfloor}\lfloor {\cfrac{n-3i}{2} \rfloor}
 \]</span></p>
-<p>两种写法都对, 方向是反着的, 比较麻烦的是取整问题, 否则就可以按照等差数列来求和了<br>
-考虑到<span class="math inline">\((\lfloor \frac{n}{2} \rfloor+\lfloor \frac{n-3}{2} \rfloor)=(\lfloor \frac{n-6}{2} \rfloor+\lfloor \frac{n-9}{2} \rfloor)+6\)</span><br>
-采用了并项的方式, 对新的等差数列进行求和, 并单独讨论原数列项数为奇数的情况</p>
+<p>两种写法都对, 方向是反着的, 比较麻烦的是取整问题, 否则就可以按照等差数列来求和了</p>
+<p>考虑到 <span class="math inline">\((\lfloor \frac{n}{2} \rfloor+\lfloor \frac{n-3}{2} \rfloor)=(\lfloor \frac{n-6}{2} \rfloor+\lfloor \frac{n-9}{2} \rfloor)+6\)</span></p>
+<p>采用了并项的方式, 对新的等差数列进行求和, 并单独讨论原数列项数为奇数的情况</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="number">1</span>):</span><br><span class="line">	n=int(input())</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> n:</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">	p=(n+<span class="number">3</span>)//<span class="number">3</span>  <span class="comment">#项数</span></span><br><span class="line">	m=p&gt;&gt;<span class="number">1</span>      <span class="comment">#并项</span></span><br><span class="line">	ans=(((n&gt;&gt;<span class="number">1</span>)+((n<span class="number">-3</span>)&gt;&gt;<span class="number">1</span>)+((n+<span class="number">6</span>-m*<span class="number">6</span>)&gt;&gt;<span class="number">1</span>)+((n+<span class="number">3</span>-m*<span class="number">6</span>)&gt;&gt;<span class="number">1</span>))*m&gt;&gt;<span class="number">1</span>)+p</span><br><span class="line">	<span class="keyword">if</span> p&amp;<span class="number">1</span>:     <span class="comment">#未合并项</span></span><br><span class="line">		ans+=(n%<span class="number">3</span>)//<span class="number">2</span></span><br><span class="line">	print(ans)</span><br></pre></td></tr></table></figure>
 <h1 id="a-simple-math-problem"><a href="http://acm.whu.edu.cn/weblearn/problem/470" target="_blank" rel="noopener">470. A Simple Math Problem</a></h1>
 <blockquote>
@@ -38,7 +40,9 @@ tips:<br>
 123456789101112131415161718192021 ≡ 4 ( mod 11)</p>
 </blockquote>
 <p>易知</p>
-<p><span class="math display">\[10^{2i}≡1\  \ (\ mod\ 11) \\ 10^{2i+1}≡10≡-1\  \ (\ mod\ 11)\]</span></p>
+<p><span class="math display">\[
+10^{2i}≡1\  \ (\ mod\ 11) \\ 10^{2i+1}≡10≡-1\  \ (\ mod\ 11)
+\]</span></p>
 <p>记所求为f(n)</p>
 <p><span class="math inline">\(f(n)≡f(n-1)10^{\lfloor lgn \rfloor}+n\  \ (\ mod\ 11)\)</span></p>
 <p>需要根据<span class="math inline">\(\lfloor lgn \rfloor\)</span>对f(n)进行分段求解</p>
@@ -97,4 +101,17 @@ m = 1, 2, 4, p, 2p, p<sup>n</sup><br>
   highlight: true,
   emoticon_url: '/img/alu',
   emoticon_list: ["吐.png","喷血.png","狂汗.png","不说话.png","汗.png","坐等.png","献花.png","不高兴.png","中刀.png","害羞.png","皱眉.png","小眼睛.png","中指.png","尴尬.png","瞅你.png","想一想.png","中枪.png","得意.png","肿包.png","扇耳光.png","亲亲.png","惊喜.png","脸红.png","无所谓.png","便便.png","愤怒.png","蜡烛.png","献黄瓜.png","内伤.png","投降.png","观察.png","看不见.png","击掌.png","抠鼻.png","邪恶.png","看热闹.png","口水.png","抽烟.png","锁眉.png","装大款.png","吐舌.png","无奈.png","长草.png","赞一个.png","呲牙.png","无语.png","阴暗.png","不出所料.png","咽气.png","期待.png","高兴.png","吐血倒地.png","哭泣.png","欢呼.png","黑线.png","喜极而泣.png","喷水.png","深思.png","鼓掌.png","暗地观察.png"],
-});</script></div></main><footer class="foot"><div class="foot-copy">&copy; 2018 - 2020 WeiSch</div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
+});</script></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script></main><footer class="foot"><div class="foot-copy">&copy; 2018 - 2020 WeiSch</div></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
